@@ -12,93 +12,6 @@
     -o-border-radius: 50%;
 }
 
-.padding-header {
-    padding-left: 10pt;
-    text-align: left;
-}
-
-.padding-next {
-    padding-left: 15pt;
-    text-align: left;
-}
-
-.s1 {
-    color: black;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 14pt;
-}
-
-.s2 {
-    color: black;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 10pt;
-}
-
-.s3 {
-    color: black;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    text-align: justify;
-}
-
-.s4 {
-    color: #0562C1;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: underline;
-    font-size: 10pt;
-}
-
-h1 {
-    color: #767070;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 12pt;
-}
-
-p {
-    color: black;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    margin: 0pt;
-    max-width: 700px;
-}
-
-.s5 {
-    color: black;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: italic;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    text-align: right;
-    padding-right: 10pt;
-}
-
-.s6 {
-    color: #2D74B5;
-    font-family: Corbel, Lucida, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 10pt;
-}
-
 li {
     display: block;
 }
@@ -110,7 +23,7 @@ li {
 #l1>li>*:first-child:before {
     content: "• ";
     color: black;
-    font-family: "Times New Roman", serif;
+    font-family: Corbel, Lucida, sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
@@ -128,7 +41,7 @@ li {
 #l2>li>*:first-child:before {
     content: "- ";
     color: black;
-    font-family: "Times New Roman", serif;
+    font-family: Corbel, Lucida, sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
@@ -146,4 +59,68 @@ tbody {
     .pagebreak {
         page-break-before: always;
     }
+    header,
+    footer,
+    aside,
+    form,
+    … {
+        display: none;
+    }
+    article {
+        width: 100%!important;
+        padding: 0!important;
+        margin: 0!important;
+    }
+}
+
+@page {
+    margin: 0.5cm;
+}
+
+h1,
+p,
+ul,
+.container,
+.text-normal,
+.text-link,
+.text-header,
+.text-title {
+    color: black;
+    font-family: Corbel, Lucida, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: 10pt;
+}
+
+p {
+    margin: 0pt;
+    max-width: 21cm;
+}
+
+h1 {
+    color: #767070;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+    max-width: 21cm;
+}
+
+.text-link {
+    color: #0562C1;
+    text-decoration: underline;
+}
+
+.text-header {
+    color: #2D74B5;
+    font-weight: bold;
+}
+
+.text-title {
+    font-weight: bold;
+    font-size: 14pt;
 }
