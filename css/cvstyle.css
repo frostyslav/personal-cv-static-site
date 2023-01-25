@@ -14,6 +14,7 @@
 
 li {
     display: block;
+    /* display: -webkit-box; */
 }
 
 #l1 {
@@ -28,10 +29,7 @@ li {
     font-weight: normal;
     text-decoration: none;
     font-size: 10pt;
-}
-
-li {
-    display: block;
+    text-rendering: optimizeLegibility;
 }
 
 #l2 {
@@ -46,6 +44,7 @@ li {
     font-weight: normal;
     text-decoration: none;
     font-size: 10pt;
+    text-rendering: optimizeLegibility;
 }
 
 table,
@@ -53,11 +52,15 @@ tbody {
     vertical-align: top;
     overflow: visible;
     overflow-x: auto;
+    /* display: -webkit-box; */
 }
 
 @media print {
     .pagebreak {
+        break-before: always;
         page-break-before: always;
+        -webkit-region-break-inside: avoid;
+        page-break-inside: avoid !important;
     }
     header,
     footer,
@@ -71,6 +74,18 @@ tbody {
         padding: 0!important;
         margin: 0!important;
     }
+    .noprint {
+        display: none;
+    }
+    .toBeReplaced {
+        visibility: hidden;
+        position: relative;
+    }
+    .toBeReplaced:after {
+        visibility: visible;
+        position: relative;
+        content: "'";
+    }
 }
 
 @page {
@@ -81,7 +96,7 @@ h1,
 p,
 ul,
 .container,
-.text-normal,
+.container-fluid,
 .text-link,
 .text-header,
 .text-title {
@@ -91,6 +106,18 @@ ul,
     font-weight: normal;
     text-decoration: none;
     font-size: 10pt;
+    text-rendering: optimizeLegibility;
+}
+
+.top-container {
+    background: #fff;
+    max-width: 21cm;
+}
+
+.padding-container {
+    background: #eee;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 p {
@@ -123,4 +150,8 @@ h1 {
 .text-title {
     font-weight: bold;
     font-size: 14pt;
+}
+
+body {
+    background: #eee;
 }
