@@ -24,7 +24,7 @@ li {
 #l1>li>*:first-child:before {
     content: "• ";
     color: black;
-    font-family: Corbel, Lucida, sans-serif;
+    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
@@ -39,7 +39,7 @@ li {
 #l2>li>*:first-child:before {
     content: "- ";
     color: black;
-    font-family: Corbel, Lucida, sans-serif;
+    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
@@ -55,39 +55,6 @@ tbody {
     /* display: -webkit-box; */
 }
 
-@media print {
-    .pagebreak {
-        break-before: always;
-        page-break-before: always;
-        -webkit-region-break-inside: avoid;
-        page-break-inside: avoid !important;
-    }
-    header,
-    footer,
-    aside,
-    form,
-    … {
-        display: none;
-    }
-    article {
-        width: 100%!important;
-        padding: 0!important;
-        margin: 0!important;
-    }
-    .noprint {
-        display: none;
-    }
-    .toBeReplaced {
-        visibility: hidden;
-        position: relative;
-    }
-    .toBeReplaced:after {
-        visibility: visible;
-        position: relative;
-        content: "'";
-    }
-}
-
 @page {
     margin: 0.5cm;
 }
@@ -101,7 +68,7 @@ ul,
 .text-header,
 .text-title {
     color: black;
-    font-family: Corbel, Lucida, sans-serif;
+    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
@@ -154,4 +121,42 @@ h1 {
 
 body {
     background: #eee;
+}
+
+@media print {
+    .pagebreak {
+        break-before: always;
+        page-break-before: always;
+        -webkit-region-break-inside: avoid;
+        page-break-inside: avoid !important;
+    }
+
+    header,
+    footer,
+    aside,
+    form,
+    … {
+        display: none;
+    }
+
+    article {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .noprint {
+        display: none;
+    }
+
+    .toBeReplaced {
+        visibility: hidden;
+        position: relative;
+    }
+
+    .toBeReplaced:after {
+        visibility: visible;
+        position: relative;
+        content: "'";
+    }
 }
