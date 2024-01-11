@@ -56,7 +56,7 @@ tbody {
 }
 
 @page {
-    margin: 0.5cm;
+    margin: 1cm;
 }
 
 h1,
@@ -102,6 +102,12 @@ h1 {
     margin: 0;
     padding: 0;
     max-width: 21cm;
+}
+
+.container-table {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: 20cm;
 }
 
 .text-link {
