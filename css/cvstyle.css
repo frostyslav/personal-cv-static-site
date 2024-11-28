@@ -1,62 +1,62 @@
 * {
-    margin: 0;
-    padding: 0;
-    text-indent: 0;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
 }
 
 .circle {
-    border: 1px solid gray;
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -o-border-radius: 50%;
+  border: 1px solid gray;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 
 li {
-    display: block;
-    /* display: -webkit-box; */
+  display: block;
+  /* display: -webkit-box; */
 }
 
 #l1 {
-    padding-left: 0pt;
+  padding-left: 0pt;
 }
 
-#l1>li>*:first-child:before {
-    content: "• ";
-    color: black;
-    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    text-rendering: optimizeLegibility;
+#l1 > li > *:first-child:before {
+  content: "• ";
+  color: black;
+  font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  font-size: 10pt;
+  text-rendering: optimizeLegibility;
 }
 
 #l2 {
-    padding-left: 0pt;
+  padding-left: 0pt;
 }
 
-#l2>li>*:first-child:before {
-    content: "- ";
-    color: black;
-    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    text-rendering: optimizeLegibility;
+#l2 > li > *:first-child:before {
+  content: "- ";
+  color: black;
+  font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  font-size: 10pt;
+  text-rendering: optimizeLegibility;
 }
 
 table,
 tbody {
-    vertical-align: top;
-    overflow: visible;
-    overflow-x: auto;
-    /* display: -webkit-box; */
+  vertical-align: top;
+  overflow: visible;
+  overflow-x: auto;
+  /* display: -webkit-box; */
 }
 
 @page {
-    margin: 1cm;
+  margin: 1cm;
 }
 
 h1,
@@ -67,102 +67,102 @@ ul,
 .text-link,
 .text-header,
 .text-title {
-    color: black;
-    font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: none;
-    font-size: 10pt;
-    text-rendering: optimizeLegibility;
+  color: black;
+  font-family: Corbel, Optima, Segoe, Segoe UI, Candara, Calibri, Arial, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: none;
+  font-size: 10pt;
+  text-rendering: optimizeLegibility;
 }
 
 .top-container {
-    background: #fff;
-    max-width: 21cm;
+  background: #fff;
+  max-width: 21cm;
 }
 
 .padding-container {
-    background: #eee;
-    padding-bottom: 10px;
-    padding-top: 10px;
+  background: #eee;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 p {
-    margin: 0pt;
-    max-width: 21cm;
+  margin: 0pt;
+  max-width: 21cm;
 }
 
 h1 {
-    color: #767070;
-    font-weight: bold;
-    font-size: 12pt;
+  color: #767070;
+  font-weight: bold;
+  font-size: 12pt;
 }
 
 .container {
-    margin: 0;
-    padding: 0;
-    max-width: 21cm;
+  margin: 0;
+  padding: 0;
+  max-width: 21cm;
 }
 
 .container-table {
-    margin-left: 1rem;
-    margin-right: 1rem;
-    max-width: 20cm;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: 20cm;
 }
 
 .text-link {
-    color: #0562C1;
-    text-decoration: underline;
+  color: #0562c1;
+  text-decoration: underline;
 }
 
 .text-header {
-    color: #2D74B5;
-    font-weight: bold;
+  color: #2d74b5;
+  font-weight: bold;
 }
 
 .text-title {
-    font-weight: bold;
-    font-size: 14pt;
+  font-weight: bold;
+  font-size: 14pt;
 }
 
 body {
-    background: #eee;
+  background: #eee;
 }
 
 @media print {
-    .pagebreak {
-        break-before: always;
-        page-break-before: always;
-        -webkit-region-break-inside: avoid;
-        page-break-inside: avoid !important;
-    }
+  .pagebreak {
+    break-before: always;
+    page-break-before: always;
+    -webkit-region-break-inside: avoid;
+    page-break-inside: avoid !important;
+  }
 
-    header,
-    footer,
-    aside,
-    form,
-    … {
-        display: none;
-    }
+  header,
+  footer,
+  aside,
+  form,
+  … {
+    display: none;
+  }
 
-    article {
-        width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
+  article {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 
-    .noprint {
-        display: none;
-    }
+  .noprint {
+    display: none;
+  }
 
-    .toBeReplaced {
-        visibility: hidden;
-        position: relative;
-    }
+  .toBeReplaced {
+    visibility: hidden;
+    position: relative;
+  }
 
-    .toBeReplaced:after {
-        visibility: visible;
-        position: relative;
-        content: "'";
-    }
+  .toBeReplaced:after {
+    visibility: visible;
+    position: relative;
+    content: "'";
+  }
 }
