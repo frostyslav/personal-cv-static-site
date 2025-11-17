@@ -38,7 +38,7 @@ function updateActiveNav() {
     if (isAtBottom) {
         // Highlight the last section (Contact)
         navLinks.forEach(link => link.classList.remove('active'));
-        const contactLink = document.querySelector('a[href="#contact"]');
+        const contactLink = document.querySelector('a[href="#certifications"]');
         if (contactLink) {
             contactLink.classList.add('active');
         }
