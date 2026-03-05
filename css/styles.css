@@ -113,7 +113,8 @@ body {
 }
 
 @keyframes avatarGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
   }
   50% {
@@ -419,7 +420,9 @@ body {
   margin-bottom: 4rem;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
 .section.visible {

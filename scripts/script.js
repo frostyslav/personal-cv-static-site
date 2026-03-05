@@ -153,7 +153,7 @@ window.addEventListener("load", () => {
       // Collapse all companies except the first one
       if (groupIndex > 0 && positionTimeline) {
         group.classList.add("company-collapsed");
-        companyCollapseBtn.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-right');
+        companyCollapseBtn.querySelector("i").classList.replace("fa-chevron-down", "fa-chevron-right");
         positionTimeline.style.display = "none";
       }
 
@@ -163,12 +163,12 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = group.classList.toggle("company-collapsed");
-        const icon = companyCollapseBtn.querySelector('i');
-        
+        const icon = companyCollapseBtn.querySelector("i");
+
         if (isCollapsed) {
-          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+          icon.classList.replace("fa-chevron-down", "fa-chevron-right");
         } else {
-          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+          icon.classList.replace("fa-chevron-right", "fa-chevron-down");
         }
 
         if (positionTimeline) {
@@ -206,7 +206,7 @@ window.addEventListener("load", () => {
       // Collapse all items except those in the first company group (latest company)
       if (groupIndex > 0) {
         item.classList.add("collapsed");
-        collapseBtn.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-right');
+        collapseBtn.querySelector("i").classList.replace("fa-chevron-down", "fa-chevron-right");
         experienceSections.forEach((section) => {
           section.style.display = "none";
         });
@@ -218,12 +218,12 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = item.classList.toggle("collapsed");
-        const icon = collapseBtn.querySelector('i');
-        
+        const icon = collapseBtn.querySelector("i");
+
         if (isCollapsed) {
-          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+          icon.classList.replace("fa-chevron-down", "fa-chevron-right");
         } else {
-          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+          icon.classList.replace("fa-chevron-right", "fa-chevron-down");
         }
 
         experienceSections.forEach((section) => {
@@ -271,12 +271,12 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = item.classList.toggle("collapsed");
-        const icon = collapseBtn.querySelector('i');
-        
+        const icon = collapseBtn.querySelector("i");
+
         if (isCollapsed) {
-          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+          icon.classList.replace("fa-chevron-down", "fa-chevron-right");
         } else {
-          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+          icon.classList.replace("fa-chevron-right", "fa-chevron-down");
         }
 
         experienceSections.forEach((section) => {
@@ -299,11 +299,11 @@ window.addEventListener("load", () => {
   // Intersection Observer for section fade-in animations
   const observerOptions = {
     threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
+    rootMargin: "0px 0px -50px 0px",
   };
 
   const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
         sectionObserver.unobserve(entry.target);
@@ -312,13 +312,13 @@ window.addEventListener("load", () => {
   }, observerOptions);
 
   // Observe all sections
-  document.querySelectorAll(".section").forEach(section => {
+  document.querySelectorAll(".section").forEach((section) => {
     sectionObserver.observe(section);
   });
 
   // Back to top button
   const backToTopBtn = document.querySelector(".back-to-top");
-  
+
   if (backToTopBtn) {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) {
@@ -331,7 +331,7 @@ window.addEventListener("load", () => {
     backToTopBtn.addEventListener("click", () => {
       window.scrollTo({
         top: 0,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     });
   }
