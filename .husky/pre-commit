@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Run prek hooks (backwards compatible with pre-commit)
-npx prek run --all-files
+uvx prek run --all-files
