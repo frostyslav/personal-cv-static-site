@@ -281,17 +281,33 @@ body {
   background: var(--bg-secondary);
   border-radius: 3px;
   overflow: hidden;
+  position: relative;
 }
 
 .language-progress {
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--primary-light),
-    var(--primary-color)
-  );
   border-radius: 3px;
   transition: width 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.language-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 256px;
+  background: linear-gradient(
+    to right,
+    #dbeafe 0%,
+    #93c5fd 25%,
+    #60a5fa 50%,
+    #3b82f6 75%,
+    #1e40af 100%
+  );
+  border-radius: 3px;
 }
 
 /* Social Links */
