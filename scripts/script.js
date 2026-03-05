@@ -140,7 +140,7 @@ window.addEventListener("load", () => {
     if (companyName) {
       const companyCollapseBtn = document.createElement("button");
       companyCollapseBtn.className = "collapse-btn company-collapse-btn";
-      companyCollapseBtn.innerHTML = "▼";
+      companyCollapseBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
       companyCollapseBtn.setAttribute("aria-label", "Toggle company details");
 
       companyName.style.display = "flex";
@@ -153,7 +153,7 @@ window.addEventListener("load", () => {
       // Collapse all companies except the first one
       if (groupIndex > 0 && positionTimeline) {
         group.classList.add("company-collapsed");
-        companyCollapseBtn.innerHTML = "▶";
+        companyCollapseBtn.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-right');
         positionTimeline.style.display = "none";
       }
 
@@ -163,7 +163,13 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = group.classList.toggle("company-collapsed");
-        companyCollapseBtn.innerHTML = isCollapsed ? "▶" : "▼";
+        const icon = companyCollapseBtn.querySelector('i');
+        
+        if (isCollapsed) {
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+        } else {
+          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+        }
 
         if (positionTimeline) {
           positionTimeline.style.display = isCollapsed ? "none" : "block";
@@ -183,6 +189,7 @@ window.addEventListener("load", () => {
       const collapseBtn = document.createElement("button");
       collapseBtn.className = "collapse-btn";
       collapseBtn.setAttribute("aria-label", "Toggle details");
+      collapseBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
 
       // Find the title and insert button after it
       const title = item.querySelector(".timeline-title");
@@ -199,12 +206,10 @@ window.addEventListener("load", () => {
       // Collapse all items except those in the first company group (latest company)
       if (groupIndex > 0) {
         item.classList.add("collapsed");
-        collapseBtn.innerHTML = "▶";
+        collapseBtn.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-right');
         experienceSections.forEach((section) => {
           section.style.display = "none";
         });
-      } else {
-        collapseBtn.innerHTML = "▼";
       }
 
       // Add click handler - both button and title
@@ -213,7 +218,13 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = item.classList.toggle("collapsed");
-        collapseBtn.innerHTML = isCollapsed ? "▶" : "▼";
+        const icon = collapseBtn.querySelector('i');
+        
+        if (isCollapsed) {
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+        } else {
+          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+        }
 
         experienceSections.forEach((section) => {
           section.style.display = isCollapsed ? "none" : "block";
@@ -234,7 +245,7 @@ window.addEventListener("load", () => {
     if (title) {
       const collapseBtn = document.createElement("button");
       collapseBtn.className = "collapse-btn";
-      collapseBtn.innerHTML = "▶";
+      collapseBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
       collapseBtn.setAttribute("aria-label", "Toggle details");
 
       title.style.display = "flex";
@@ -260,7 +271,13 @@ window.addEventListener("load", () => {
         e.stopPropagation();
 
         const isCollapsed = item.classList.toggle("collapsed");
-        collapseBtn.innerHTML = isCollapsed ? "▶" : "▼";
+        const icon = collapseBtn.querySelector('i');
+        
+        if (isCollapsed) {
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+        } else {
+          icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+        }
 
         experienceSections.forEach((section) => {
           section.style.display = isCollapsed ? "none" : "block";
@@ -279,6 +296,47 @@ window.addEventListener("load", () => {
 
 // Skills search and filter functionality
 window.addEventListener("load", () => {
+  // Intersection Observer for section fade-in animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        sectionObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections
+  document.querySelectorAll(".section").forEach(section => {
+    sectionObserver.observe(section);
+  });
+
+  // Back to top button
+  const backToTopBtn = document.querySelector(".back-to-top");
+  
+  if (backToTopBtn) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+    });
+
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+
+  // Skills search and filter
   const skillsSection = document.querySelector("#skills");
   if (!skillsSection) return;
 
@@ -306,7 +364,9 @@ window.addEventListener("load", () => {
       const filterBtn = document.createElement("button");
       filterBtn.className = "category-filter-btn";
       filterBtn.setAttribute("data-category", categoryName);
-      filterBtn.innerHTML = `<i class="${iconClass}"></i> ${categoryName}`;
+      filterBtn.setAttribute("title", categoryName);
+      filterBtn.setAttribute("aria-label", categoryName);
+      filterBtn.innerHTML = `<i class="${iconClass}"></i>`;
 
       categoryFiltersContainer.appendChild(filterBtn);
     }
@@ -385,6 +445,14 @@ window.addEventListener("load", () => {
 
       activeCategory = category;
       filterSkills();
+
+      // Scroll to top of skills section
+      const skillsSection = document.querySelector("#skills");
+      if (skillsSection) {
+        const yOffset = -100; // Offset for sticky header
+        const y = skillsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
     });
   });
 
