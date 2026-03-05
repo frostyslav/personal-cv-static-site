@@ -24,7 +24,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
   background: var(--bg-secondary);
@@ -89,9 +90,10 @@ body {
 
 .sidebar.collapsed ~ .sidebar-collapse-btn {
   left: 0;
-  border-left: 1px solid var(--border-color);
-  border-right: none;
-  border-radius: 0.5rem 0 0 0.5rem;
+  border: 1px solid var(--border-color);
+  border-left: none;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar.collapsed ~ .sidebar-collapse-btn i {
@@ -283,7 +285,11 @@ body {
 
 .language-progress {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-light), var(--primary-color));
+  background: linear-gradient(
+    90deg,
+    var(--primary-light),
+    var(--primary-color)
+  );
   border-radius: 3px;
   transition: width 0.6s ease;
 }
@@ -456,7 +462,7 @@ body {
 }
 
 .section-title::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
@@ -489,7 +495,7 @@ body {
 }
 
 .qualifications-list li::before {
-  content: "✓";
+  content: '✓';
   position: absolute;
   left: 0;
   color: var(--primary-color);
@@ -506,7 +512,7 @@ body {
 }
 
 .timeline-item::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -6px;
   top: 0.5rem;
@@ -518,7 +524,7 @@ body {
 }
 
 .timeline-item::after {
-  content: "";
+  content: '';
   position: absolute;
   left: -2px;
   top: 0;
@@ -653,7 +659,7 @@ body {
 }
 
 .position-item::before {
-  content: "";
+  content: '';
   position: absolute;
   left: -1.5rem;
   top: 0.4rem;
@@ -667,7 +673,7 @@ body {
 }
 
 .position-item::after {
-  content: "";
+  content: '';
   position: absolute;
   left: -1.5rem;
   top: 0;
@@ -746,7 +752,11 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, var(--gradient-primary-color), var(--gradient-secondary-color));
+  background: linear-gradient(
+    135deg,
+    var(--gradient-primary-color),
+    var(--gradient-secondary-color)
+  );
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   margin-left: 0.75rem;
@@ -864,7 +874,7 @@ body {
   flex-shrink: 0;
 }
 
-.certification-logo[alt*="STACKIT"] {
+.certification-logo[alt*='STACKIT'] {
   width: 50px;
   height: 50px;
 }
