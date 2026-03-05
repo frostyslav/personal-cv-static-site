@@ -312,8 +312,8 @@ window.addEventListener('load', () => {
 window.addEventListener('load', () => {
   // Intersection Observer for section fade-in animations
   const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.05,
+    rootMargin: '0px 0px 100px 0px',
   };
 
   const sectionObserver = new IntersectionObserver(entries => {
