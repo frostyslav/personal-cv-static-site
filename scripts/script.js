@@ -2,11 +2,19 @@
 const menuToggle = document.querySelector(".mobile-menu-toggle");
 const sidebar = document.querySelector(".sidebar");
 const navLinks = document.querySelectorAll(".nav-link");
+const sidebarCollapseBtn = document.querySelector(".sidebar-collapse-btn");
 
 menuToggle.addEventListener("click", () => {
   sidebar.classList.toggle("active");
   menuToggle.classList.toggle("active");
 });
+
+// Sidebar collapse button (desktop)
+if (sidebarCollapseBtn) {
+  sidebarCollapseBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("collapsed");
+  });
+}
 
 // Close sidebar when clicking on a nav link (mobile)
 navLinks.forEach((link) => {
