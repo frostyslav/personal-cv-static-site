@@ -1,0 +1,155 @@
+/* Certifications */
+.certifications-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  transition: grid-template-columns 0.3s ease;
+}
+
+/* Certification provider groups */
+.cert-group {
+  grid-column: 1 / -1;
+}
+
+.cert-group-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cert-group + .cert-group {
+  margin-top: 1.25rem;
+}
+
+.cert-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.certification-card {
+  background: var(--bg-primary);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--border-color);
+  text-decoration: none;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.certification-card:hover {
+  border-color: var(--primary-hover);
+  border-left-color: var(--primary-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+}
+
+/* Provider accent colors */
+.cert-aws .certification-card {
+  border-left-color: #ff9900;
+}
+.cert-aws .certification-card:hover {
+  border-left-color: #ff9900;
+}
+.cert-azure .certification-card {
+  border-left-color: #0078d4;
+}
+.cert-azure .certification-card:hover {
+  border-left-color: #0078d4;
+}
+.cert-gcp .certification-card {
+  border-left-color: #4285f4;
+}
+.cert-gcp .certification-card:hover {
+  border-left-color: #4285f4;
+}
+.cert-k8s .certification-card {
+  border-left-color: #326ce5;
+}
+.cert-k8s .certification-card:hover {
+  border-left-color: #326ce5;
+}
+.cert-other .certification-card {
+  border-left-color: #6b7280;
+}
+.cert-other .certification-card:hover {
+  border-left-color: #6b7280;
+}
+
+.certification-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.certification-logo[alt*='STACKIT'] {
+  width: 50px;
+  height: 50px;
+}
+
+.certification-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.certification-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.certification-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Expired certification styles */
+.certification-expired {
+  background: #f5f5f5;
+  opacity: 0.6;
+  filter: grayscale(100%);
+  border-color: #d0d0d0;
+}
+
+.certification-expired:hover {
+  border-color: #b0b0b0;
+  transform: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+.certification-expired .certification-logo {
+  opacity: 0.5;
+}
+
+.certification-expired .certification-title {
+  color: #888;
+}
+
+.expired-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}

@@ -1,0 +1,202 @@
+/* Responsive Design */
+
+/* Ultra-wide screens */
+@media (min-width: 1920px) {
+  .content {
+    max-width: 1600px;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .certifications-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet landscape - smoother transition */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .certifications-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .content {
+    padding: 5rem 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-collapse-btn {
+    display: none;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 5rem 2rem 2rem;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 1024px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .certifications-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    transform: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .sidebar.active {
+    transform: none;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 2rem 1.5rem;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cert-group-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+
+  .skills-filter-container {
+    position: static;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .name {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-text {
+    font-size: 1rem;
+  }
+
+  .timeline-item {
+    padding-left: 1.5rem;
+  }
+
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cert-group-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Larger phones - 2 column certifications */
+@media (min-width: 481px) and (max-width: 768px) {
+  .certifications-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .cert-group-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .certification-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .certification-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .certification-title {
+    font-size: 0.95rem;
+  }
+}
+
+/* Responsive adjustments for skills filter */
+@media (max-width: 768px) {
+  .skills-category-filters {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .category-filter-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
