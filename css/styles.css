@@ -135,7 +135,7 @@ body {
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
-  letter-spacing: -0.025em;
+  letter-spacing: 0.01em;
 }
 
 .title {
@@ -178,6 +178,7 @@ body {
   border-radius: 0.5rem;
   transition: var(--transition);
   font-weight: 500;
+  border-left: 3px solid transparent;
 }
 
 .nav-link:hover {
@@ -188,6 +189,7 @@ body {
 .nav-link.active {
   background: var(--bg-secondary);
   color: var(--primary-color);
+  border-left-color: var(--primary-color);
 }
 
 /* Contact Info */
@@ -301,10 +303,9 @@ body {
   width: 100%;
   background: linear-gradient(
     to right,
-    #dbeafe 0%,
-    #93c5fd 25%,
-    #60a5fa 50%,
-    #3b82f6 75%,
+    #60a5fa 0%,
+    #3b82f6 40%,
+    #2563eb 70%,
     #1e40af 100%
   );
   border-radius: 3px;
@@ -437,14 +438,34 @@ body {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 
-/* Sections */
+/* Sections — default visible for no-JS fallback */
 .section {
-  margin-bottom: 4rem;
-  opacity: 0;
-  transform: translateY(30px);
+  margin-bottom: 3.5rem;
+  opacity: 1;
+  transform: none;
   transition:
     opacity 0.6s ease,
     transform 0.6s ease;
+}
+
+/* JS adds this class to enable fade-in animations */
+.section.js-animate {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Varied section spacing for visual rhythm */
+.section#qualifications {
+  margin-bottom: 2.5rem;
+}
+
+.section#experience {
+  margin-bottom: 4.5rem;
+}
+
+.section#skills {
+  margin-top: 1rem;
+  margin-bottom: 4.5rem;
 }
 
 .section.visible {
@@ -469,12 +490,13 @@ body {
 
 .section-title {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 1.5rem;
   color: var(--text-primary);
   position: relative;
   padding-bottom: 0.75rem;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 
 .section-title::after {
@@ -621,6 +643,7 @@ body {
 .timeline-description li {
   margin-left: 1.25rem;
   margin-bottom: 0.5rem;
+  line-height: 1.6;
 }
 
 .experience-section {
@@ -666,39 +689,13 @@ body {
 .position-timeline {
   margin-top: 1rem;
   padding-left: 1.5rem;
-  border-left: 2px dashed var(--border-color);
+  border-left: 2px solid var(--border-color);
   position: relative;
 }
 
 .position-item {
   margin-bottom: 2rem;
   position: relative;
-}
-
-.position-item::before {
-  content: '';
-  position: absolute;
-  left: -1.5rem;
-  top: 0.4rem;
-  width: 8px;
-  height: 8px;
-  background: var(--bg-primary);
-  border: 2px solid var(--primary-color);
-  border-radius: 50%;
-  margin-left: -7px;
-  z-index: 1;
-}
-
-.position-item::after {
-  content: '';
-  position: absolute;
-  left: -1.5rem;
-  top: 0;
-  width: 4px;
-  height: 1rem;
-  background: var(--bg-secondary);
-  margin-left: -2px;
-  z-index: 0;
 }
 
 .position-date {
@@ -750,6 +747,30 @@ body {
 /* Smooth expand/collapse animation */
 .experience-section {
   animation: fadeIn 0.3s ease;
+}
+
+/* Details toggle link */
+.details-toggle {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.details-toggle:hover {
+  color: var(--primary-hover);
+}
+
+.details-toggle i {
+  font-size: 0.7rem;
 }
 
 @keyframes fadeIn {
@@ -808,7 +829,7 @@ body {
 /* Skills */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   transition: grid-template-columns 0.3s ease;
 }
@@ -857,6 +878,70 @@ body {
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
+/* Skill category color-coding */
+.skill-category.color-blue .skill-tag {
+  background: #eff6ff;
+  color: #1e40af;
+}
+.skill-category.color-blue .skill-tag:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.skill-category.color-purple .skill-tag {
+  background: #f5f3ff;
+  color: #5b21b6;
+}
+.skill-category.color-purple .skill-tag:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+.skill-category.color-green .skill-tag {
+  background: #f0fdf4;
+  color: #166534;
+}
+.skill-category.color-green .skill-tag:hover {
+  background: #16a34a;
+  color: white;
+}
+
+.skill-category.color-amber .skill-tag {
+  background: #fffbeb;
+  color: #92400e;
+}
+.skill-category.color-amber .skill-tag:hover {
+  background: #d97706;
+  color: white;
+}
+
+.skill-category.color-rose .skill-tag {
+  background: #fff1f2;
+  color: #9f1239;
+}
+.skill-category.color-rose .skill-tag:hover {
+  background: #e11d48;
+  color: white;
+}
+
+.skill-category.color-teal .skill-tag {
+  background: #f0fdfa;
+  color: #115e59;
+}
+.skill-category.color-teal .skill-tag:hover {
+  background: #0d9488;
+  color: white;
+}
+
+.skill-category.color-slate .skill-tag {
+  background: #f1f5f9;
+  color: #334155;
+}
+.skill-category.color-slate .skill-tag:hover {
+  background: #475569;
+  color: white;
+}
+
 /* Certifications */
 .certifications-grid {
   display: grid;
@@ -865,11 +950,38 @@ body {
   transition: grid-template-columns 0.3s ease;
 }
 
+/* Certification provider groups */
+.cert-group {
+  grid-column: 1 / -1;
+}
+
+.cert-group-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cert-group + .cert-group {
+  margin-top: 1.25rem;
+}
+
+.cert-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
 .certification-card {
   background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid var(--border-color);
+  border-left: 3px solid var(--border-color);
   text-decoration: none;
   transition: var(--transition);
   display: flex;
@@ -880,8 +992,41 @@ body {
 
 .certification-card:hover {
   border-color: var(--primary-hover);
+  border-left-color: var(--primary-hover);
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+}
+
+/* Provider accent colors */
+.cert-aws .certification-card {
+  border-left-color: #ff9900;
+}
+.cert-aws .certification-card:hover {
+  border-left-color: #ff9900;
+}
+.cert-azure .certification-card {
+  border-left-color: #0078d4;
+}
+.cert-azure .certification-card:hover {
+  border-left-color: #0078d4;
+}
+.cert-gcp .certification-card {
+  border-left-color: #4285f4;
+}
+.cert-gcp .certification-card:hover {
+  border-left-color: #4285f4;
+}
+.cert-k8s .certification-card {
+  border-left-color: #326ce5;
+}
+.cert-k8s .certification-card:hover {
+  border-left-color: #326ce5;
+}
+.cert-other .certification-card {
+  border-left-color: #6b7280;
+}
+.cert-other .certification-card:hover {
+  border-left-color: #6b7280;
 }
 
 .certification-logo {
@@ -909,6 +1054,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.certification-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* Expired certification styles */
@@ -1098,6 +1249,10 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .cert-group-grid {
+    grid-template-columns: 1fr;
+  }
+
   .contact-buttons {
     flex-direction: column;
   }
@@ -1145,11 +1300,20 @@ body {
   .certifications-grid {
     grid-template-columns: 1fr;
   }
+
+  .cert-group-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Larger phones - 2 column certifications */
 @media (min-width: 481px) and (max-width: 768px) {
   .certifications-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .cert-group-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
@@ -1238,11 +1402,13 @@ html {
   gap: 1rem;
   position: sticky;
   top: 1rem;
-  background: var(--bg-secondary);
+  background: rgba(249, 250, 251, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 1rem;
   border-radius: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .skills-search-box {

@@ -195,13 +195,46 @@ window.addEventListener('load', () => {
     const positionItems = group.querySelectorAll('.position-item');
 
     positionItems.forEach(item => {
-      // Create collapse button
+      // Separate experience sections into summary (overview/focus) and results
+      const experienceSections = item.querySelectorAll('.experience-section');
+      const summarySections = [];
+      const resultsSections = [];
+
+      experienceSections.forEach(section => {
+        const sectionTitle = section.querySelector('.experience-section-title');
+        const titleText = sectionTitle
+          ? sectionTitle.textContent.trim().toLowerCase()
+          : '';
+        if (titleText.includes('results') || titleText.includes('impact')) {
+          resultsSections.push(section);
+        } else {
+          summarySections.push(section);
+        }
+      });
+
+      // Create "Show project details" / "Hide project details" toggle link
+      const detailsToggle = document.createElement('button');
+      detailsToggle.className = 'details-toggle';
+      detailsToggle.innerHTML =
+        '<i class="fa-solid fa-plus"></i> Show project details';
+
+      // Insert toggle after the last results section (or after project name if no results)
+      const lastResults = resultsSections[resultsSections.length - 1];
+      const insertAfter =
+        lastResults || item.querySelector('.timeline-project');
+      if (insertAfter && insertAfter.parentNode) {
+        insertAfter.parentNode.insertBefore(
+          detailsToggle,
+          insertAfter.nextSibling
+        );
+      }
+
+      // Create collapse button on title for full expand/collapse
       const collapseBtn = document.createElement('button');
       collapseBtn.className = 'collapse-btn';
       collapseBtn.setAttribute('aria-label', 'Toggle details');
       collapseBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
 
-      // Find the title and insert button after it
       const title = item.querySelector('.timeline-title');
       if (title) {
         title.style.display = 'flex';
@@ -210,10 +243,8 @@ window.addEventListener('load', () => {
         title.appendChild(collapseBtn);
       }
 
-      // Get all collapsible content (everything after project name)
-      const experienceSections = item.querySelectorAll('.experience-section');
-
-      // Collapse all items except those in the first company group (latest company)
+      // Default state: summary hidden, results visible
+      // For non-first companies: everything hidden (company is collapsed)
       if (groupIndex > 0) {
         item.classList.add('collapsed');
         collapseBtn
@@ -222,25 +253,69 @@ window.addEventListener('load', () => {
         experienceSections.forEach(section => {
           section.style.display = 'none';
         });
+        detailsToggle.style.display = 'none';
+      } else {
+        summarySections.forEach(section => {
+          section.style.display = 'none';
+        });
       }
 
-      // Add click handler - both button and title
+      // Details toggle: show/hide summary sections only
+      const toggleDetails = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isHidden =
+          summarySections[0] && summarySections[0].style.display === 'none';
+
+        summarySections.forEach(section => {
+          section.style.display = isHidden ? 'block' : 'none';
+        });
+
+        if (isHidden) {
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-minus"></i> Hide project details';
+          summarySections[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+          });
+        } else {
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-plus"></i> Show project details';
+        }
+      };
+
+      detailsToggle.addEventListener('click', toggleDetails);
+
+      // Title/chevron: full collapse/expand (all sections + details toggle)
       const togglePosition = e => {
         e.preventDefault();
         e.stopPropagation();
 
-        const isCollapsed = item.classList.toggle('collapsed');
+        const isCurrentlyCollapsed = item.classList.contains('collapsed');
         const icon = collapseBtn.querySelector('i');
 
-        if (isCollapsed) {
-          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-        } else {
+        if (isCurrentlyCollapsed) {
+          // Expand: show results, hide summary, show details toggle
+          item.classList.remove('collapsed');
           icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
+          resultsSections.forEach(section => {
+            section.style.display = 'block';
+          });
+          summarySections.forEach(section => {
+            section.style.display = 'none';
+          });
+          detailsToggle.style.display = '';
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-plus"></i> Show project details';
+        } else {
+          // Collapse: hide everything
+          item.classList.add('collapsed');
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+          experienceSections.forEach(section => {
+            section.style.display = 'none';
+          });
+          detailsToggle.style.display = 'none';
         }
-
-        experienceSections.forEach(section => {
-          section.style.display = isCollapsed ? 'none' : 'block';
-        });
       };
 
       collapseBtn.addEventListener('click', togglePosition);
@@ -268,9 +343,38 @@ window.addEventListener('load', () => {
       title.appendChild(collapseBtn);
 
       const experienceSections = item.querySelectorAll('.experience-section');
+      const summarySections = [];
+      const resultsSections = [];
       const projectField = item.querySelector('.timeline-project');
 
-      // Collapse by default
+      experienceSections.forEach(section => {
+        const sectionTitle = section.querySelector('.experience-section-title');
+        const titleText = sectionTitle
+          ? sectionTitle.textContent.trim().toLowerCase()
+          : '';
+        if (titleText.includes('results') || titleText.includes('impact')) {
+          resultsSections.push(section);
+        } else {
+          summarySections.push(section);
+        }
+      });
+
+      // Create details toggle
+      const detailsToggle = document.createElement('button');
+      detailsToggle.className = 'details-toggle';
+      detailsToggle.innerHTML =
+        '<i class="fa-solid fa-plus"></i> Show project details';
+
+      const lastResults = resultsSections[resultsSections.length - 1];
+      const insertAfter = lastResults || projectField;
+      if (insertAfter && insertAfter.parentNode) {
+        insertAfter.parentNode.insertBefore(
+          detailsToggle,
+          insertAfter.nextSibling
+        );
+      }
+
+      // Collapse by default: hide everything
       item.classList.add('collapsed');
       experienceSections.forEach(section => {
         section.style.display = 'none';
@@ -278,26 +382,65 @@ window.addEventListener('load', () => {
       if (projectField) {
         projectField.style.display = 'none';
       }
+      detailsToggle.style.display = 'none';
 
-      // Add click handler - both button and title
+      // Details toggle: show/hide summary sections
+      detailsToggle.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isHidden =
+          summarySections[0] && summarySections[0].style.display === 'none';
+
+        summarySections.forEach(section => {
+          section.style.display = isHidden ? 'block' : 'none';
+        });
+
+        if (isHidden) {
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-minus"></i> Hide project details';
+          summarySections[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+          });
+        } else {
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-plus"></i> Show project details';
+        }
+      });
+
+      // Title/chevron: full collapse/expand
       const toggleSingle = e => {
         e.preventDefault();
         e.stopPropagation();
 
-        const isCollapsed = item.classList.toggle('collapsed');
+        const isCurrentlyCollapsed = item.classList.contains('collapsed');
         const icon = collapseBtn.querySelector('i');
 
-        if (isCollapsed) {
-          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-        } else {
+        if (isCurrentlyCollapsed) {
+          item.classList.remove('collapsed');
           icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-        }
-
-        experienceSections.forEach(section => {
-          section.style.display = isCollapsed ? 'none' : 'block';
-        });
-        if (projectField) {
-          projectField.style.display = isCollapsed ? 'none' : 'block';
+          if (projectField) {
+            projectField.style.display = 'block';
+          }
+          resultsSections.forEach(section => {
+            section.style.display = 'block';
+          });
+          summarySections.forEach(section => {
+            section.style.display = 'none';
+          });
+          detailsToggle.style.display = '';
+          detailsToggle.innerHTML =
+            '<i class="fa-solid fa-plus"></i> Show project details';
+        } else {
+          item.classList.add('collapsed');
+          icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+          experienceSections.forEach(section => {
+            section.style.display = 'none';
+          });
+          if (projectField) {
+            projectField.style.display = 'none';
+          }
+          detailsToggle.style.display = 'none';
         }
       };
 
@@ -325,8 +468,9 @@ window.addEventListener('load', () => {
     });
   }, observerOptions);
 
-  // Observe all sections
+  // Observe all sections — add js-animate to enable fade-in
   document.querySelectorAll('.section').forEach(section => {
+    section.classList.add('js-animate');
     sectionObserver.observe(section);
   });
 
