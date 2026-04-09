@@ -200,6 +200,31 @@
   display: none;
 }
 
+.position-item.collapsed .details-toggle {
+  display: none;
+}
+
+.position-item.collapsed .timeline-project {
+  display: none;
+}
+
+/* Summary sections hidden by default, shown via class */
+.experience-section.summary-section {
+  display: none;
+}
+
+.experience-section.summary-section.visible {
+  display: block;
+}
+
+/* Collapsible header layout */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
 /* Smooth expand/collapse animation */
 .experience-section {
   animation: fadeIn 0.3s ease;

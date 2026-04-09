@@ -4,15 +4,21 @@ const sidebar = document.querySelector('.sidebar');
 const navLinks = document.querySelectorAll('.nav-link');
 const sidebarCollapseBtn = document.querySelector('.sidebar-collapse-btn');
 
-menuToggle.addEventListener('click', () => {
-  sidebar.classList.toggle('active');
-  menuToggle.classList.toggle('active');
-});
+if (menuToggle) {
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    menuToggle.classList.toggle('active');
+    const expanded = sidebar.classList.contains('active');
+    menuToggle.setAttribute('aria-expanded', expanded);
+  });
+}
 
 // Sidebar collapse button (desktop)
 if (sidebarCollapseBtn) {
   sidebarCollapseBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
+    const expanded = !sidebar.classList.contains('collapsed');
+    sidebarCollapseBtn.setAttribute('aria-expanded', expanded);
   });
 }
 
@@ -21,7 +27,10 @@ navLinks.forEach(link => {
   link.addEventListener('click', () => {
     if (window.innerWidth <= 768) {
       sidebar.classList.remove('active');
-      menuToggle.classList.remove('active');
+      if (menuToggle) {
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
     }
   });
 });
@@ -30,23 +39,12 @@ navLinks.forEach(link => {
 const sections = document.querySelectorAll('.section');
 
 function updateActiveNav() {
-  // If at the top of the page, always highlight About
-  if (window.scrollY < 50) {
-    navLinks.forEach(link => link.classList.remove('active'));
-    const aboutLink = document.querySelector('a[href="#about"]');
-    if (aboutLink) {
-      aboutLink.classList.add('active');
-    }
-    return;
-  }
-
   // Check if we're at the bottom of the page
   const isAtBottom =
     window.innerHeight + window.scrollY >=
     document.documentElement.scrollHeight - 10;
 
   if (isAtBottom) {
-    // Highlight the last section (Contact)
     navLinks.forEach(link => link.classList.remove('active'));
     const contactLink = document.querySelector('a[href="#certifications"]');
     if (contactLink) {
@@ -55,18 +53,24 @@ function updateActiveNav() {
     return;
   }
 
-  // Otherwise, find which section is most visible
+  // Find the section closest to the top of the viewport
   let currentSection = '';
-  const scrollPosition = window.scrollY + 300;
+  let closestDistance = Infinity;
 
   sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-
-    // If we've scrolled past this section's top, it's a candidate
-    if (scrollPosition >= sectionTop) {
+    const rect = section.getBoundingClientRect();
+    // Consider sections whose top is at or above 150px from viewport top
+    // Pick the one closest to the top (smallest negative or positive value)
+    if (rect.top <= 150 && Math.abs(rect.top) < closestDistance) {
+      closestDistance = Math.abs(rect.top);
       currentSection = section.getAttribute('id');
     }
   });
+
+  // If no section has scrolled past the threshold, highlight the first one
+  if (!currentSection && sections.length > 0) {
+    currentSection = sections[0].getAttribute('id');
+  }
 
   if (currentSection) {
     navLinks.forEach(link => {
@@ -78,8 +82,17 @@ function updateActiveNav() {
   }
 }
 
-// Update on scroll
-window.addEventListener('scroll', updateActiveNav);
+// Update on scroll (throttled via rAF)
+let navScrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!navScrollTicking) {
+    requestAnimationFrame(() => {
+      updateActiveNav();
+      navScrollTicking = false;
+    });
+    navScrollTicking = true;
+  }
+});
 
 // Set initial state
 window.addEventListener('load', () => {
@@ -105,9 +118,16 @@ navLinks.forEach(link => {
 // Close sidebar when clicking outside (mobile)
 document.addEventListener('click', e => {
   if (window.innerWidth <= 768) {
-    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+    if (
+      sidebar &&
+      !sidebar.contains(e.target) &&
+      (!menuToggle || !menuToggle.contains(e.target))
+    ) {
       sidebar.classList.remove('active');
-      menuToggle.classList.remove('active');
+      if (menuToggle) {
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
     }
   }
 });

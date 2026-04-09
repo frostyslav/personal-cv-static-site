@@ -7,17 +7,18 @@ window.addEventListener('load', () => {
   const companyGroups = experienceSection.querySelectorAll('.company-group');
 
   companyGroups.forEach((group, groupIndex) => {
-    // Add company-level collapse button
     const companyName = group.querySelector('.timeline-company');
     if (companyName) {
       const companyCollapseBtn = document.createElement('button');
       companyCollapseBtn.className = 'collapse-btn company-collapse-btn';
       companyCollapseBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
       companyCollapseBtn.setAttribute('aria-label', 'Toggle company details');
+      companyCollapseBtn.setAttribute(
+        'aria-expanded',
+        groupIndex === 0 ? 'true' : 'false'
+      );
 
-      companyName.style.display = 'flex';
-      companyName.style.alignItems = 'center';
-      companyName.style.justifyContent = 'space-between';
+      companyName.classList.add('collapsible-header');
       companyName.appendChild(companyCollapseBtn);
 
       const positionTimeline = group.querySelector('.position-timeline');
@@ -28,38 +29,31 @@ window.addEventListener('load', () => {
         companyCollapseBtn
           .querySelector('i')
           .classList.replace('fa-chevron-down', 'fa-chevron-right');
-        positionTimeline.style.display = 'none';
       }
 
-      // Company collapse click handler - both button and company name
       const toggleCompany = e => {
         e.preventDefault();
         e.stopPropagation();
 
         const isCollapsed = group.classList.toggle('company-collapsed');
         const icon = companyCollapseBtn.querySelector('i');
+        companyCollapseBtn.setAttribute('aria-expanded', !isCollapsed);
 
         if (isCollapsed) {
           icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
         } else {
           icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
         }
-
-        if (positionTimeline) {
-          positionTimeline.style.display = isCollapsed ? 'none' : 'block';
-        }
       };
 
       companyCollapseBtn.addEventListener('click', toggleCompany);
       companyName.addEventListener('click', toggleCompany);
-      companyName.style.cursor = 'pointer';
     }
 
     // Position-level collapse buttons
     const positionItems = group.querySelectorAll('.position-item');
 
     positionItems.forEach(item => {
-      // Separate experience sections into summary (overview/focus) and results
       const experienceSections = item.querySelectorAll('.experience-section');
       const summarySections = [];
       const resultsSections = [];
@@ -73,16 +67,16 @@ window.addEventListener('load', () => {
           resultsSections.push(section);
         } else {
           summarySections.push(section);
+          section.classList.add('summary-section');
         }
       });
 
-      // Create "Show project details" / "Hide project details" toggle link
+      // Create details toggle
       const detailsToggle = document.createElement('button');
       detailsToggle.className = 'details-toggle';
       detailsToggle.innerHTML =
         '<i class="fa-solid fa-plus"></i> Show project details';
 
-      // Insert toggle after the last results section (or after project name if no results)
       const lastResults = resultsSections[resultsSections.length - 1];
       const insertAfter =
         lastResults || item.querySelector('.timeline-project');
@@ -93,49 +87,44 @@ window.addEventListener('load', () => {
         );
       }
 
-      // Create collapse button on title for full expand/collapse
+      // Create collapse button on title
       const collapseBtn = document.createElement('button');
       collapseBtn.className = 'collapse-btn';
       collapseBtn.setAttribute('aria-label', 'Toggle details');
+      collapseBtn.setAttribute(
+        'aria-expanded',
+        groupIndex === 0 ? 'true' : 'false'
+      );
       collapseBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
 
       const title = item.querySelector('.timeline-title');
       if (title) {
-        title.style.display = 'flex';
-        title.style.alignItems = 'center';
-        title.style.justifyContent = 'space-between';
+        title.classList.add('collapsible-header');
         title.appendChild(collapseBtn);
       }
 
-      // Default state: summary hidden, results visible
-      // For non-first companies: everything hidden (company is collapsed)
+      // Non-first companies start fully collapsed
       if (groupIndex > 0) {
         item.classList.add('collapsed');
         collapseBtn
           .querySelector('i')
           .classList.replace('fa-chevron-down', 'fa-chevron-right');
-        experienceSections.forEach(section => {
-          section.style.display = 'none';
-        });
-        detailsToggle.style.display = 'none';
-      } else {
-        summarySections.forEach(section => {
-          section.style.display = 'none';
-        });
       }
+      // Summary sections start hidden via CSS class (no inline style needed)
 
-      // Details toggle: show/hide summary sections only
-      const toggleDetails = e => {
+      // Details toggle: show/hide summary sections
+      detailsToggle.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-        const isHidden =
-          summarySections[0] && summarySections[0].style.display === 'none';
+        const showing =
+          summarySections[0] &&
+          !summarySections[0].classList.contains('visible');
 
         summarySections.forEach(section => {
-          section.style.display = isHidden ? 'block' : 'none';
+          section.classList.toggle('visible', showing);
         });
 
-        if (isHidden) {
+        if (showing) {
           detailsToggle.innerHTML =
             '<i class="fa-solid fa-minus"></i> Hide project details';
           summarySections[0].scrollIntoView({
@@ -146,11 +135,9 @@ window.addEventListener('load', () => {
           detailsToggle.innerHTML =
             '<i class="fa-solid fa-plus"></i> Show project details';
         }
-      };
+      });
 
-      detailsToggle.addEventListener('click', toggleDetails);
-
-      // Title/chevron: full collapse/expand (all sections + details toggle)
+      // Title/chevron: full collapse/expand
       const togglePosition = e => {
         e.preventDefault();
         e.stopPropagation();
@@ -159,32 +146,23 @@ window.addEventListener('load', () => {
         const icon = collapseBtn.querySelector('i');
 
         if (isCurrentlyCollapsed) {
-          // Expand: show results, hide summary, show details toggle
           item.classList.remove('collapsed');
           icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-          resultsSections.forEach(section => {
-            section.style.display = 'block';
-          });
-          summarySections.forEach(section => {
-            section.style.display = 'none';
-          });
-          detailsToggle.style.display = '';
+          collapseBtn.setAttribute('aria-expanded', 'true');
+          // Reset summary sections to hidden
+          summarySections.forEach(s => s.classList.remove('visible'));
           detailsToggle.innerHTML =
             '<i class="fa-solid fa-plus"></i> Show project details';
         } else {
-          // Collapse: hide everything
           item.classList.add('collapsed');
           icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-          experienceSections.forEach(section => {
-            section.style.display = 'none';
-          });
-          detailsToggle.style.display = 'none';
+          collapseBtn.setAttribute('aria-expanded', 'false');
+          summarySections.forEach(s => s.classList.remove('visible'));
         }
       };
 
       collapseBtn.addEventListener('click', togglePosition);
-      title.addEventListener('click', togglePosition);
-      title.style.cursor = 'pointer';
+      if (title) title.addEventListener('click', togglePosition);
     });
   });
 
@@ -200,10 +178,9 @@ window.addEventListener('load', () => {
       collapseBtn.className = 'collapse-btn';
       collapseBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
       collapseBtn.setAttribute('aria-label', 'Toggle details');
+      collapseBtn.setAttribute('aria-expanded', 'false');
 
-      title.style.display = 'flex';
-      title.style.alignItems = 'center';
-      title.style.justifyContent = 'space-between';
+      title.classList.add('collapsible-header');
       title.appendChild(collapseBtn);
 
       const experienceSections = item.querySelectorAll('.experience-section');
@@ -220,6 +197,7 @@ window.addEventListener('load', () => {
           resultsSections.push(section);
         } else {
           summarySections.push(section);
+          section.classList.add('summary-section');
         }
       });
 
@@ -238,28 +216,22 @@ window.addEventListener('load', () => {
         );
       }
 
-      // Collapse by default: hide everything
+      // Collapse by default
       item.classList.add('collapsed');
-      experienceSections.forEach(section => {
-        section.style.display = 'none';
-      });
-      if (projectField) {
-        projectField.style.display = 'none';
-      }
-      detailsToggle.style.display = 'none';
 
       // Details toggle: show/hide summary sections
       detailsToggle.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-        const isHidden =
-          summarySections[0] && summarySections[0].style.display === 'none';
+        const showing =
+          summarySections[0] &&
+          !summarySections[0].classList.contains('visible');
 
         summarySections.forEach(section => {
-          section.style.display = isHidden ? 'block' : 'none';
+          section.classList.toggle('visible', showing);
         });
 
-        if (isHidden) {
+        if (showing) {
           detailsToggle.innerHTML =
             '<i class="fa-solid fa-minus"></i> Hide project details';
           summarySections[0].scrollIntoView({
@@ -283,34 +255,20 @@ window.addEventListener('load', () => {
         if (isCurrentlyCollapsed) {
           item.classList.remove('collapsed');
           icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-          if (projectField) {
-            projectField.style.display = 'block';
-          }
-          resultsSections.forEach(section => {
-            section.style.display = 'block';
-          });
-          summarySections.forEach(section => {
-            section.style.display = 'none';
-          });
-          detailsToggle.style.display = '';
+          collapseBtn.setAttribute('aria-expanded', 'true');
+          summarySections.forEach(s => s.classList.remove('visible'));
           detailsToggle.innerHTML =
             '<i class="fa-solid fa-plus"></i> Show project details';
         } else {
           item.classList.add('collapsed');
           icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-          experienceSections.forEach(section => {
-            section.style.display = 'none';
-          });
-          if (projectField) {
-            projectField.style.display = 'none';
-          }
-          detailsToggle.style.display = 'none';
+          collapseBtn.setAttribute('aria-expanded', 'false');
+          summarySections.forEach(s => s.classList.remove('visible'));
         }
       };
 
       collapseBtn.addEventListener('click', toggleSingle);
       title.addEventListener('click', toggleSingle);
-      title.style.cursor = 'pointer';
     }
   });
 });
