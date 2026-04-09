@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "esbuild": "^0.25.12",
     "husky": "^9.1.7",
     "lightningcss-cli": "^1.29.0",
     "prettier": "^3.8.1",
@@ -8,8 +9,8 @@
   "scripts": {
     "prebuild": "mkdir -p dist",
     "build": "npm run build:css && npm run build:js",
-    "build:css": "cat css/base.css css/sidebar.css css/sections.css css/experience.css css/skills.css css/certifications.css css/components.css css/responsive.css | npx lightningcss --minify > dist/styles.min.css",
-    "build:js": "cat scripts/ui.js scripts/navigation.js scripts/print-handler.js scripts/experience.js scripts/skills.js | npx terser --compress --mangle > dist/scripts.min.js",
+    "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
+    "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
     "prepare": "husky"
   },
   "dependencies": {

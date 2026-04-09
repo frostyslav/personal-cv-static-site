@@ -36,11 +36,6 @@ body {
   min-height: 100vh;
 }
 
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Skip to content link */
 .skip-to-content {
   position: absolute;
@@ -82,4 +77,9 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
+}
+
+/* Utility: hidden class for JS-driven visibility toggling */
+.hidden {
+  display: none;
 }
