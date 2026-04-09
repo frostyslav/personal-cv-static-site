@@ -74,7 +74,7 @@
         "url": "https://cv.rostyslav.eu/",
         "image": "{{sidebar.profile.photo.png}}",
         "sameAs": [
-          {{#each sidebar.social}}{{#if external}}"{{{href}}}"{{#unless @last}},
+          {{#each sidebar.social}}{{#if external}}"{{safeUrl href}}"{{#unless @last}},
           {{/unless}}{{/if}}{{/each}}
         ],
         "worksFor": {

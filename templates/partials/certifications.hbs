@@ -6,7 +6,7 @@
     <h4 class="cert-group-title">{{group}}</h4>
     <div class="cert-group-grid">
       {{#each certs}}
-      <a href="{{{href}}}" target="_blank" rel="noopener noreferrer" class="certification-card">
+      <a href="{{safeUrl href}}" target="_blank" rel="noopener noreferrer" class="certification-card">
         <img src="{{image}}" alt="{{alt}}" loading="lazy" class="certification-logo" />
         <div class="certification-content">
           <h3 class="certification-title">{{title}}</h3>
