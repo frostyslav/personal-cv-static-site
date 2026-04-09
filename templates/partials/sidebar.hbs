@@ -29,11 +29,11 @@
     <div class="language-item">
     {{/if}}
       <div class="language-info">
-        <span class="language-name">{{name}}</span>
+        <span class="language-name" id="lang-{{@index}}">{{name}}</span>
         <span class="language-level">{{level}}</span>
       </div>
-      <div class="language-bar">
-        <div class="language-progress" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{name}} proficiency: {{percent}}%" style="width: {{percent}}%"></div>
+      <div class="language-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-labelledby="lang-{{@index}}">
+        <div class="language-progress" style="width: {{percent}}%"></div>
       </div>
     {{#if certUrl}}
     </a>

@@ -20,8 +20,8 @@
 }
 
 .btn-primary {
-  background: var(--primary-color);
-  color: white;
+  background: var(--secondary-color);
+  color: var(--bg-secondary);
 }
 
 .btn-primary:hover {
@@ -32,13 +32,13 @@
 
 .btn-secondary {
   background: transparent;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
 }
 
 .btn-secondary:hover {
-  background: var(--primary-hover);
-  color: white;
+  background: var(--secondary-color);
+  color: var(--bg-secondary);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--shadow-primary);
 }
@@ -136,7 +136,7 @@
 }
 
 .print-modal-actions .btn-secondary {
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--secondary-color);
   cursor: pointer;
 }
 

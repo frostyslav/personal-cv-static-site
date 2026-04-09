@@ -29,8 +29,8 @@
     <style>
       /* Critical CSS — inlined to avoid render-blocking */
       *{margin:0;padding:0;box-sizing:border-box}
-      :root{--primary-color:#2563eb;--text-primary:#1f2937;--text-secondary:#6b7280;--bg-primary:#ffffff;--bg-secondary:#f9fafb;--border-color:#e5e7eb;--sidebar-width:320px;--transition:all .3s ease;color-scheme:light dark}
-      [data-theme='dark']{--primary-color:#3b82f6;--text-primary:#f3f4f6;--text-secondary:#9ca3af;--bg-primary:#1f2937;--bg-secondary:#111827;--border-color:#374151}
+      :root{--primary-color:#2563eb;--text-primary:#1f2937;--text-secondary:#4b5563;--bg-primary:#ffffff;--bg-secondary:#f9fafb;--border-color:#e5e7eb;--sidebar-width:320px;--transition:all .3s ease;color-scheme:light dark}
+      [data-theme='dark']{--primary-color:#3b82f6;--text-primary:#f3f4f6;--text-secondary:#d1d5db;--bg-primary:#1f2937;--bg-secondary:#111827;--border-color:#374151}
       body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.6;color:var(--text-primary);background:var(--bg-secondary)}
       .container{display:flex;min-height:100vh}
       .sidebar{width:var(--sidebar-width);background:var(--bg-primary);padding:2rem;display:flex;flex-direction:column;gap:2.5rem;border-right:1px solid var(--border-color);position:fixed;height:100vh;overflow-y:auto;z-index:100}
@@ -42,7 +42,8 @@
       .avatar{width:150px;height:150px;margin:0 auto 1.5rem;border-radius:50%;overflow:hidden;border:4px solid var(--primary-color)}
       .avatar img{width:100%;height:100%;object-fit:cover}
       .name{font-size:1.75rem;font-weight:700;margin-bottom:.5rem;color:var(--text-primary)}
-      .skip-to-content{position:absolute;top:-100%;left:1rem;z-index:9999;padding:.75rem 1.5rem;background:var(--primary-color);color:white;border-radius:0 0 .5rem .5rem;text-decoration:none;font-weight:600;transition:top .2s ease}
+      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+      .skip-to-content{position:absolute;top:-100%;left:1rem;z-index:9999;padding:.75rem 1.5rem;background:var(--secondary-color);color:var(--bg-secondary);border-radius:0 0 .5rem .5rem;text-decoration:none;font-weight:600;transition:top .2s ease}
       .skip-to-content:focus{top:0}
       @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.content{margin-left:0;padding:5rem 2rem 2rem}}
       @media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.content{margin-left:0;padding:2rem 1.5rem}}
@@ -136,7 +137,7 @@
       <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <div class="print-modal-overlay" id="printModal" role="dialog" aria-modal="true" aria-labelledby="printModalTitle" hidden>
+    <div class="print-modal-overlay" id="printModal" role="dialog" aria-modal="true" aria-labelledby="printModalTitle" tabindex="-1" hidden>
       <div class="print-modal">
         <h2 id="printModalTitle">Print or Download</h2>
         <p>How would you like to get this CV?</p>

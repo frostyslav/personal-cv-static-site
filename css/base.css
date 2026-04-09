@@ -10,8 +10,8 @@
   --primary-light: #60a5fa;
   --secondary-color: #1e40af;
   --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-tertiary: #4b5563;
+  --text-secondary: #4b5563;
+  --text-tertiary: #374151;
   --gradient-primary-color: #acd68b;
   --gradient-secondary-color: #6db56d;
   --language-gradient-start: #8b5cf6;
@@ -36,10 +36,10 @@
     --primary-color: #3b82f6;
     --primary-hover: #60a5fa;
     --primary-light: #93c5fd;
-    --secondary-color: #2563eb;
+    --secondary-color: #60a5fa;
     --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
-    --text-tertiary: #d1d5db;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #e5e7eb;
     --gradient-primary-color: #86efac;
     --gradient-secondary-color: #4ade80;
     --bg-primary: #1f2937;
@@ -58,10 +58,10 @@
   --primary-color: #3b82f6;
   --primary-hover: #60a5fa;
   --primary-light: #93c5fd;
-  --secondary-color: #2563eb;
+  --secondary-color: #60a5fa;
   --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-tertiary: #d1d5db;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #e5e7eb;
   --gradient-primary-color: #86efac;
   --gradient-secondary-color: #4ade80;
   --bg-primary: #1f2937;
@@ -81,8 +81,8 @@
   --primary-light: #60a5fa;
   --secondary-color: #1e40af;
   --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-tertiary: #4b5563;
+  --text-secondary: #4b5563;
+  --text-tertiary: #374151;
   --gradient-primary-color: #acd68b;
   --gradient-secondary-color: #6db56d;
   --bg-primary: #ffffff;
@@ -109,6 +109,19 @@ body {
   min-height: 100vh;
 }
 
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Skip to content link */
 .skip-to-content {
   position: absolute;
@@ -116,8 +129,8 @@ body {
   left: 1rem;
   z-index: 9999;
   padding: 0.75rem 1.5rem;
-  background: var(--primary-color);
-  color: white;
+  background: var(--secondary-color);
+  color: var(--bg-secondary);
   border-radius: 0 0 0.5rem 0.5rem;
   text-decoration: none;
   font-weight: 600;

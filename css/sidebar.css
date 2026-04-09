@@ -306,8 +306,8 @@
   display: block;
   width: 100%;
   padding: 0.875rem 1.5rem;
-  background: var(--primary-color);
-  color: white;
+  background: var(--secondary-color);
+  color: var(--bg-secondary);
   text-decoration: none;
   text-align: center;
   border-radius: 0.5rem;
