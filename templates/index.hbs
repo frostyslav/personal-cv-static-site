@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{sidebar.profile.name}} - {{sidebar.profile.title}}</title>
+    <meta
+      name="description"
+      content="CV of {{sidebar.profile.name}} — {{sidebar.profile.title}} with 15+ years of expertise in DevOps, cloud migration, and infrastructure. AWS, Azure, GCP certified."
+    />
+    <meta property="og:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
+    <meta
+      property="og:description"
+      content="Professional CV — 15+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cv.rostyslav.eu/" />
+    <meta property="og:image" content="{{sidebar.profile.photo.png}}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
+    <meta
+      name="twitter:description"
+      content="Professional CV — 15+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+    />
+    <meta name="twitter:image" content="{{sidebar.profile.photo.png}}" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="canonical" href="https://cv.rostyslav.eu/" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="dist/styles.min.css" />
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{sidebar.profile.name}}",
+        "jobTitle": "{{sidebar.profile.title}}",
+        "url": "https://cv.rostyslav.eu/",
+        "image": "{{sidebar.profile.photo.png}}",
+        "sameAs": [
+          {{#each sidebar.social}}{{#if external}}"{{{href}}}"{{#unless @last}},
+          {{/unless}}{{/if}}{{/each}}
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "{{experience.groups.[0].company}}"
+        },
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "{{education.groups.[0].institution}}"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Frankfurt am Main",
+          "addressCountry": "DE"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <a href="#about" class="skip-to-content">Skip to content</a>
+    <div class="container">
+      {{> sidebar}}
+
+      <button class="sidebar-collapse-btn" aria-label="Collapse sidebar" aria-expanded="true">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <main class="content">
+        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <section id="about" class="section">
+          <h2 class="section-title">About Me</h2>
+          {{#each about.paragraphs}}
+          <p class="section-text">{{this}}</p>
+          {{/each}}
+        </section>
+
+        <section id="qualifications" class="section">
+          <h2 class="section-title">Core Qualifications</h2>
+          <ul class="qualifications-list">
+            {{#each about.qualifications}}
+            <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </section>
+
+        {{> experience}}
+        {{> education}}
+        {{> skills}}
+        {{> certifications}}
+      </main>
+    </div>
+
+    <button class="back-to-top" aria-label="Back to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script src="dist/scripts.min.js"></script>
+  </body>
+</html>

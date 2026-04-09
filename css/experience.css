@@ -1,0 +1,308 @@
+/* Timeline Items */
+.timeline-item {
+  margin-bottom: 3.5rem;
+  padding-left: 2rem;
+  border-left: 2px solid var(--border-color);
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 2px;
+  height: 0.5rem;
+  background: var(--bg-secondary);
+  z-index: 0;
+}
+
+.timeline-date {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* Single timeline items (not in company-group) should match company-position size */
+.timeline-item:not(.company-group) .timeline-title {
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-company {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.timeline-location {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.company-position {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.company-group .timeline-location {
+  margin-top: 0;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.timeline-project {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+.timeline-description {
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.timeline-description li {
+  margin-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.experience-section {
+  margin-bottom: 1rem;
+}
+
+.experience-section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Company Group - Multiple positions at same company */
+.company-group .timeline-company {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  border-radius: 0.5rem;
+}
+
+.company-group .timeline-company:hover {
+  color: var(--primary-hover);
+  background: var(--bg-hover);
+}
+
+.company-collapsed .position-timeline {
+  display: none;
+}
+
+.company-collapse-btn {
+  font-size: 1.2rem;
+}
+
+.position-timeline {
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--border-color);
+  position: relative;
+}
+
+.position-item {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.position-date {
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.position-item .timeline-title {
+  font-size: 1.15rem;
+}
+
+.position-item .timeline-title:hover {
+  color: var(--primary-hover);
+}
+
+.position-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Collapse button */
+.collapse-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.5rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.collapse-btn:hover {
+  color: var(--primary-hover);
+  transform: scale(1.15);
+}
+
+.collapse-btn i {
+  transition: transform 0.3s ease;
+}
+
+.position-item.collapsed .experience-section {
+  display: none;
+}
+
+.position-item.collapsed .details-toggle {
+  display: none;
+}
+
+.position-item.collapsed .timeline-project {
+  display: none;
+}
+
+/* Summary sections hidden by default, shown via class */
+.experience-section.summary-section {
+  display: none;
+}
+
+.experience-section.summary-section.visible {
+  display: block;
+}
+
+/* Collapsible header layout */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+/* Smooth expand/collapse animation */
+.experience-section {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Details toggle link */
+.details-toggle {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.details-toggle:hover {
+  color: var(--primary-hover);
+}
+
+.details-toggle i {
+  font-size: 0.7rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Promotion Badge & Indicator */
+.promotion-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-primary-color),
+    var(--gradient-secondary-color)
+  );
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-left: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(108, 181, 109, 0.3);
+  animation: promotionPulse 2s ease-in-out infinite;
+}
+
+.promotion-indicator {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gradient-secondary-color);
+  background: rgba(108, 181, 109, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  border: 1px solid var(--gradient-secondary-color);
+}
+
+@keyframes promotionPulse {
+  0%,
+  100% {
+    box-shadow: 0 2px 8px rgba(108, 181, 109, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(108, 181, 109, 0.5);
+  }
+}

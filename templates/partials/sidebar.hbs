@@ -1,0 +1,57 @@
+<aside class="sidebar">
+  <div class="profile">
+    <div class="avatar">
+      <picture>
+        <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
+        <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" />
+      </picture>
+    </div>
+    <h1 class="name">{{sidebar.profile.name}}</h1>
+    <p class="title">{{sidebar.profile.title}}</p>
+    <a href="{{{sidebar.profile.location.url}}}" target="_blank" rel="noopener noreferrer" class="location">
+      <i class="fa-solid fa-location-dot"></i>
+      {{sidebar.profile.location.text}}
+    </a>
+  </div>
+
+  <div class="social-links">
+    {{#each sidebar.social}}
+    <a href="{{{href}}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="social-link" aria-label="{{label}}"><i class="{{icon}}"></i></a>
+    {{/each}}
+  </div>
+
+  <div class="languages">
+    <h3 class="languages-title">Languages</h3>
+    {{#each sidebar.languages}}
+    {{#if certUrl}}
+    <a href="{{{certUrl}}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link">
+    {{else}}
+    <div class="language-item">
+    {{/if}}
+      <div class="language-info">
+        <span class="language-name">{{name}}</span>
+        <span class="language-level">{{level}}</span>
+      </div>
+      <div class="language-bar">
+        <div class="language-progress" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{name}} proficiency: {{percent}}%" style="width: {{percent}}%"></div>
+      </div>
+    {{#if certUrl}}
+    </a>
+    {{else}}
+    </div>
+    {{/if}}
+    {{/each}}
+  </div>
+
+  <nav class="nav">
+    {{#each sidebar.nav}}
+    <a href="{{href}}" class="nav-link{{#if @first}} active{{/if}}">{{text}}</a>
+    {{/each}}
+  </nav>
+
+  <a href="{{{sidebar.cvDownloadUrl}}}" target="_blank" rel="noopener noreferrer" class="btn btn-download"><i class="fa-solid fa-file-pdf"></i> Download CV</a>
+
+  <button class="theme-toggle" aria-label="Switch to dark mode">
+    <i class="fa-solid fa-moon"></i>
+  </button>
+</aside>

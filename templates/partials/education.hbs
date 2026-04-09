@@ -1,0 +1,29 @@
+<section id="education" class="section">
+  <h2 class="section-title">Education</h2>
+
+  {{#each education.groups}}
+  <div class="timeline-item company-group">
+    <div class="timeline-date">{{date}}</div>
+    <p class="timeline-company">{{institution}}</p>
+    <p class="timeline-location">{{location}}</p>
+
+    <div class="position-timeline">
+      {{#each degrees}}
+      <div class="position-item">
+        <div class="position-date">{{date}}</div>
+        <h3 class="timeline-title">{{title}}</h3>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/each}}
+
+  {{#each education.singles}}
+  <div class="timeline-item">
+    <div class="timeline-date">{{date}}</div>
+    <p class="timeline-company">{{institution}}</p>
+    <p class="timeline-location">{{location}}</p>
+    <h3 class="timeline-title">{{title}}</h3>
+  </div>
+  {{/each}}
+</section>
