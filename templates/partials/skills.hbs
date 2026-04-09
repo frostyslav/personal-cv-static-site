@@ -1,0 +1,33 @@
+<section id="skills" class="section">
+  <h2 class="section-title">Skills</h2>
+
+  <div class="skills-filter-container">
+    <div class="skills-search-box">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" id="skillsSearch" placeholder="Search skills..." aria-label="Search skills" />
+      <button id="clearSearch" class="clear-search" aria-label="Clear search">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="skills-category-filters">
+      <button class="category-filter-btn active" data-category="all" title="All Skills" aria-label="All Skills">
+        <i class="fa-solid fa-grip"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="skills-grid">
+    {{#each skills}}
+    <div class="skill-category color-{{color}}">
+      <h3 class="skill-category-title">
+        <i class="{{icon}}"></i> {{title}}
+      </h3>
+      <div class="skill-tags">
+        {{#each tags}}
+        <span class="skill-tag">{{this}}</span>
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</section>

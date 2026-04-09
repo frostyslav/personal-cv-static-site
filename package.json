@@ -1,14 +1,17 @@
 {
   "devDependencies": {
     "esbuild": "^0.25.12",
+    "handlebars": "^4.7.9",
     "husky": "^9.1.7",
+    "js-yaml": "^4.1.1",
     "lightningcss-cli": "^1.29.0",
     "prettier": "^3.8.1",
     "terser": "^5.39.0"
   },
   "scripts": {
     "prebuild": "mkdir -p dist",
-    "build": "npm run build:css && npm run build:js",
+    "build": "npm run build:html && npm run build:css && npm run build:js",
+    "build:html": "node build-html.js",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
     "prepare": "husky"
