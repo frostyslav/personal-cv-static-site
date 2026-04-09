@@ -180,3 +180,41 @@ body {
   color: var(--primary-hover);
   border-color: var(--primary-hover);
 }
+
+/* Respect prefers-reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .section.js-animate {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .section.visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .avatar {
+    animation: none !important;
+    box-shadow: 0 0 20px var(--shadow-primary) !important;
+  }
+
+  .skill-tag:hover,
+  .skill-category:hover,
+  .social-link:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-download:hover,
+  .back-to-top:hover,
+  .category-filter-btn:hover {
+    transform: none !important;
+  }
+}

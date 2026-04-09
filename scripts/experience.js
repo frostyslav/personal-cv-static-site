@@ -110,6 +110,7 @@
       title.addEventListener('click', toggleCollapse);
       title.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
           toggleCollapse(e);
         }
       });
@@ -165,6 +166,7 @@
         companyName.addEventListener('click', toggleCompany);
         companyName.addEventListener('keydown', e => {
           if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
             toggleCompany(e);
           }
         });
