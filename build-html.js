@@ -77,8 +77,10 @@ try {
   );
   const template = Handlebars.compile(templateSrc);
   const html = template(data);
-  fs.writeFileSync('index.html', html);
-  console.log('✓ index.html generated from templates + data');
+  // Remove trailing whitespace from each line (Handlebars leaves indentation on blank lines)
+  const cleaned = html.replace(/[ \t]+$/gm, '');
+  fs.writeFileSync(path.join('dist', 'index.html'), cleaned);
+  console.log('✓ dist/index.html generated from templates + data');
 } catch (e) {
   console.error(`✗ Template compilation failed: ${e.message}`);
   process.exit(1);

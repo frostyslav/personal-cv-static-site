@@ -12,10 +12,10 @@
   "scripts": {
     "prebuild": "rm -rf dist && mkdir -p dist",
     "build": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets",
-    "build:html": "node build-html.js",
+    "build:html": "node build-html.js && npx prettier --write dist/index.html",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
-    "build:assets": "cp index.html dist/ && cp sw.js dist/ && cp favicon.svg dist/ && cp -r vendor dist/",
+    "build:assets": "cp sw.js dist/ && cp favicon.svg dist/ && cp -r vendor dist/",
     "test": "node tests/smoke.test.js",
     "validate": "npx html-validate dist/index.html",
     "prepare": "husky"
