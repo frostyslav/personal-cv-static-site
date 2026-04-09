@@ -27,7 +27,7 @@
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-primary-lg);
 }
 
 .btn-secondary {
@@ -40,7 +40,7 @@
   background: var(--primary-hover);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-primary);
 }
 
 /* Back to Top Button */
@@ -62,7 +62,7 @@
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-primary);
   z-index: 1000;
 }
 
@@ -74,7 +74,7 @@
 .back-to-top:hover {
   background: var(--primary-hover);
   transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-primary-lg);
 }
 
 .back-to-top:active {

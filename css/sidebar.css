@@ -36,7 +36,7 @@
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 101;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 0 8px var(--shadow-color);
 }
 
 .sidebar-collapse-btn:hover {
@@ -55,7 +55,7 @@
   border: 1px solid var(--border-color);
   border-left: none;
   border-radius: 0 0.5rem 0.5rem 0;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 0 8px var(--shadow-color);
 }
 
 .sidebar.collapsed ~ .sidebar-collapse-btn i {
@@ -79,10 +79,10 @@
 @keyframes avatarGlow {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 20px var(--shadow-primary);
   }
   50% {
-    box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 30px var(--shadow-primary-lg);
   }
 }
 
@@ -235,7 +235,7 @@
 
 .language-level {
   font-size: 0.8rem;
-  color: #4b5563;
+  color: var(--text-tertiary);
   font-weight: 500;
 }
 
@@ -265,10 +265,10 @@
   width: 100%;
   background: linear-gradient(
     to right,
-    #60a5fa 0%,
-    #3b82f6 40%,
-    #2563eb 70%,
-    #1e40af 100%
+    var(--primary-light) 0%,
+    var(--primary-hover) 40%,
+    var(--primary-color) 70%,
+    var(--secondary-color) 100%
   );
   border-radius: 3px;
 }
@@ -298,7 +298,7 @@
   background: var(--primary-hover);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-primary-lg);
 }
 
 /* Download CV Button */
@@ -322,7 +322,7 @@
 .btn-download:hover {
   background: var(--secondary-color);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 6px 16px var(--shadow-primary-lg);
 }
 
 /* Main Content */

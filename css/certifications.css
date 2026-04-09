@@ -50,7 +50,7 @@
   border-color: var(--primary-hover);
   border-left-color: var(--primary-hover);
   transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 6px 20px var(--shadow-primary-sm);
 }
 
 /* Provider accent colors */
@@ -120,14 +120,14 @@
 
 /* Expired certification styles */
 .certification-expired {
-  background: #f5f5f5;
+  background: var(--bg-secondary);
   opacity: 0.6;
   filter: grayscale(100%);
-  border-color: #d0d0d0;
+  border-color: var(--border-color);
 }
 
 .certification-expired:hover {
-  border-color: #b0b0b0;
+  border-color: var(--border-hover);
   transform: none;
   box-shadow: none;
   cursor: default;
@@ -138,7 +138,7 @@
 }
 
 .certification-expired .certification-title {
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .expired-badge {
@@ -152,4 +152,15 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   width: fit-content;
+}
+
+/* Dark mode certification adjustments */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .expired-badge {
+    background: rgba(220, 38, 38, 0.15);
+  }
+}
+
+[data-theme='dark'] .expired-badge {
+  background: rgba(220, 38, 38, 0.15);
 }

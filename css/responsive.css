@@ -198,3 +198,68 @@
     padding: 0.4rem 0.75rem;
   }
 }
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .mobile-menu-toggle,
+  .back-to-top,
+  .details-toggle,
+  .collapse-btn,
+  .company-collapse-btn,
+  .skills-filter-container,
+  .sidebar-collapse-btn,
+  .skip-to-content,
+  .theme-toggle {
+    display: none !important;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .section {
+    opacity: 1 !important;
+    transform: none !important;
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+
+  .section.js-animate {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .timeline-item {
+    break-inside: avoid;
+  }
+
+  .position-item {
+    break-inside: avoid;
+  }
+
+  .position-item.collapsed .experience-section,
+  .position-item.collapsed .details-toggle,
+  .position-item.collapsed .timeline-project {
+    display: block !important;
+  }
+
+  .company-collapsed .position-timeline {
+    display: block !important;
+  }
+
+  .experience-section.summary-section {
+    display: block !important;
+  }
+
+  .certification-card {
+    break-inside: avoid;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}

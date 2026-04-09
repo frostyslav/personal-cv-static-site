@@ -11,6 +11,15 @@
     );
     const skillCategories = document.querySelectorAll('.skill-category');
 
+    // Create aria-live region for search result announcements
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.className = 'sr-only';
+    liveRegion.style.cssText =
+      'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;';
+    skillsSection.appendChild(liveRegion);
+
     // Build category filter buttons dynamically
     skillCategories.forEach(category => {
       const title = category.querySelector('.skill-category-title');
@@ -76,7 +85,18 @@
       });
 
       clearSearchBtn.classList.toggle('hidden', !searchTerm);
-      showNoResultsMessage(visibleCount === 0 && searchTerm !== '');
+
+      const noResults = visibleCount === 0 && searchTerm !== '';
+      showNoResultsMessage(noResults);
+
+      // Announce results to screen readers
+      if (searchTerm) {
+        liveRegion.textContent = noResults
+          ? 'No skills found matching your search.'
+          : `${visibleCount} skill${visibleCount !== 1 ? 's' : ''} found.`;
+      } else {
+        liveRegion.textContent = '';
+      }
     }
 
     function showNoResultsMessage(show) {
@@ -91,6 +111,13 @@
       } else if (!show && msg) {
         msg.remove();
       }
+    }
+
+    // Debounce helper
+    let debounceTimer;
+    function debouncedFilter() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(filterSkills, 150);
     }
 
     categoryFilterBtns.forEach(btn => {
@@ -115,7 +142,7 @@
       });
     });
 
-    searchInput.addEventListener('input', filterSkills);
+    searchInput.addEventListener('input', debouncedFilter);
 
     clearSearchBtn.addEventListener('click', () => {
       searchInput.value = '';

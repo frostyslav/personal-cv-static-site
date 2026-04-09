@@ -27,6 +27,7 @@
     // Details toggle button
     const detailsToggle = document.createElement('button');
     detailsToggle.className = 'details-toggle';
+    detailsToggle.setAttribute('aria-expanded', 'false');
     detailsToggle.innerHTML =
       '<i class="fa-solid fa-plus"></i> Show project details';
 
@@ -51,6 +52,8 @@
 
     if (title) {
       title.classList.add('collapsible-header');
+      title.setAttribute('role', 'button');
+      title.setAttribute('tabindex', '0');
       title.appendChild(collapseBtn);
     }
 
@@ -66,6 +69,7 @@
         summarySections[0] && !summarySections[0].classList.contains('visible');
 
       summarySections.forEach(s => s.classList.toggle('visible', showing));
+      detailsToggle.setAttribute('aria-expanded', String(showing));
 
       detailsToggle.innerHTML = showing
         ? '<i class="fa-solid fa-minus"></i> Hide project details'
@@ -96,12 +100,20 @@
 
       // Reset summary sections when toggling
       summarySections.forEach(s => s.classList.remove('visible'));
+      detailsToggle.setAttribute('aria-expanded', 'false');
       detailsToggle.innerHTML =
         '<i class="fa-solid fa-plus"></i> Show project details';
     };
 
     collapseBtn.addEventListener('click', toggleCollapse);
-    if (title) title.addEventListener('click', toggleCollapse);
+    if (title) {
+      title.addEventListener('click', toggleCollapse);
+      title.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          toggleCollapse(e);
+        }
+      });
+    }
   }
 
   window.addEventListener('load', () => {
@@ -125,6 +137,8 @@
         );
 
         companyName.classList.add('collapsible-header');
+        companyName.setAttribute('role', 'button');
+        companyName.setAttribute('tabindex', '0');
         companyName.appendChild(companyCollapseBtn);
 
         if (groupIndex > 0) {
@@ -149,6 +163,11 @@
 
         companyCollapseBtn.addEventListener('click', toggleCompany);
         companyName.addEventListener('click', toggleCompany);
+        companyName.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            toggleCompany(e);
+          }
+        });
       }
 
       // Position-level collapse — use shared helper

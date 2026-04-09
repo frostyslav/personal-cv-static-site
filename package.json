@@ -9,7 +9,7 @@
     "terser": "^5.39.0"
   },
   "scripts": {
-    "prebuild": "mkdir -p dist",
+    "prebuild": "rm -rf dist && mkdir -p dist",
     "build": "npm run build:html && npm run build:css && npm run build:js",
     "build:html": "node build-html.js",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
