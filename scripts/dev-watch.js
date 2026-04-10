@@ -22,7 +22,7 @@ function rebuild() {
   try {
     execSync('npm run build', { cwd: ROOT, stdio: 'inherit' });
     console.log('✓ Build complete');
-  } catch (e) {
+  } catch {
     console.error('✗ Build failed');
   }
   building = false;

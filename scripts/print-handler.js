@@ -1,14 +1,15 @@
 // Print handler — show modal with options on Ctrl+P / Cmd+P
 (() => {
-  const pdfUrl = 'https://cv.rostyslav.eu/files/CV_Rostyslav_Fridman.pdf';
-
   document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('printModal');
     const downloadBtn = document.getElementById('printModalDownload');
     const printBtn = document.getElementById('printModalPrint');
     const closeBtn = document.getElementById('printModalClose');
 
-    if (!modal) return;
+    if (!modal || !downloadBtn || !printBtn || !closeBtn) return;
+
+    const pdfUrl =
+      modal.getAttribute('data-pdf-url') || '/files/CV_Rostyslav_Fridman.pdf';
 
     let previousFocus = null;
 

@@ -27,73 +27,78 @@
   --shadow-primary-sm: rgba(59, 130, 246, 0.15);
   --sidebar-width: 320px;
   --transition: all 0.3s ease;
-  --scroll-show-threshold: 300;
   color-scheme: light dark;
+
+  /* Dark theme palette — defined once as --dark-* properties.
+     Both [data-theme='dark'] and the prefers-color-scheme fallback
+     reference these, so color values live in one place only. */
+  --dark-primary-color: #3b82f6;
+  --dark-primary-hover: #60a5fa;
+  --dark-primary-light: #93c5fd;
+  --dark-secondary-color: #60a5fa;
+  --dark-text-primary: #f3f4f6;
+  --dark-text-secondary: #d1d5db;
+  --dark-text-tertiary: #e5e7eb;
+  --dark-gradient-primary: #86efac;
+  --dark-gradient-secondary: #4ade80;
+  --dark-bg-primary: #1f2937;
+  --dark-bg-secondary: #111827;
+  --dark-bg-hover: #374151;
+  --dark-border-color: #374151;
+  --dark-border-hover: #4b5563;
+  --dark-shadow-color: rgba(0, 0, 0, 0.3);
+  --dark-shadow-primary: rgba(59, 130, 246, 0.3);
+  --dark-shadow-primary-lg: rgba(59, 130, 246, 0.4);
+  --dark-shadow-primary-sm: rgba(59, 130, 246, 0.2);
+}
+
+/* Dark theme overrides — shared between explicit toggle and system preference.
+   The --dark-* values are defined on :root above; these selectors simply
+   map them onto the active custom properties. */
+
+[data-theme='dark'],
+:root:not([data-theme='light']):where(.prefers-dark) {
+  --primary-color: var(--dark-primary-color);
+  --primary-hover: var(--dark-primary-hover);
+  --primary-light: var(--dark-primary-light);
+  --secondary-color: var(--dark-secondary-color);
+  --text-primary: var(--dark-text-primary);
+  --text-secondary: var(--dark-text-secondary);
+  --text-tertiary: var(--dark-text-tertiary);
+  --gradient-primary-color: var(--dark-gradient-primary);
+  --gradient-secondary-color: var(--dark-gradient-secondary);
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-hover: var(--dark-bg-hover);
+  --border-color: var(--dark-border-color);
+  --border-hover: var(--dark-border-hover);
+  --shadow-color: var(--dark-shadow-color);
+  --shadow-primary: var(--dark-shadow-primary);
+  --shadow-primary-lg: var(--dark-shadow-primary-lg);
+  --shadow-primary-sm: var(--dark-shadow-primary-sm);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --primary-color: #3b82f6;
-    --primary-hover: #60a5fa;
-    --primary-light: #93c5fd;
-    --secondary-color: #60a5fa;
-    --text-primary: #f3f4f6;
-    --text-secondary: #d1d5db;
-    --text-tertiary: #e5e7eb;
-    --gradient-primary-color: #86efac;
-    --gradient-secondary-color: #4ade80;
-    --bg-primary: #1f2937;
-    --bg-secondary: #111827;
-    --bg-hover: #374151;
-    --border-color: #374151;
-    --border-hover: #4b5563;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --shadow-primary: rgba(59, 130, 246, 0.3);
-    --shadow-primary-lg: rgba(59, 130, 246, 0.4);
-    --shadow-primary-sm: rgba(59, 130, 246, 0.2);
+  :root:not([data-theme='light']) {
+    --primary-color: var(--dark-primary-color);
+    --primary-hover: var(--dark-primary-hover);
+    --primary-light: var(--dark-primary-light);
+    --secondary-color: var(--dark-secondary-color);
+    --text-primary: var(--dark-text-primary);
+    --text-secondary: var(--dark-text-secondary);
+    --text-tertiary: var(--dark-text-tertiary);
+    --gradient-primary-color: var(--dark-gradient-primary);
+    --gradient-secondary-color: var(--dark-gradient-secondary);
+    --bg-primary: var(--dark-bg-primary);
+    --bg-secondary: var(--dark-bg-secondary);
+    --bg-hover: var(--dark-bg-hover);
+    --border-color: var(--dark-border-color);
+    --border-hover: var(--dark-border-hover);
+    --shadow-color: var(--dark-shadow-color);
+    --shadow-primary: var(--dark-shadow-primary);
+    --shadow-primary-lg: var(--dark-shadow-primary-lg);
+    --shadow-primary-sm: var(--dark-shadow-primary-sm);
   }
-}
-
-[data-theme='dark'] {
-  --primary-color: #3b82f6;
-  --primary-hover: #60a5fa;
-  --primary-light: #93c5fd;
-  --secondary-color: #60a5fa;
-  --text-primary: #f3f4f6;
-  --text-secondary: #d1d5db;
-  --text-tertiary: #e5e7eb;
-  --gradient-primary-color: #86efac;
-  --gradient-secondary-color: #4ade80;
-  --bg-primary: #1f2937;
-  --bg-secondary: #111827;
-  --bg-hover: #374151;
-  --border-color: #374151;
-  --border-hover: #4b5563;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --shadow-primary: rgba(59, 130, 246, 0.3);
-  --shadow-primary-lg: rgba(59, 130, 246, 0.4);
-  --shadow-primary-sm: rgba(59, 130, 246, 0.2);
-}
-
-[data-theme='light'] {
-  --primary-color: #2563eb;
-  --primary-hover: #3b82f6;
-  --primary-light: #60a5fa;
-  --secondary-color: #1e40af;
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --text-tertiary: #374151;
-  --gradient-primary-color: #acd68b;
-  --gradient-secondary-color: #6db56d;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-hover: #f3f4f6;
-  --border-color: #e5e7eb;
-  --border-hover: #d1d5db;
-  --shadow-color: rgba(0, 0, 0, 0.08);
-  --shadow-primary: rgba(37, 99, 235, 0.3);
-  --shadow-primary-lg: rgba(37, 99, 235, 0.4);
-  --shadow-primary-sm: rgba(59, 130, 246, 0.15);
 }
 
 body {

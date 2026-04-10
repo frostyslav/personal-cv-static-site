@@ -42,13 +42,16 @@
       applyTheme(next);
     });
 
-    // Listen for system preference changes
+    // Listen for system preference changes.
+    // Honour the change even if the user previously toggled manually —
+    // the stored preference is kept but the OS switch takes effect so
+    // the toggle stays in sync with the system.
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', e => {
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          applyTheme(e.matches ? 'dark' : 'light');
-        }
+        const next = e.matches ? 'dark' : 'light';
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
       });
   });
 })();

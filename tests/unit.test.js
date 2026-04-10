@@ -5,256 +5,185 @@
  * These tests exercise the fuzzy matching algorithm and build-html
  * validation logic without needing a browser environment.
  */
-let failures = 0;
-let passes = 0;
-
-function assert(condition, message) {
-  if (condition) {
-    console.log(`  ✓ ${message}`);
-    passes++;
-  } else {
-    console.error(`  ✗ ${message}`);
-    failures++;
-  }
-}
-
-function assertEqual(actual, expected, message) {
-  const pass = actual === expected;
-  if (pass) {
-    console.log(`  ✓ ${message}`);
-    passes++;
-  } else {
-    console.error(`  ✗ ${message}`);
-    console.error(`    expected: ${JSON.stringify(expected)}`);
-    console.error(`    actual:   ${JSON.stringify(actual)}`);
-    failures++;
-  }
-}
-
-// ─── Extract fuzzy match logic for testing ───────────────────────────────────
-// Mirror of the ALIASES and fuzzyMatch from scripts/skills.js
-const ALIASES = {
-  k8s: 'kubernetes',
-  aws: 'amazon web services',
-  gcp: 'google cloud platform',
-  tf: 'terraform',
-  tg: 'terragrunt',
-  gh: 'github',
-  gl: 'gitlab',
-  js: 'javascript',
-  ts: 'typescript',
-  py: 'python',
-  pg: 'postgresql',
-  mongo: 'mongodb',
-  iac: 'infrastructure as code',
-  otel: 'opentelemetry',
-  eks: 'amazon eks',
-  aks: 'azure aks',
-  gke: 'google gke',
-  ecs: 'amazon ecs',
-  rds: 'amazon rds',
-  cdk: 'aws cdk',
-  cfn: 'aws cloudformation',
-  ovs: 'openvswitch',
-  ovn: 'open virtual network',
-  dpdk: 'data plane development kit',
-  cni: 'container network interface',
-  rag: 'retrieval-augmented generation',
-  vm: 'virtualization',
-  kvm: 'kvm',
-  hv: 'hyper-v',
-};
-
-function fuzzyMatch(query, text) {
-  const q = query.toLowerCase();
-  const t = text.toLowerCase();
-
-  // Exact substring match
-  if (t.includes(q)) return true;
-
-  // Alias match — check if query is a known alias
-  const aliasTarget = ALIASES[q];
-  if (aliasTarget && t.includes(aliasTarget)) return true;
-
-  // Reverse alias — check if any alias value matches and query matches the key
-  for (const [abbr, full] of Object.entries(ALIASES)) {
-    if (q.includes(full) && t.includes(abbr)) return true;
-  }
-
-  // Fuzzy character sequence match
-  let qi = 0;
-  for (let ti = 0; ti < t.length && qi < q.length; ti++) {
-    if (t[ti] === q[qi]) qi++;
-  }
-  return qi === q.length;
-}
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const { ALIASES, fuzzyMatch } = require('../utils/fuzzy-match.cjs');
 
 // ─── Fuzzy Match: Exact substring ────────────────────────────────────────────
-console.log('\n🔍 fuzzyMatch — exact substring');
-assert(fuzzyMatch('docker', 'Docker'), 'case-insensitive exact match');
-assert(
-  fuzzyMatch('DOCKER', 'docker'),
-  'uppercase query matches lowercase text'
-);
-assert(fuzzyMatch('kube', 'Kubernetes'), 'partial substring match');
-assert(fuzzyMatch('java', 'JavaScript'), 'prefix match');
-assert(!fuzzyMatch('xyz123', 'Docker'), 'no match for unrelated query');
-assert(fuzzyMatch('', 'anything'), 'empty query matches everything');
+describe('fuzzyMatch — exact substring', () => {
+  it('case-insensitive exact match', () =>
+    assert.ok(fuzzyMatch('docker', 'Docker')));
+  it('uppercase query matches lowercase text', () =>
+    assert.ok(fuzzyMatch('DOCKER', 'docker')));
+  it('partial substring match', () =>
+    assert.ok(fuzzyMatch('kube', 'Kubernetes')));
+  it('prefix match', () => assert.ok(fuzzyMatch('java', 'JavaScript')));
+  it('no match for unrelated query', () =>
+    assert.ok(!fuzzyMatch('xyz123', 'Docker')));
+  it('empty query matches everything', () =>
+    assert.ok(fuzzyMatch('', 'anything')));
+});
 
 // ─── Fuzzy Match: Alias resolution ──────────────────────────────────────────
-console.log('\n🏷️  fuzzyMatch — alias resolution');
-assert(fuzzyMatch('k8s', 'Kubernetes'), 'k8s alias resolves to kubernetes');
-assert(fuzzyMatch('aws', 'Amazon Web Services'), 'aws alias resolves');
-assert(fuzzyMatch('tf', 'Terraform'), 'tf alias resolves to terraform');
-assert(fuzzyMatch('js', 'JavaScript'), 'js alias resolves to javascript');
-assert(fuzzyMatch('ts', 'TypeScript'), 'ts alias resolves to typescript');
-assert(fuzzyMatch('py', 'Python'), 'py alias resolves to python');
-assert(fuzzyMatch('pg', 'PostgreSQL'), 'pg alias resolves to postgresql');
-assert(fuzzyMatch('mongo', 'MongoDB'), 'mongo alias resolves to mongodb');
-assert(fuzzyMatch('gcp', 'Google Cloud Platform'), 'gcp alias resolves');
-assert(fuzzyMatch('gh', 'GitHub'), 'gh alias resolves to github');
-assert(fuzzyMatch('iac', 'Infrastructure as Code'), 'iac alias resolves');
-assert(fuzzyMatch('cdk', 'AWS CDK'), 'cdk alias resolves to aws cdk');
-assert(fuzzyMatch('cfn', 'AWS CloudFormation'), 'cfn alias resolves');
+describe('fuzzyMatch — alias resolution', () => {
+  it('k8s alias resolves to kubernetes', () =>
+    assert.ok(fuzzyMatch('k8s', 'Kubernetes')));
+  it('aws alias resolves', () =>
+    assert.ok(fuzzyMatch('aws', 'Amazon Web Services')));
+  it('tf alias resolves to terraform', () =>
+    assert.ok(fuzzyMatch('tf', 'Terraform')));
+  it('js alias resolves to javascript', () =>
+    assert.ok(fuzzyMatch('js', 'JavaScript')));
+  it('ts alias resolves to typescript', () =>
+    assert.ok(fuzzyMatch('ts', 'TypeScript')));
+  it('py alias resolves to python', () =>
+    assert.ok(fuzzyMatch('py', 'Python')));
+  it('pg alias resolves to postgresql', () =>
+    assert.ok(fuzzyMatch('pg', 'PostgreSQL')));
+  it('mongo alias resolves to mongodb', () =>
+    assert.ok(fuzzyMatch('mongo', 'MongoDB')));
+  it('gcp alias resolves', () =>
+    assert.ok(fuzzyMatch('gcp', 'Google Cloud Platform')));
+  it('gh alias resolves to github', () =>
+    assert.ok(fuzzyMatch('gh', 'GitHub')));
+  it('iac alias resolves', () =>
+    assert.ok(fuzzyMatch('iac', 'Infrastructure as Code')));
+  it('cdk alias resolves to aws cdk', () =>
+    assert.ok(fuzzyMatch('cdk', 'AWS CDK')));
+  it('cfn alias resolves', () =>
+    assert.ok(fuzzyMatch('cfn', 'AWS CloudFormation')));
+});
 
 // ─── Fuzzy Match: Reverse alias ─────────────────────────────────────────────
-console.log('\n🔄 fuzzyMatch — reverse alias');
-assert(
-  fuzzyMatch('kubernetes', 'k8s'),
-  'full name matches text containing abbreviation'
-);
-assert(fuzzyMatch('terraform', 'tf'), 'terraform matches text containing tf');
+describe('fuzzyMatch — reverse alias', () => {
+  it('full name matches text containing abbreviation', () =>
+    assert.ok(fuzzyMatch('kubernetes', 'k8s')));
+  it('terraform matches text containing tf', () =>
+    assert.ok(fuzzyMatch('terraform', 'tf')));
+});
 
 // ─── Fuzzy Match: Character sequence ────────────────────────────────────────
-console.log('\n🔤 fuzzyMatch — fuzzy character sequence');
-assert(fuzzyMatch('dkr', 'Docker'), 'fuzzy: d-k-r in Docker');
-assert(fuzzyMatch('kbs', 'Kubernetes'), 'fuzzy: k-b-s in Kubernetes');
-assert(!fuzzyMatch('zyx', 'Docker'), 'fuzzy: no match for reversed chars');
-assert(fuzzyMatch('ans', 'Ansible'), 'fuzzy: a-n-s in Ansible');
+describe('fuzzyMatch — fuzzy character sequence', () => {
+  it('fuzzy: d-k-r in Docker', () => assert.ok(fuzzyMatch('dkr', 'Docker')));
+  it('fuzzy: k-b-s in Kubernetes', () =>
+    assert.ok(fuzzyMatch('kbs', 'Kubernetes')));
+  it('fuzzy: no match for reversed chars', () =>
+    assert.ok(!fuzzyMatch('zyx', 'Docker')));
+  it('fuzzy: a-n-s in Ansible', () => assert.ok(fuzzyMatch('ans', 'Ansible')));
+});
 
 // ─── Fuzzy Match: Edge cases ────────────────────────────────────────────────
-console.log('\n⚠️  fuzzyMatch — edge cases');
-assert(fuzzyMatch('a', 'Ansible'), 'single char match');
-assert(!fuzzyMatch('zzz', 'abc'), 'no match when chars not present');
-assert(fuzzyMatch('docker', 'docker'), 'exact full match');
-assert(
-  fuzzyMatch('KUBERNETES', 'kubernetes'),
-  'all caps query matches lowercase'
-);
-assert(fuzzyMatch('k8s', 'k8s'), 'alias matches itself');
+describe('fuzzyMatch — edge cases', () => {
+  it('single char match', () => assert.ok(fuzzyMatch('a', 'Ansible')));
+  it('no match when chars not present', () =>
+    assert.ok(!fuzzyMatch('zzz', 'abc')));
+  it('exact full match', () => assert.ok(fuzzyMatch('docker', 'docker')));
+  it('all caps query matches lowercase', () =>
+    assert.ok(fuzzyMatch('KUBERNETES', 'kubernetes')));
+  it('alias matches itself', () => assert.ok(fuzzyMatch('k8s', 'k8s')));
+});
+
+// ─── Shared module integrity ────────────────────────────────────────────────
+describe('Shared module', () => {
+  it('ALIASES is exported', () => assert.equal(typeof ALIASES, 'object'));
+  it('has at least 29 aliases', () =>
+    assert.ok(Object.keys(ALIASES).length >= 29));
+  it('fuzzyMatch is exported', () =>
+    assert.equal(typeof fuzzyMatch, 'function'));
+});
 
 // ─── Build validation logic ─────────────────────────────────────────────────
-console.log('\n🏗️  build-html — data validation');
+describe('build-html — data validation', () => {
+  function validateData(data) {
+    const errors = [];
+    if (!data.sidebar?.profile?.name)
+      errors.push('sidebar.profile.name is required');
+    if (!data.sidebar?.profile?.title)
+      errors.push('sidebar.profile.title is required');
+    if (!data.sidebar?.nav?.length)
+      errors.push('sidebar.nav must have at least one entry');
+    if (!data.about?.paragraphs?.length)
+      errors.push('about.paragraphs must have at least one entry');
+    if (!data.experience?.groups && !data.experience?.singles)
+      errors.push('experience must have groups or singles');
+    if (!data.education?.groups && !data.education?.singles)
+      errors.push('education must have groups or singles');
+    if (!Array.isArray(data.skills) || !data.skills.length)
+      errors.push('skills must be a non-empty array');
+    if (!Array.isArray(data.certifications) || !data.certifications.length)
+      errors.push('certifications must be a non-empty array');
+    return errors;
+  }
 
-function validateData(data) {
-  const errors = [];
-  if (!data.sidebar?.profile?.name)
-    errors.push('sidebar.profile.name is required');
-  if (!data.sidebar?.profile?.title)
-    errors.push('sidebar.profile.title is required');
-  if (!data.sidebar?.nav?.length)
-    errors.push('sidebar.nav must have at least one entry');
-  if (!data.about?.paragraphs?.length)
-    errors.push('about.paragraphs must have at least one entry');
-  if (!data.experience?.groups && !data.experience?.singles)
-    errors.push('experience must have groups or singles');
-  if (!data.education?.groups && !data.education?.singles)
-    errors.push('education must have groups or singles');
-  if (!Array.isArray(data.skills) || !data.skills.length)
-    errors.push('skills must be a non-empty array');
-  if (!Array.isArray(data.certifications) || !data.certifications.length)
-    errors.push('certifications must be a non-empty array');
-  return errors;
-}
+  const validData = {
+    sidebar: { profile: { name: 'Test', title: 'Dev' }, nav: [{ href: '#' }] },
+    about: { paragraphs: ['Hello'] },
+    experience: { groups: [{}] },
+    education: { groups: [{}] },
+    skills: [{ name: 'JS' }],
+    certifications: [{ name: 'AWS' }],
+  };
 
-// Valid data
-const validData = {
-  sidebar: { profile: { name: 'Test', title: 'Dev' }, nav: [{ href: '#' }] },
-  about: { paragraphs: ['Hello'] },
-  experience: { groups: [{}] },
-  education: { groups: [{}] },
-  skills: [{ name: 'JS' }],
-  certifications: [{ name: 'AWS' }],
-};
-assertEqual(validateData(validData).length, 0, 'valid data passes validation');
+  it('valid data passes validation', () => {
+    assert.equal(validateData(validData).length, 0);
+  });
 
-// Missing sidebar name
-const missingName = JSON.parse(JSON.stringify(validData));
-missingName.sidebar.profile.name = '';
-assert(
-  validateData(missingName).includes('sidebar.profile.name is required'),
-  'catches missing sidebar.profile.name'
-);
+  it('catches missing sidebar.profile.name', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    d.sidebar.profile.name = '';
+    assert.ok(validateData(d).includes('sidebar.profile.name is required'));
+  });
 
-// Missing about paragraphs
-const missingAbout = JSON.parse(JSON.stringify(validData));
-missingAbout.about.paragraphs = [];
-assert(
-  validateData(missingAbout).includes(
-    'about.paragraphs must have at least one entry'
-  ),
-  'catches empty about.paragraphs'
-);
+  it('catches empty about.paragraphs', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    d.about.paragraphs = [];
+    assert.ok(
+      validateData(d).includes('about.paragraphs must have at least one entry')
+    );
+  });
 
-// Missing experience
-const missingExp = JSON.parse(JSON.stringify(validData));
-delete missingExp.experience.groups;
-assert(
-  validateData(missingExp).includes('experience must have groups or singles'),
-  'catches missing experience groups/singles'
-);
+  it('catches missing experience groups/singles', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    delete d.experience.groups;
+    assert.ok(
+      validateData(d).includes('experience must have groups or singles')
+    );
+  });
 
-// Empty skills
-const emptySkills = JSON.parse(JSON.stringify(validData));
-emptySkills.skills = [];
-assert(
-  validateData(emptySkills).includes('skills must be a non-empty array'),
-  'catches empty skills array'
-);
+  it('catches empty skills array', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    d.skills = [];
+    assert.ok(validateData(d).includes('skills must be a non-empty array'));
+  });
 
-// Completely empty data
-const emptyData = {};
-const emptyErrors = validateData(emptyData);
-assert(
-  emptyErrors.length === 8,
-  `catches all 8 errors on empty data (got ${emptyErrors.length})`
-);
+  it('catches all 8 errors on empty data', () => {
+    assert.equal(validateData({}).length, 8);
+  });
 
-// Experience with singles instead of groups
-const singlesExp = JSON.parse(JSON.stringify(validData));
-delete singlesExp.experience.groups;
-singlesExp.experience.singles = [{}];
-assertEqual(
-  validateData(singlesExp).filter(e => e.includes('experience')).length,
-  0,
-  'experience.singles is accepted as alternative to groups'
-);
+  it('experience.singles is accepted as alternative to groups', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    delete d.experience.groups;
+    d.experience.singles = [{}];
+    assert.equal(
+      validateData(d).filter(e => e.includes('experience')).length,
+      0
+    );
+  });
+});
 
-// ─── Service worker path validation ─────────────────────────────────────────
-console.log('\n🔧 Service worker — source template');
-const swContent = require('fs').readFileSync(
-  require('path').join(__dirname, '..', 'sw.js'),
-  'utf8'
-);
-assert(
-  !swContent.includes('/dist/'),
-  'sw.js source has no /dist/ prefixed paths'
-);
-assert(
-  swContent.includes('/styles.min.css'),
-  'sw.js source has /styles.min.css placeholder'
-);
-assert(
-  swContent.includes('/scripts.min.js'),
-  'sw.js source has /scripts.min.js placeholder'
-);
-assert(
-  /CACHE_NAME\s*=\s*'cv-cache-v\d+'/.test(swContent),
-  'sw.js source has versioned cache name template'
-);
+// ─── Service worker template validation ─────────────────────────────────────
+describe('Service worker — template', () => {
+  const swTemplate = require('fs').readFileSync(
+    require('path').join(__dirname, '..', 'templates', 'sw.template.js'),
+    'utf8'
+  );
 
-// ─── Summary ─────────────────────────────────────────────────────────────────
-console.log(
-  `\n${passes + failures} tests, ${passes} passed, ${failures} failed\n`
-);
-process.exit(failures > 0 ? 1 : 0);
+  it('has {{CACHE_NAME}} placeholder', () =>
+    assert.ok(swTemplate.includes('{{CACHE_NAME}}')));
+  it('has {{CSS_BUNDLE}} placeholder', () =>
+    assert.ok(swTemplate.includes('{{CSS_BUNDLE}}')));
+  it('has {{JS_BUNDLE}} placeholder', () =>
+    assert.ok(swTemplate.includes('{{JS_BUNDLE}}')));
+  it('has no /dist/ prefixed paths', () =>
+    assert.ok(!swTemplate.includes('/dist/')));
+});

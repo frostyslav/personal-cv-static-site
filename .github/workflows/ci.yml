@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'false'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Security audit
+        run: npm audit --omit=dev
+
+      - name: Lint JS
+        run: npx eslint .
+
+      - name: Lint CSS
+        run: npx stylelint "css/**/*.css"
+
+      - name: Build & smoke tests
+        run: npm test
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: HTML validation
+        run: npm run validate
+
+      - name: Install Chromium dependencies
+        run: npx puppeteer browsers install chrome
+
+      - name: E2E tests
+        run: npm run test:e2e

@@ -240,18 +240,37 @@
     break-inside: avoid;
   }
 
+  /* Override all JS-driven collapse states so content is fully visible */
   .position-item.collapsed .experience-section,
   .position-item.collapsed .details-toggle,
   .position-item.collapsed .timeline-project {
     display: block !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    animation: none !important;
   }
 
   .company-collapsed .position-timeline {
     display: block !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    visibility: visible !important;
   }
 
   .experience-section.summary-section {
     display: block !important;
+    opacity: 1 !important;
+    height: auto !important;
+    overflow: visible !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure collapsible headers render as plain text in print */
+  .collapsible-header {
+    cursor: default !important;
   }
 
   .certification-card {

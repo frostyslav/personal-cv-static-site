@@ -51,6 +51,7 @@ function validateData(data) {
 }
 
 const data = {
+  site: loadYaml('site.yaml'),
   sidebar: loadYaml('sidebar.yaml'),
   about: loadYaml('about.yaml'),
   experience: loadYaml('experience.yaml'),
@@ -71,12 +72,13 @@ validateData(data);
 Handlebars.registerHelper('safeUrl', function (url) {
   if (typeof url !== 'string') return '';
   const trimmed = url.trim();
-  // Allow http(s), mailto, tel, and fragment-only links
+  // Allow http(s), mailto, tel, fragment-only, and absolute-path links
   if (
     /^https?:\/\//i.test(trimmed) ||
     /^mailto:/i.test(trimmed) ||
     /^tel:/i.test(trimmed) ||
-    /^#/.test(trimmed)
+    /^#/.test(trimmed) ||
+    /^\/[^/]/.test(trimmed)
   ) {
     return new Handlebars.SafeString(trimmed);
   }

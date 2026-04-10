@@ -1,6 +1,6 @@
 /**
- * Asset fingerprinting — renames CSS/JS bundles with content hashes
- * and rewrites references in index.html and sw.js.
+ * Asset fingerprinting — renames CSS/JS bundles with content hashes,
+ * generates sw.js from template, and rewrites references in index.html.
  *
  * Run after the full build: node scripts/fingerprint.js
  */
@@ -8,7 +8,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const DIST = path.join(__dirname, '..', 'dist');
+const ROOT = path.join(__dirname, '..');
+const DIST = path.join(ROOT, 'dist');
 
 const ASSETS_TO_FINGERPRINT = [
   { original: 'styles.min.css', pattern: /styles\.min\.css/g },
@@ -17,7 +18,7 @@ const ASSETS_TO_FINGERPRINT = [
 
 function hashFile(filePath) {
   const content = fs.readFileSync(filePath);
-  return crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
+  return crypto.createHash('sha256').update(content).digest('hex').slice(0, 8);
 }
 
 function fingerprint() {
@@ -39,6 +40,13 @@ function fingerprint() {
     fs.renameSync(filePath, path.join(DIST, fingerprinted));
     manifest[asset.original] = fingerprinted;
     console.log(`  ${asset.original} → ${fingerprinted}`);
+
+    // Rename associated source map if it exists
+    const mapPath = filePath + '.map';
+    if (fs.existsSync(mapPath)) {
+      fs.renameSync(mapPath, path.join(DIST, fingerprinted + '.map'));
+      console.log(`  ${asset.original}.map → ${fingerprinted}.map`);
+    }
   }
 
   // Rewrite references in index.html
@@ -49,25 +57,22 @@ function fingerprint() {
   }
   fs.writeFileSync(htmlPath, html);
 
-  // Rewrite sw.js — update CACHE_NAME with a hash of all fingerprinted names
-  // and update the asset paths in the ASSETS array
-  const swPath = path.join(DIST, 'sw.js');
-  let sw = fs.readFileSync(swPath, 'utf8');
-
+  // Generate sw.js from template with actual fingerprinted values
   const cacheHash = crypto
-    .createHash('md5')
+    .createHash('sha256')
     .update(Object.values(manifest).sort().join(','))
     .digest('hex')
     .slice(0, 8);
 
-  sw = sw.replace(
-    /const CACHE_NAME = '[^']+'/,
-    `const CACHE_NAME = 'cv-cache-${cacheHash}'`
+  const swTemplate = fs.readFileSync(
+    path.join(ROOT, 'templates', 'sw.template.js'),
+    'utf8'
   );
-  for (const asset of ASSETS_TO_FINGERPRINT) {
-    sw = sw.replace(asset.pattern, manifest[asset.original]);
-  }
-  fs.writeFileSync(swPath, sw);
+  const sw = swTemplate
+    .replace('{{CACHE_NAME}}', `cv-cache-${cacheHash}`)
+    .replace('{{CSS_BUNDLE}}', `/${manifest['styles.min.css']}`)
+    .replace('{{JS_BUNDLE}}', `/${manifest['scripts.min.js']}`);
+  fs.writeFileSync(path.join(DIST, 'sw.js'), sw);
 
   console.log(
     `✓ Fingerprinted ${ASSETS_TO_FINGERPRINT.length} assets, cache: cv-cache-${cacheHash}`

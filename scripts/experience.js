@@ -1,6 +1,30 @@
 // Collapsible experience items
 (() => {
   /**
+   * Build a FontAwesome icon element.
+   * @param {string} iconClass - e.g. 'fa-solid fa-plus'
+   * @returns {HTMLElement}
+   */
+  function createIcon(iconClass) {
+    const i = document.createElement('i');
+    i.className = iconClass;
+    return i;
+  }
+
+  /**
+   * Set the content of a details-toggle button without innerHTML.
+   * @param {HTMLElement} btn
+   * @param {boolean} expanded
+   */
+  function setDetailsToggleContent(btn, expanded) {
+    btn.textContent = '';
+    btn.appendChild(
+      createIcon(expanded ? 'fa-solid fa-minus' : 'fa-solid fa-plus')
+    );
+    btn.append(expanded ? ' Hide project details' : ' Show project details');
+  }
+
+  /**
    * Shared helper: set up collapse/expand and details toggle on a position or
    * single timeline item.
    *
@@ -28,8 +52,7 @@
     const detailsToggle = document.createElement('button');
     detailsToggle.className = 'details-toggle';
     detailsToggle.setAttribute('aria-expanded', 'false');
-    detailsToggle.innerHTML =
-      '<i class="fa-solid fa-plus"></i> Show project details';
+    setDetailsToggleContent(detailsToggle, false);
 
     const insertAfter =
       resultsSections[resultsSections.length - 1] ||
@@ -39,6 +62,9 @@
         detailsToggle,
         insertAfter.nextSibling
       );
+    } else {
+      // Fallback: append to item if no suitable insertion point found
+      item.appendChild(detailsToggle);
     }
 
     // Collapse chevron on title
@@ -46,9 +72,13 @@
     collapseBtn.className = 'collapse-btn';
     collapseBtn.setAttribute('aria-label', 'Toggle details');
     collapseBtn.setAttribute('aria-expanded', String(!startCollapsed));
-    collapseBtn.innerHTML = startCollapsed
-      ? '<i class="fa-solid fa-chevron-right"></i>'
-      : '<i class="fa-solid fa-chevron-down"></i>';
+    collapseBtn.appendChild(
+      createIcon(
+        startCollapsed
+          ? 'fa-solid fa-chevron-right'
+          : 'fa-solid fa-chevron-down'
+      )
+    );
 
     if (title) {
       title.classList.add('collapsible-header');
@@ -70,10 +100,7 @@
 
       summarySections.forEach(s => s.classList.toggle('visible', showing));
       detailsToggle.setAttribute('aria-expanded', String(showing));
-
-      detailsToggle.innerHTML = showing
-        ? '<i class="fa-solid fa-minus"></i> Hide project details'
-        : '<i class="fa-solid fa-plus"></i> Show project details';
+      setDetailsToggleContent(detailsToggle, showing);
 
       if (showing && summarySections[0]) {
         summarySections[0].scrollIntoView({
@@ -101,8 +128,7 @@
       // Reset summary sections when toggling
       summarySections.forEach(s => s.classList.remove('visible'));
       detailsToggle.setAttribute('aria-expanded', 'false');
-      detailsToggle.innerHTML =
-        '<i class="fa-solid fa-plus"></i> Show project details';
+      setDetailsToggleContent(detailsToggle, false);
     };
 
     collapseBtn.addEventListener('click', toggleCollapse);
@@ -129,8 +155,7 @@
       if (companyName) {
         const companyCollapseBtn = document.createElement('button');
         companyCollapseBtn.className = 'collapse-btn company-collapse-btn';
-        companyCollapseBtn.innerHTML =
-          '<i class="fa-solid fa-chevron-down"></i>';
+        companyCollapseBtn.appendChild(createIcon('fa-solid fa-chevron-down'));
         companyCollapseBtn.setAttribute('aria-label', 'Toggle company details');
         companyCollapseBtn.setAttribute(
           'aria-expanded',

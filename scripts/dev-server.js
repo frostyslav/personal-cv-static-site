@@ -1,5 +1,5 @@
 /**
- * Minimal dev server — serves dist/ on localhost:3000 with live reload.
+ * Minimal dev server — serves dist/ on localhost:3000.
  * Uses only Node.js built-ins (no extra dependencies).
  *
  * Usage: node scripts/dev-server.js
