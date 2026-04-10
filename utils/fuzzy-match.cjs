@@ -1,6 +1,9 @@
 /**
- * CJS wrapper for fuzzy-match.js — used by Node tests.
- * The canonical source is fuzzy-match.js (ESM).
+ * CJS wrapper for fuzzy-match.js — used by Node tests (which run as CJS).
+ * The canonical source is utils/fuzzy-match.js (ESM).
+ * This file exists solely because Node's --test runner uses CJS by default
+ * and cannot directly import the ESM module. Do not edit the matching logic
+ * here; update fuzzy-match.js instead.
  */
 const fs = require('fs');
 const path = require('path');

@@ -28,13 +28,10 @@
   --sidebar-width: 320px;
   --transition: all 0.3s ease;
   color-scheme: light dark;
-}
 
-/* Dark theme palette — defined once as --dark-* properties on :root.
-   Both [data-theme='dark'] and the prefers-color-scheme fallback
-   reference these, so color values live in one place only. */
-
-:root {
+  /* Dark theme palette — defined once as --dark-* properties.
+     Both [data-theme='dark'] and the prefers-color-scheme fallback
+     reference these, so color values live in one place only. */
   --dark-primary-color: #3b82f6;
   --dark-primary-hover: #60a5fa;
   --dark-primary-light: #93c5fd;
@@ -53,6 +50,32 @@
   --dark-shadow-primary: rgba(59, 130, 246, 0.3);
   --dark-shadow-primary-lg: rgba(59, 130, 246, 0.4);
   --dark-shadow-primary-sm: rgba(59, 130, 246, 0.2);
+}
+
+/* Dark theme overrides — shared between explicit toggle and system preference.
+   The --dark-* values are defined on :root above; these selectors simply
+   map them onto the active custom properties. */
+
+[data-theme='dark'],
+:root:not([data-theme='light']):where(.prefers-dark) {
+  --primary-color: var(--dark-primary-color);
+  --primary-hover: var(--dark-primary-hover);
+  --primary-light: var(--dark-primary-light);
+  --secondary-color: var(--dark-secondary-color);
+  --text-primary: var(--dark-text-primary);
+  --text-secondary: var(--dark-text-secondary);
+  --text-tertiary: var(--dark-text-tertiary);
+  --gradient-primary-color: var(--dark-gradient-primary);
+  --gradient-secondary-color: var(--dark-gradient-secondary);
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-hover: var(--dark-bg-hover);
+  --border-color: var(--dark-border-color);
+  --border-hover: var(--dark-border-hover);
+  --shadow-color: var(--dark-shadow-color);
+  --shadow-primary: var(--dark-shadow-primary);
+  --shadow-primary-lg: var(--dark-shadow-primary-lg);
+  --shadow-primary-sm: var(--dark-shadow-primary-sm);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,27 +99,6 @@
     --shadow-primary-lg: var(--dark-shadow-primary-lg);
     --shadow-primary-sm: var(--dark-shadow-primary-sm);
   }
-}
-
-[data-theme='dark'] {
-  --primary-color: var(--dark-primary-color);
-  --primary-hover: var(--dark-primary-hover);
-  --primary-light: var(--dark-primary-light);
-  --secondary-color: var(--dark-secondary-color);
-  --text-primary: var(--dark-text-primary);
-  --text-secondary: var(--dark-text-secondary);
-  --text-tertiary: var(--dark-text-tertiary);
-  --gradient-primary-color: var(--dark-gradient-primary);
-  --gradient-secondary-color: var(--dark-gradient-secondary);
-  --bg-primary: var(--dark-bg-primary);
-  --bg-secondary: var(--dark-bg-secondary);
-  --bg-hover: var(--dark-bg-hover);
-  --border-color: var(--dark-border-color);
-  --border-hover: var(--dark-border-hover);
-  --shadow-color: var(--dark-shadow-color);
-  --shadow-primary: var(--dark-shadow-primary);
-  --shadow-primary-lg: var(--dark-shadow-primary-lg);
-  --shadow-primary-sm: var(--dark-shadow-primary-sm);
 }
 
 body {

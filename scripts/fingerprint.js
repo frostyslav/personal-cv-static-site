@@ -40,6 +40,13 @@ function fingerprint() {
     fs.renameSync(filePath, path.join(DIST, fingerprinted));
     manifest[asset.original] = fingerprinted;
     console.log(`  ${asset.original} → ${fingerprinted}`);
+
+    // Rename associated source map if it exists
+    const mapPath = filePath + '.map';
+    if (fs.existsSync(mapPath)) {
+      fs.renameSync(mapPath, path.join(DIST, fingerprinted + '.map'));
+      console.log(`  ${asset.original}.map → ${fingerprinted}.map`);
+    }
   }
 
   // Rewrite references in index.html

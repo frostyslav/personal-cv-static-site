@@ -62,6 +62,9 @@
         detailsToggle,
         insertAfter.nextSibling
       );
+    } else {
+      // Fallback: append to item if no suitable insertion point found
+      item.appendChild(detailsToggle);
     }
 
     // Collapse chevron on title

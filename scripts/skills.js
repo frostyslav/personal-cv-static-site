@@ -13,6 +13,8 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
     );
     const skillCategories = document.querySelectorAll('.skill-category');
 
+    if (!searchInput || !clearSearchBtn || !categoryFiltersContainer) return;
+
     // Create aria-live region for search result announcements
     const liveRegion = document.createElement('div');
     liveRegion.setAttribute('aria-live', 'polite');

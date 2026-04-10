@@ -1,7 +1,9 @@
 {
   "extends": "stylelint-config-standard",
   "rules": {
-    "no-descending-specificity": null,
+    "no-descending-specificity": [true, { "severity": "warning" }],
+    "no-duplicate-selectors": true,
+    "shorthand-property-no-redundant-values": true,
     "custom-property-empty-line-before": null,
     "declaration-empty-line-before": null,
     "comment-empty-line-before": null,
@@ -9,12 +11,10 @@
     "keyframes-name-pattern": null,
     "alpha-value-notation": null,
     "color-function-notation": null,
-    "shorthand-property-no-redundant-values": null,
     "media-feature-range-notation": null,
     "rule-empty-line-before": null,
     "import-notation": null,
     "color-hex-length": null,
-    "no-duplicate-selectors": null,
     "property-no-vendor-prefix": null
   },
   "ignoreFiles": ["dist/**", "vendor/**"]

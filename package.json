@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "prebuild": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist',{recursive:true})\"",
+    "prebuild": "node scripts/clean.js",
     "build": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
     "build:html": "node scripts/build-html.js && npx prettier --write dist/index.html",
-    "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
-    "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
+    "build:css": "npx lightningcss --bundle --minify --sourcemap css/main.css -o dist/styles.min.css",
+    "build:js": "npx esbuild scripts/main.js --bundle --minify --sourcemap --outfile=dist/scripts.min.js",
     "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && cp -r vendor dist/",
     "dev": "npm run build && node scripts/dev-server.js",
     "dev:watch": "node scripts/dev-watch.js",

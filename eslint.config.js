@@ -66,6 +66,7 @@ export default [
   {
     files: [
       'scripts/build-html.js',
+      'scripts/clean.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',
       'scripts/dev-watch.js',

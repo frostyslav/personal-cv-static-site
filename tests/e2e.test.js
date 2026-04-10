@@ -92,11 +92,6 @@ describe('Dark mode toggle', () => {
       el.getAttribute('data-theme')
     );
     await page.evaluate(() => document.querySelector('.theme-toggle').click());
-    await page.waitForFunction(
-      t => document.documentElement.getAttribute('data-theme') !== t,
-      {},
-      initial
-    );
     const next = await page.$eval('html', el => el.getAttribute('data-theme'));
     assert.notEqual(next, initial);
   });

@@ -14,7 +14,7 @@
       content="Professional CV — 15+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://cv.rostyslav.eu/" />
+    <meta property="og:url" content="{{site.baseUrl}}/" />
     <meta property="og:image" content="{{sidebar.profile.photo.png}}" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
@@ -24,7 +24,7 @@
     />
     <meta name="twitter:image" content="{{sidebar.profile.photo.png}}" />
     <meta name="theme-color" content="#2563eb" />
-    <link rel="canonical" href="https://cv.rostyslav.eu/" />
+    <link rel="canonical" href="{{site.baseUrl}}/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
       /* Critical CSS — inlined to avoid render-blocking */
@@ -74,7 +74,7 @@
         "@type": "Person",
         "name": "{{sidebar.profile.name}}",
         "jobTitle": "{{sidebar.profile.title}}",
-        "url": "https://cv.rostyslav.eu/",
+        "url": "{{site.baseUrl}}/",
         "image": "{{sidebar.profile.photo.png}}",
         "sameAs": [
           {{#each sidebar.social}}{{#if external}}"{{safeUrl href}}"{{#unless @last}},
@@ -139,7 +139,7 @@
       <i class="fa-solid fa-arrow-up"></i>
     </button>
 
-    <div class="print-modal-overlay" id="printModal" role="dialog" aria-modal="true" aria-labelledby="printModalTitle" tabindex="-1" hidden>
+    <div class="print-modal-overlay" id="printModal" role="dialog" aria-modal="true" aria-labelledby="printModalTitle" tabindex="-1" hidden data-pdf-url="{{site.baseUrl}}{{site.cvPdfPath}}">
       <div class="print-modal">
         <h2 id="printModalTitle">Print or Download</h2>
         <p>How would you like to get this CV?</p>

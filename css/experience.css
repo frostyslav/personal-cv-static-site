@@ -104,6 +104,7 @@
 
 .experience-section {
   margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease;
 }
 
 .experience-section-title {
@@ -222,11 +223,6 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-}
-
-/* Smooth expand/collapse animation */
-.experience-section {
-  animation: fadeIn 0.3s ease;
 }
 
 /* Details toggle link */

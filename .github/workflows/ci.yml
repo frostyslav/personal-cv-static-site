@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'false'
     steps:
       - uses: actions/checkout@v4
 
@@ -18,6 +20,9 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
+
+      - name: Security audit
+        run: npm audit --omit=dev
 
       - name: Lint JS
         run: npx eslint .
@@ -33,6 +38,9 @@ jobs:
 
       - name: HTML validation
         run: npm run validate
+
+      - name: Install Chromium dependencies
+        run: npx puppeteer browsers install chrome
 
       - name: E2E tests
         run: npm run test:e2e

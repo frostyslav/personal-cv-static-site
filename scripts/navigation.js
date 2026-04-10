@@ -6,6 +6,8 @@
     const navLinks = document.querySelectorAll('.nav-link');
     const sidebarCollapseBtn = document.querySelector('.sidebar-collapse-btn');
 
+    if (!sidebar) return;
+
     if (menuToggle) {
       menuToggle.addEventListener('click', () => {
         sidebar.classList.toggle('active');
@@ -40,58 +42,79 @@
       });
     });
 
-    // Active navigation highlighting
+    // Active navigation highlighting via IntersectionObserver
     const sections = document.querySelectorAll('.section');
+    let currentSectionId = sections.length ? sections[0].id : '';
 
-    function updateActiveNav() {
-      const isAtBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 10;
-
-      if (isAtBottom) {
-        navLinks.forEach(link => link.classList.remove('active'));
-        const lastLink = document.querySelector('a[href="#certifications"]');
-        if (lastLink) lastLink.classList.add('active');
-        return;
-      }
-
-      let currentSection = '';
-      let closestDistance = Infinity;
-
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 150 && Math.abs(rect.top) < closestDistance) {
-          closestDistance = Math.abs(rect.top);
-          currentSection = section.getAttribute('id');
-        }
+    function setActiveNav(sectionId) {
+      currentSectionId = sectionId;
+      navLinks.forEach(link => {
+        link.classList.toggle(
+          'active',
+          link.getAttribute('href') === `#${sectionId}`
+        );
       });
-
-      if (!currentSection && sections.length > 0) {
-        currentSection = sections[0].getAttribute('id');
-      }
-
-      if (currentSection) {
-        navLinks.forEach(link => {
-          link.classList.toggle(
-            'active',
-            link.getAttribute('href') === `#${currentSection}`
-          );
-        });
-      }
     }
 
-    let navScrollTicking = false;
-    window.addEventListener('scroll', () => {
-      if (!navScrollTicking) {
-        requestAnimationFrame(() => {
-          updateActiveNav();
-          navScrollTicking = false;
-        });
-        navScrollTicking = true;
-      }
-    });
+    // Track which sections are currently intersecting the viewport
+    const visibleSections = new Map();
 
-    window.addEventListener('load', updateActiveNav);
+    const navObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute('id');
+          if (entry.isIntersecting) {
+            visibleSections.set(id, entry.target);
+          } else {
+            visibleSections.delete(id);
+          }
+        });
+
+        // Pick the topmost visible section (DOM order)
+        if (visibleSections.size > 0) {
+          for (const section of sections) {
+            if (visibleSections.has(section.id)) {
+              setActiveNav(section.id);
+              return;
+            }
+          }
+        }
+      },
+      {
+        // Fire when a section enters the top 20% of the viewport
+        rootMargin: '0px 0px -80% 0px',
+        threshold: 0,
+      }
+    );
+
+    sections.forEach(section => navObserver.observe(section));
+
+    // Edge case: when scrolled to the very bottom, activate the last section
+    // even if it's too short to cross the rootMargin threshold.
+    // Guard with a scroll-position check so the initial observe() callback
+    // (which fires synchronously at scroll 0) doesn't hijack the active state.
+    let scrollTicking = false;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!scrollTicking) {
+          requestAnimationFrame(() => {
+            const atBottom =
+              window.innerHeight + window.scrollY >=
+              document.documentElement.scrollHeight - 10;
+            if (atBottom && sections.length > 0) {
+              setActiveNav(sections[sections.length - 1].id);
+            }
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    // Set initial active state
+    if (currentSectionId) setActiveNav(currentSectionId);
 
     // Smooth scroll for navigation links
     navLinks.forEach(link => {
