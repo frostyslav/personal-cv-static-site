@@ -1,22 +1,28 @@
 {
+  "scripts": {
+    "prebuild": "rm -rf dist && mkdir -p dist",
+    "build": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
+    "build:html": "node build-html.js && npx prettier --write dist/index.html",
+    "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
+    "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
+    "build:assets": "cp sw.js dist/ && cp favicon.svg dist/ && cp -r vendor dist/",
+    "dev": "npm run build && node scripts/dev-server.js",
+    "dev:watch": "node scripts/dev-watch.js",
+    "test": "node tests/smoke.test.js",
+    "test:unit": "node tests/unit.test.js",
+    "test:all": "npm test && npm run test:unit",
+    "validate": "npx html-validate dist/index.html",
+    "prepare": "husky"
+  },
   "devDependencies": {
     "esbuild": "^0.25.12",
     "handlebars": "^4.7.9",
+    "html-validate": "^10.11.3",
     "husky": "^9.1.7",
     "js-yaml": "^4.1.1",
     "lightningcss-cli": "^1.29.0",
     "prettier": "^3.8.1",
+    "puppeteer": "^24.40.0",
     "terser": "^5.39.0"
-  },
-  "scripts": {
-    "prebuild": "rm -rf dist && mkdir -p dist",
-    "build": "npm run build:html && npm run build:css && npm run build:js",
-    "build:html": "node build-html.js",
-    "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
-    "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
-    "prepare": "husky"
-  },
-  "dependencies": {
-    "puppeteer": "^24.40.0"
   }
 }

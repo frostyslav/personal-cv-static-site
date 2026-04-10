@@ -61,6 +61,29 @@ const data = {
 
 validateData(data);
 
+// Register helpers
+
+/**
+ * {{safeUrl value}} — outputs a URL without HTML-escaping (so & stays &),
+ * but only if the value looks like a safe URL. Blocks javascript: URIs and
+ * other potentially dangerous schemes.
+ */
+Handlebars.registerHelper('safeUrl', function (url) {
+  if (typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  // Allow http(s), mailto, tel, and fragment-only links
+  if (
+    /^https?:\/\//i.test(trimmed) ||
+    /^mailto:/i.test(trimmed) ||
+    /^tel:/i.test(trimmed) ||
+    /^#/.test(trimmed)
+  ) {
+    return new Handlebars.SafeString(trimmed);
+  }
+  console.warn(`⚠ Blocked unsafe URL in template: ${trimmed}`);
+  return '';
+});
+
 // Register partials
 const partialsDir = path.join('templates', 'partials');
 for (const file of fs.readdirSync(partialsDir)) {
@@ -77,8 +100,10 @@ try {
   );
   const template = Handlebars.compile(templateSrc);
   const html = template(data);
-  fs.writeFileSync('index.html', html);
-  console.log('✓ index.html generated from templates + data');
+  // Remove trailing whitespace from each line (Handlebars leaves indentation on blank lines)
+  const cleaned = html.replace(/[ \t]+$/gm, '');
+  fs.writeFileSync(path.join('dist', 'index.html'), cleaned);
+  console.log('✓ dist/index.html generated from templates + data');
 } catch (e) {
   console.error(`✗ Template compilation failed: ${e.message}`);
   process.exit(1);

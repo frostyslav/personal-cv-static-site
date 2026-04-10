@@ -29,3 +29,12 @@ repos:
       - id: prettier
         types_or:
           [javascript, jsx, ts, tsx, json, css, scss, html, yaml, markdown]
+
+  - repo: local
+    hooks:
+      - id: html-validate
+        name: html-validate
+        entry: npx html-validate
+        language: system
+        files: '\.html$'
+        pass_filenames: true

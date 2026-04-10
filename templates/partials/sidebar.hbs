@@ -3,12 +3,12 @@
     <div class="avatar">
       <picture>
         <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
-        <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" />
+        <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" loading="lazy" />
       </picture>
     </div>
     <h1 class="name">{{sidebar.profile.name}}</h1>
     <p class="title">{{sidebar.profile.title}}</p>
-    <a href="{{{sidebar.profile.location.url}}}" target="_blank" rel="noopener noreferrer" class="location">
+    <a href="{{safeUrl sidebar.profile.location.url}}" target="_blank" rel="noopener noreferrer" class="location">
       <i class="fa-solid fa-location-dot"></i>
       {{sidebar.profile.location.text}}
     </a>
@@ -16,7 +16,7 @@
 
   <div class="social-links">
     {{#each sidebar.social}}
-    <a href="{{{href}}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="social-link" aria-label="{{label}}"><i class="{{icon}}"></i></a>
+    <a href="{{safeUrl href}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="social-link" aria-label="{{label}}"><i class="{{icon}}"></i></a>
     {{/each}}
   </div>
 
@@ -24,16 +24,16 @@
     <h3 class="languages-title">Languages</h3>
     {{#each sidebar.languages}}
     {{#if certUrl}}
-    <a href="{{{certUrl}}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link">
+    <a href="{{safeUrl certUrl}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link">
     {{else}}
     <div class="language-item">
     {{/if}}
       <div class="language-info">
-        <span class="language-name">{{name}}</span>
+        <span class="language-name" id="lang-{{@index}}">{{name}}</span>
         <span class="language-level">{{level}}</span>
       </div>
-      <div class="language-bar">
-        <div class="language-progress" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{name}} proficiency: {{percent}}%" style="width: {{percent}}%"></div>
+      <div class="language-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-labelledby="lang-{{@index}}">
+        <div class="language-progress" style="width: {{percent}}%"></div>
       </div>
     {{#if certUrl}}
     </a>
@@ -49,7 +49,7 @@
     {{/each}}
   </nav>
 
-  <a href="{{{sidebar.cvDownloadUrl}}}" target="_blank" rel="noopener noreferrer" class="btn btn-download"><i class="fa-solid fa-file-pdf"></i> Download CV</a>
+  <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="btn btn-download"><i class="fa-solid fa-file-pdf"></i> Download CV</a>
 
   <button class="theme-toggle" aria-label="Switch to dark mode">
     <i class="fa-solid fa-moon"></i>
