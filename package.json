@@ -1,20 +1,24 @@
 {
   "scripts": {
-    "prebuild": "rm -rf dist && mkdir -p dist",
+    "prebuild": "node -e \"const fs=require('fs');fs.rmSync('dist',{recursive:true,force:true});fs.mkdirSync('dist',{recursive:true})\"",
     "build": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
-    "build:html": "node build-html.js && npx prettier --write dist/index.html",
+    "build:html": "node scripts/build-html.js && npx prettier --write dist/index.html",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
-    "build:assets": "cp sw.js dist/ && cp favicon.svg dist/ && cp -r vendor dist/",
+    "build:assets": "cp assets/favicon.svg dist/ && cp -r vendor dist/",
     "dev": "npm run build && node scripts/dev-server.js",
     "dev:watch": "node scripts/dev-watch.js",
+    "lint": "npx eslint . && npx stylelint \"css/**/*.css\"",
     "test": "node tests/smoke.test.js",
     "test:unit": "node tests/unit.test.js",
-    "test:all": "npm test && npm run test:unit",
+    "test:e2e": "node tests/e2e.test.js",
+    "test:all": "npm test && npm run test:unit && npm run test:e2e",
     "validate": "npx html-validate dist/index.html",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "eslint": "^9.25.0",
     "esbuild": "^0.25.12",
     "handlebars": "^4.7.9",
     "html-validate": "^10.11.3",
@@ -23,6 +27,7 @@
     "lightningcss-cli": "^1.29.0",
     "prettier": "^3.8.1",
     "puppeteer": "^24.40.0",
-    "terser": "^5.39.0"
+    "stylelint": "^16.18.0",
+    "stylelint-config-standard": "^37.0.0"
   }
 }

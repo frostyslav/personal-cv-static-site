@@ -27,12 +27,14 @@
   --shadow-primary-sm: rgba(59, 130, 246, 0.15);
   --sidebar-width: 320px;
   --transition: all 0.3s ease;
-  --scroll-show-threshold: 300;
   color-scheme: light dark;
 }
 
+/* Dark theme — single source of truth.
+   [data-theme='dark'] is set by theme.js based on user preference or system setting.
+   The @media query acts as a no-JS fallback. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --primary-color: #3b82f6;
     --primary-hover: #60a5fa;
     --primary-light: #93c5fd;
@@ -73,27 +75,6 @@
   --shadow-primary: rgba(59, 130, 246, 0.3);
   --shadow-primary-lg: rgba(59, 130, 246, 0.4);
   --shadow-primary-sm: rgba(59, 130, 246, 0.2);
-}
-
-[data-theme='light'] {
-  --primary-color: #2563eb;
-  --primary-hover: #3b82f6;
-  --primary-light: #60a5fa;
-  --secondary-color: #1e40af;
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --text-tertiary: #374151;
-  --gradient-primary-color: #acd68b;
-  --gradient-secondary-color: #6db56d;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-hover: #f3f4f6;
-  --border-color: #e5e7eb;
-  --border-hover: #d1d5db;
-  --shadow-color: rgba(0, 0, 0, 0.08);
-  --shadow-primary: rgba(37, 99, 235, 0.3);
-  --shadow-primary-lg: rgba(37, 99, 235, 0.4);
-  --shadow-primary-sm: rgba(59, 130, 246, 0.15);
 }
 
 body {

@@ -1,11 +1,11 @@
 // Service Worker — offline caching for static resume site
-// CACHE_VERSION is replaced at build time with a content hash for cache busting
-const CACHE_NAME = 'cv-cache-v2';
+// Generated at build time by scripts/fingerprint.js
+const CACHE_NAME = '{{CACHE_NAME}}';
 const ASSETS = [
   '/',
   '/index.html',
-  '/styles.min.css',
-  '/scripts.min.js',
+  '{{CSS_BUNDLE}}',
+  '{{JS_BUNDLE}}',
   '/vendor/fontawesome/css/all.min.css',
   '/favicon.svg',
 ];

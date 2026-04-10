@@ -5,6 +5,8 @@
  * These tests exercise the fuzzy matching algorithm and build-html
  * validation logic without needing a browser environment.
  */
+const { ALIASES, fuzzyMatch } = require('../utils/fuzzy-match.js');
+
 let failures = 0;
 let passes = 0;
 
@@ -29,64 +31,6 @@ function assertEqual(actual, expected, message) {
     console.error(`    actual:   ${JSON.stringify(actual)}`);
     failures++;
   }
-}
-
-// ─── Extract fuzzy match logic for testing ───────────────────────────────────
-// Mirror of the ALIASES and fuzzyMatch from scripts/skills.js
-const ALIASES = {
-  k8s: 'kubernetes',
-  aws: 'amazon web services',
-  gcp: 'google cloud platform',
-  tf: 'terraform',
-  tg: 'terragrunt',
-  gh: 'github',
-  gl: 'gitlab',
-  js: 'javascript',
-  ts: 'typescript',
-  py: 'python',
-  pg: 'postgresql',
-  mongo: 'mongodb',
-  iac: 'infrastructure as code',
-  otel: 'opentelemetry',
-  eks: 'amazon eks',
-  aks: 'azure aks',
-  gke: 'google gke',
-  ecs: 'amazon ecs',
-  rds: 'amazon rds',
-  cdk: 'aws cdk',
-  cfn: 'aws cloudformation',
-  ovs: 'openvswitch',
-  ovn: 'open virtual network',
-  dpdk: 'data plane development kit',
-  cni: 'container network interface',
-  rag: 'retrieval-augmented generation',
-  vm: 'virtualization',
-  kvm: 'kvm',
-  hv: 'hyper-v',
-};
-
-function fuzzyMatch(query, text) {
-  const q = query.toLowerCase();
-  const t = text.toLowerCase();
-
-  // Exact substring match
-  if (t.includes(q)) return true;
-
-  // Alias match — check if query is a known alias
-  const aliasTarget = ALIASES[q];
-  if (aliasTarget && t.includes(aliasTarget)) return true;
-
-  // Reverse alias — check if any alias value matches and query matches the key
-  for (const [abbr, full] of Object.entries(ALIASES)) {
-    if (q.includes(full) && t.includes(abbr)) return true;
-  }
-
-  // Fuzzy character sequence match
-  let qi = 0;
-  for (let ti = 0; ti < t.length && qi < q.length; ti++) {
-    if (t[ti] === q[qi]) qi++;
-  }
-  return qi === q.length;
 }
 
 // ─── Fuzzy Match: Exact substring ────────────────────────────────────────────
@@ -142,6 +86,15 @@ assert(
   'all caps query matches lowercase'
 );
 assert(fuzzyMatch('k8s', 'k8s'), 'alias matches itself');
+
+// ─── Shared module integrity ────────────────────────────────────────────────
+console.log('\n📦 Shared module');
+assert(typeof ALIASES === 'object', 'ALIASES is exported');
+assert(
+  Object.keys(ALIASES).length >= 29,
+  `has ${Object.keys(ALIASES).length} aliases`
+);
+assert(typeof fuzzyMatch === 'function', 'fuzzyMatch is exported');
 
 // ─── Build validation logic ─────────────────────────────────────────────────
 console.log('\n🏗️  build-html — data validation');
@@ -230,27 +183,27 @@ assertEqual(
   'experience.singles is accepted as alternative to groups'
 );
 
-// ─── Service worker path validation ─────────────────────────────────────────
-console.log('\n🔧 Service worker — source template');
-const swContent = require('fs').readFileSync(
-  require('path').join(__dirname, '..', 'sw.js'),
+// ─── Service worker template validation ─────────────────────────────────────
+console.log('\n🔧 Service worker — template');
+const swTemplate = require('fs').readFileSync(
+  require('path').join(__dirname, '..', 'templates', 'sw.template.js'),
   'utf8'
 );
 assert(
-  !swContent.includes('/dist/'),
-  'sw.js source has no /dist/ prefixed paths'
+  swTemplate.includes('{{CACHE_NAME}}'),
+  'sw.template.js has {{CACHE_NAME}} placeholder'
 );
 assert(
-  swContent.includes('/styles.min.css'),
-  'sw.js source has /styles.min.css placeholder'
+  swTemplate.includes('{{CSS_BUNDLE}}'),
+  'sw.template.js has {{CSS_BUNDLE}} placeholder'
 );
 assert(
-  swContent.includes('/scripts.min.js'),
-  'sw.js source has /scripts.min.js placeholder'
+  swTemplate.includes('{{JS_BUNDLE}}'),
+  'sw.template.js has {{JS_BUNDLE}} placeholder'
 );
 assert(
-  /CACHE_NAME\s*=\s*'cv-cache-v\d+'/.test(swContent),
-  'sw.js source has versioned cache name template'
+  !swTemplate.includes('/dist/'),
+  'sw.template.js has no /dist/ prefixed paths'
 );
 
 // ─── Summary ─────────────────────────────────────────────────────────────────

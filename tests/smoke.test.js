@@ -98,7 +98,7 @@ for (const id of sections) {
 // --- HTML validation ---
 console.log('\n🔍 HTML validation');
 try {
-  const result = execSync('npx html-validate dist/index.html', {
+  execSync('npx html-validate dist/index.html', {
     cwd: path.join(__dirname, '..'),
     stdio: 'pipe',
   });
@@ -129,12 +129,18 @@ assert(js.length > 500, `JS bundle is non-trivial (${js.length} chars)`);
 console.log('\n🔑 Asset fingerprinting');
 const sw = fs.readFileSync(path.join(DIST, 'sw.js'), 'utf8');
 assert(
-  !/styles\.min\.css[^.]/.test(sw),
-  'sw.js references fingerprinted CSS (not plain)'
+  !sw.includes('{{CACHE_NAME}}'),
+  'sw.js has no unresolved template placeholders'
+);
+assert(!sw.includes('{{CSS_BUNDLE}}'), 'sw.js CSS placeholder was replaced');
+assert(!sw.includes('{{JS_BUNDLE}}'), 'sw.js JS placeholder was replaced');
+assert(
+  /styles\.min\.[a-f0-9]+\.css/.test(sw),
+  'sw.js references fingerprinted CSS'
 );
 assert(
-  !/scripts\.min\.js[^.]/.test(sw),
-  'sw.js references fingerprinted JS (not plain)'
+  /scripts\.min\.[a-f0-9]+\.js/.test(sw),
+  'sw.js references fingerprinted JS'
 );
 assert(/cv-cache-[a-f0-9]{8}/.test(sw), 'sw.js has content-hashed cache name');
 // --- Summary ---

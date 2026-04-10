@@ -31,6 +31,7 @@
       *{margin:0;padding:0;box-sizing:border-box}
       :root{--primary-color:#2563eb;--text-primary:#1f2937;--text-secondary:#4b5563;--bg-primary:#ffffff;--bg-secondary:#f9fafb;--border-color:#e5e7eb;--sidebar-width:320px;--transition:all .3s ease;color-scheme:light dark}
       [data-theme='dark']{--primary-color:#3b82f6;--text-primary:#f3f4f6;--text-secondary:#d1d5db;--bg-primary:#1f2937;--bg-secondary:#111827;--border-color:#374151}
+      @media(prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:#3b82f6;--text-primary:#f3f4f6;--text-secondary:#d1d5db;--bg-primary:#1f2937;--bg-secondary:#111827;--border-color:#374151}}
       body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.6;color:var(--text-primary);background:var(--bg-secondary)}
       .container{display:flex;min-height:100vh}
       .sidebar{width:var(--sidebar-width);background:var(--bg-primary);padding:2rem;display:flex;flex-direction:column;gap:2.5rem;border-right:1px solid var(--border-color);position:fixed;height:100vh;overflow-y:auto;z-index:100}
@@ -49,7 +50,8 @@
       @media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.content{margin-left:0;padding:2rem 1.5rem}}
     </style>
     <link rel="stylesheet" href="styles.min.css" />
-    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
+    <link rel="preload" href="vendor/fontawesome/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" /></noscript>
     <noscript>
       <style>
         /* Ensure everything is visible when JS is disabled */
