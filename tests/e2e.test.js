@@ -99,9 +99,8 @@ async function run() {
   const initialTheme = await page.$eval('html', el =>
     el.getAttribute('data-theme')
   );
-  await page.evaluate(() => document.querySelector('.theme-toggle').click()); // eslint-disable-line no-undef
+  await page.evaluate(() => document.querySelector('.theme-toggle').click());
   await page.waitForFunction(
-    // eslint-disable-next-line no-undef
     t => document.documentElement.getAttribute('data-theme') !== t,
     {},
     initialTheme
@@ -153,7 +152,6 @@ async function run() {
 
   // Click first company header to toggle
   if (collapsibleHeaders.length > 0) {
-    // eslint-disable-next-line no-undef
     await page.evaluate(() =>
       document.querySelector('.collapsible-header').click()
     );
@@ -163,7 +161,7 @@ async function run() {
 
   // --- Back to top ---
   console.log('\n⬆️  Back to top');
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); // eslint-disable-line no-undef
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await new Promise(r => setTimeout(r, 500));
 
   const backToTop = await page.$('.back-to-top');
@@ -175,9 +173,9 @@ async function run() {
     'back-to-top visible after scrolling'
   );
 
-  await page.evaluate(() => document.querySelector('.back-to-top').click()); // eslint-disable-line no-undef
+  await page.evaluate(() => document.querySelector('.back-to-top').click());
   await new Promise(r => setTimeout(r, 2000));
-  const scrollY = await page.evaluate(() => window.scrollY); // eslint-disable-line no-undef
+  const scrollY = await page.evaluate(() => window.scrollY);
   assert(scrollY < 200, `scrolled back to top (scrollY=${scrollY})`);
 
   // --- Print modal ---

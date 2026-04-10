@@ -66,7 +66,13 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',
-      globals: NODE_CJS_GLOBALS,
+      globals: {
+        ...NODE_CJS_GLOBALS,
+        // page.evaluate() callbacks run in the browser but ESLint
+        // parses them as regular code — allow browser globals here.
+        document: 'readonly',
+        window: 'readonly',
+      },
     },
   },
   // Service worker template
