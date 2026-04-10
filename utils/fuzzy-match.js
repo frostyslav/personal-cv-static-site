@@ -1,7 +1,7 @@
 /**
  * Fuzzy matching with alias support — shared between browser and tests.
  */
-const ALIASES = {
+export const ALIASES = {
   k8s: 'kubernetes',
   aws: 'amazon web services',
   gcp: 'google cloud platform',
@@ -33,7 +33,7 @@ const ALIASES = {
   hv: 'hyper-v',
 };
 
-function fuzzyMatch(query, text) {
+export function fuzzyMatch(query, text) {
   const q = query.toLowerCase();
   const t = text.toLowerCase();
 
@@ -56,9 +56,3 @@ function fuzzyMatch(query, text) {
   }
   return qi === q.length;
 }
-
-// Support both ESM (esbuild bundle) and CJS (Node tests)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ALIASES, fuzzyMatch };
-}
-export { ALIASES, fuzzyMatch };

@@ -18,7 +18,7 @@ const ASSETS_TO_FINGERPRINT = [
 
 function hashFile(filePath) {
   const content = fs.readFileSync(filePath);
-  return crypto.createHash('md5').update(content).digest('hex').slice(0, 8);
+  return crypto.createHash('sha256').update(content).digest('hex').slice(0, 8);
 }
 
 function fingerprint() {
@@ -52,7 +52,7 @@ function fingerprint() {
 
   // Generate sw.js from template with actual fingerprinted values
   const cacheHash = crypto
-    .createHash('md5')
+    .createHash('sha256')
     .update(Object.values(manifest).sort().join(','))
     .digest('hex')
     .slice(0, 8);

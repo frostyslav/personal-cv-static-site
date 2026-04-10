@@ -30,51 +30,73 @@
   color-scheme: light dark;
 }
 
-/* Dark theme — single source of truth.
-   [data-theme='dark'] is set by theme.js based on user preference or system setting.
-   The @media query acts as a no-JS fallback. */
+/* Dark theme palette — defined once as --dark-* properties on :root.
+   Both [data-theme='dark'] and the prefers-color-scheme fallback
+   reference these, so color values live in one place only. */
+
+:root {
+  --dark-primary-color: #3b82f6;
+  --dark-primary-hover: #60a5fa;
+  --dark-primary-light: #93c5fd;
+  --dark-secondary-color: #60a5fa;
+  --dark-text-primary: #f3f4f6;
+  --dark-text-secondary: #d1d5db;
+  --dark-text-tertiary: #e5e7eb;
+  --dark-gradient-primary: #86efac;
+  --dark-gradient-secondary: #4ade80;
+  --dark-bg-primary: #1f2937;
+  --dark-bg-secondary: #111827;
+  --dark-bg-hover: #374151;
+  --dark-border-color: #374151;
+  --dark-border-hover: #4b5563;
+  --dark-shadow-color: rgba(0, 0, 0, 0.3);
+  --dark-shadow-primary: rgba(59, 130, 246, 0.3);
+  --dark-shadow-primary-lg: rgba(59, 130, 246, 0.4);
+  --dark-shadow-primary-sm: rgba(59, 130, 246, 0.2);
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --primary-color: #3b82f6;
-    --primary-hover: #60a5fa;
-    --primary-light: #93c5fd;
-    --secondary-color: #60a5fa;
-    --text-primary: #f3f4f6;
-    --text-secondary: #d1d5db;
-    --text-tertiary: #e5e7eb;
-    --gradient-primary-color: #86efac;
-    --gradient-secondary-color: #4ade80;
-    --bg-primary: #1f2937;
-    --bg-secondary: #111827;
-    --bg-hover: #374151;
-    --border-color: #374151;
-    --border-hover: #4b5563;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --shadow-primary: rgba(59, 130, 246, 0.3);
-    --shadow-primary-lg: rgba(59, 130, 246, 0.4);
-    --shadow-primary-sm: rgba(59, 130, 246, 0.2);
+    --primary-color: var(--dark-primary-color);
+    --primary-hover: var(--dark-primary-hover);
+    --primary-light: var(--dark-primary-light);
+    --secondary-color: var(--dark-secondary-color);
+    --text-primary: var(--dark-text-primary);
+    --text-secondary: var(--dark-text-secondary);
+    --text-tertiary: var(--dark-text-tertiary);
+    --gradient-primary-color: var(--dark-gradient-primary);
+    --gradient-secondary-color: var(--dark-gradient-secondary);
+    --bg-primary: var(--dark-bg-primary);
+    --bg-secondary: var(--dark-bg-secondary);
+    --bg-hover: var(--dark-bg-hover);
+    --border-color: var(--dark-border-color);
+    --border-hover: var(--dark-border-hover);
+    --shadow-color: var(--dark-shadow-color);
+    --shadow-primary: var(--dark-shadow-primary);
+    --shadow-primary-lg: var(--dark-shadow-primary-lg);
+    --shadow-primary-sm: var(--dark-shadow-primary-sm);
   }
 }
 
 [data-theme='dark'] {
-  --primary-color: #3b82f6;
-  --primary-hover: #60a5fa;
-  --primary-light: #93c5fd;
-  --secondary-color: #60a5fa;
-  --text-primary: #f3f4f6;
-  --text-secondary: #d1d5db;
-  --text-tertiary: #e5e7eb;
-  --gradient-primary-color: #86efac;
-  --gradient-secondary-color: #4ade80;
-  --bg-primary: #1f2937;
-  --bg-secondary: #111827;
-  --bg-hover: #374151;
-  --border-color: #374151;
-  --border-hover: #4b5563;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --shadow-primary: rgba(59, 130, 246, 0.3);
-  --shadow-primary-lg: rgba(59, 130, 246, 0.4);
-  --shadow-primary-sm: rgba(59, 130, 246, 0.2);
+  --primary-color: var(--dark-primary-color);
+  --primary-hover: var(--dark-primary-hover);
+  --primary-light: var(--dark-primary-light);
+  --secondary-color: var(--dark-secondary-color);
+  --text-primary: var(--dark-text-primary);
+  --text-secondary: var(--dark-text-secondary);
+  --text-tertiary: var(--dark-text-tertiary);
+  --gradient-primary-color: var(--dark-gradient-primary);
+  --gradient-secondary-color: var(--dark-gradient-secondary);
+  --bg-primary: var(--dark-bg-primary);
+  --bg-secondary: var(--dark-bg-secondary);
+  --bg-hover: var(--dark-bg-hover);
+  --border-color: var(--dark-border-color);
+  --border-hover: var(--dark-border-hover);
+  --shadow-color: var(--dark-shadow-color);
+  --shadow-primary: var(--dark-shadow-primary);
+  --shadow-primary-lg: var(--dark-shadow-primary-lg);
+  --shadow-primary-sm: var(--dark-shadow-primary-sm);
 }
 
 body {

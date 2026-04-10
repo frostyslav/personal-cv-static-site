@@ -44,13 +44,22 @@ export default [
       globals: BROWSER_GLOBALS,
     },
   },
-  // Shared utils (dual ESM/CJS)
+  // Shared utils — pure ESM (browser bundle via esbuild)
   {
     files: ['utils/fuzzy-match.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
-      globals: { ...BROWSER_GLOBALS, module: 'readonly' },
+      globals: BROWSER_GLOBALS,
+    },
+  },
+  // Shared utils — CJS wrapper for Node tests
+  {
+    files: ['utils/fuzzy-match.cjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'commonjs',
+      globals: NODE_CJS_GLOBALS,
     },
   },
   // Node CJS — build scripts, dev tooling, tests

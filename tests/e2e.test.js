@@ -4,6 +4,8 @@
  *
  * Requires a build to exist in dist/ (runs npm run build first).
  */
+const { describe, it, before, after } = require('node:test');
+const assert = require('node:assert/strict');
 const { execSync } = require('child_process');
 const http = require('http');
 const fs = require('fs');
@@ -11,23 +13,8 @@ const path = require('path');
 
 const DIST = path.join(__dirname, '..', 'dist');
 const PORT = 9222;
-let server;
-let browser;
-let page;
-let failures = 0;
-let passes = 0;
+let server, browser, page;
 
-function assert(condition, message) {
-  if (condition) {
-    console.log(`  ✓ ${message}`);
-    passes++;
-  } else {
-    console.error(`  ✗ ${message}`);
-    failures++;
-  }
-}
-
-// Minimal static server
 const MIME = {
   '.html': 'text/html',
   '.css': 'text/css',
@@ -63,171 +50,145 @@ function startServer() {
   });
 }
 
-async function run() {
-  // Ensure build exists
+before(async () => {
   if (!fs.existsSync(path.join(DIST, 'index.html'))) {
-    console.log('Building first...');
     execSync('npm run build', {
       cwd: path.join(__dirname, '..'),
       stdio: 'pipe',
     });
   }
-
   await startServer();
-  console.log(`\n🌐 E2E server on http://localhost:${PORT}`);
-
   const puppeteer = require('puppeteer');
   browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
   page = await browser.newPage();
   await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
+});
 
-  // --- Page loads ---
-  console.log('\n📄 Page load');
-  const title = await page.title();
-  assert(title.length > 0, `page has a title: "${title}"`);
+after(async () => {
+  if (browser) await browser.close();
+  if (server) server.close();
+});
 
-  const h2s = await page.$$eval('h2.section-title', els =>
-    els.map(e => e.textContent.trim())
-  );
-  assert(h2s.length >= 5, `has ${h2s.length} section titles`);
+describe('Page load', () => {
+  it('page has a title', async () => {
+    const title = await page.title();
+    assert.ok(title.length > 0);
+  });
+  it('has at least 5 section titles', async () => {
+    const h2s = await page.$$eval('h2.section-title', els =>
+      els.map(e => e.textContent.trim())
+    );
+    assert.ok(h2s.length >= 5);
+  });
+});
 
-  // --- Dark mode toggle ---
-  console.log('\n🌙 Dark mode toggle');
-  const themeBtn = await page.$('.theme-toggle');
-  assert(themeBtn !== null, 'theme toggle button exists');
+describe('Dark mode toggle', () => {
+  it('theme toggle button exists', async () => {
+    const btn = await page.$('.theme-toggle');
+    assert.ok(btn !== null);
+  });
+  it('toggles theme on click', async () => {
+    const initial = await page.$eval('html', el =>
+      el.getAttribute('data-theme')
+    );
+    await page.evaluate(() => document.querySelector('.theme-toggle').click());
+    await page.waitForFunction(
+      t => document.documentElement.getAttribute('data-theme') !== t,
+      {},
+      initial
+    );
+    const next = await page.$eval('html', el => el.getAttribute('data-theme'));
+    assert.notEqual(next, initial);
+  });
+});
 
-  const initialTheme = await page.$eval('html', el =>
-    el.getAttribute('data-theme')
-  );
-  await page.evaluate(() => document.querySelector('.theme-toggle').click());
-  await page.waitForFunction(
-    t => document.documentElement.getAttribute('data-theme') !== t,
-    {},
-    initialTheme
-  );
-  const newTheme = await page.$eval('html', el =>
-    el.getAttribute('data-theme')
-  );
-  assert(
-    newTheme !== initialTheme,
-    `theme toggled from ${initialTheme} to ${newTheme}`
-  );
+describe('Skills search', () => {
+  it('skills search input exists', async () => {
+    assert.ok((await page.$('#skillsSearch')) !== null);
+  });
+  it('k8s alias resolves to Kubernetes in UI', async () => {
+    const input = await page.$('#skillsSearch');
+    // Clear any previous value
+    await input.click({ clickCount: 3 });
+    await input.type('k8s');
+    await new Promise(r => setTimeout(r, 300));
+    const tags = await page.$$eval('.skill-tag:not(.hidden)', els =>
+      els.map(e => e.textContent.trim())
+    );
+    assert.ok(tags.length > 0);
+    assert.ok(
+      tags.some(
+        t =>
+          t.toLowerCase().includes('kubernetes') ||
+          t.toLowerCase().includes('k8s')
+      )
+    );
+    // Clear search
+    const clearBtn = await page.$('#clearSearch');
+    if (clearBtn) {
+      await clearBtn.click();
+      await new Promise(r => setTimeout(r, 200));
+    }
+  });
+});
 
-  // --- Skills search ---
-  console.log('\n🔍 Skills search');
-  const searchInput = await page.$('#skillsSearch');
-  assert(searchInput !== null, 'skills search input exists');
-
-  await searchInput.type('k8s');
-  // Wait for debounce
-  await new Promise(r => setTimeout(r, 300));
-
-  const visibleTags = await page.$$eval('.skill-tag:not(.hidden)', els =>
-    els.map(e => e.textContent.trim())
-  );
-  assert(
-    visibleTags.length > 0,
-    `search "k8s" shows ${visibleTags.length} results`
-  );
-  const hasK8sMatch = visibleTags.some(
-    t =>
-      t.toLowerCase().includes('kubernetes') || t.toLowerCase().includes('k8s')
-  );
-  assert(hasK8sMatch, 'k8s alias resolves to Kubernetes in UI');
-
-  // Clear search
-  const clearBtn = await page.$('#clearSearch');
-  if (clearBtn) {
-    await clearBtn.click();
-    await new Promise(r => setTimeout(r, 200));
-  }
-
-  // --- Experience collapse ---
-  console.log('\n📂 Experience collapse');
-  const collapsibleHeaders = await page.$$('.collapsible-header');
-  assert(
-    collapsibleHeaders.length > 0,
-    `has ${collapsibleHeaders.length} collapsible headers`
-  );
-
-  // Click first company header to toggle
-  if (collapsibleHeaders.length > 0) {
+describe('Experience collapse', () => {
+  it('has collapsible headers', async () => {
+    const headers = await page.$$('.collapsible-header');
+    assert.ok(headers.length > 0);
+  });
+  it('collapsible header click does not throw', async () => {
     await page.evaluate(() =>
       document.querySelector('.collapsible-header').click()
     );
     await new Promise(r => setTimeout(r, 200));
-    assert(true, 'collapsible header click does not throw');
-  }
+    assert.ok(true);
+  });
+});
 
-  // --- Back to top ---
-  console.log('\n⬆️  Back to top');
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  await new Promise(r => setTimeout(r, 500));
+describe('Back to top', () => {
+  it('visible after scrolling and scrolls back', async () => {
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await new Promise(r => setTimeout(r, 500));
+    const isVisible = await page.$eval('.back-to-top', el =>
+      el.classList.contains('visible')
+    );
+    assert.ok(isVisible);
+    await page.evaluate(() => document.querySelector('.back-to-top').click());
+    await new Promise(r => setTimeout(r, 2000));
+    const scrollY = await page.evaluate(() => window.scrollY);
+    assert.ok(scrollY < 200);
+  });
+});
 
-  const backToTop = await page.$('.back-to-top');
-  const isVisible = await page.$eval('.back-to-top', el =>
-    el.classList.contains('visible')
-  );
-  assert(
-    backToTop !== null && isVisible,
-    'back-to-top visible after scrolling'
-  );
+describe('Print modal', () => {
+  it('print modal exists and starts hidden', async () => {
+    const isHidden = await page.$eval('#printModal', el => el.hidden);
+    assert.ok(isHidden);
+  });
+  it('opens on Cmd+P and closes on Escape', async () => {
+    await page.keyboard.down('Meta');
+    await page.keyboard.press('p');
+    await page.keyboard.up('Meta');
+    await new Promise(r => setTimeout(r, 200));
+    const isShown = await page.$eval('#printModal', el => !el.hidden);
+    assert.ok(isShown);
+    await page.keyboard.press('Escape');
+    await new Promise(r => setTimeout(r, 200));
+    const isClosed = await page.$eval('#printModal', el => el.hidden);
+    assert.ok(isClosed);
+  });
+});
 
-  await page.evaluate(() => document.querySelector('.back-to-top').click());
-  await new Promise(r => setTimeout(r, 2000));
-  const scrollY = await page.evaluate(() => window.scrollY);
-  assert(scrollY < 200, `scrolled back to top (scrollY=${scrollY})`);
-
-  // --- Print modal ---
-  console.log('\n🖨️  Print modal');
-  const modal = await page.$('#printModal');
-  assert(modal !== null, 'print modal exists in DOM');
-
-  const isHidden = await page.$eval('#printModal', el => el.hidden);
-  assert(isHidden, 'print modal starts hidden');
-
-  // Trigger Ctrl+P
-  await page.keyboard.down('Meta');
-  await page.keyboard.press('p');
-  await page.keyboard.up('Meta');
-  await new Promise(r => setTimeout(r, 200));
-
-  const isShown = await page.$eval('#printModal', el => !el.hidden);
-  assert(isShown, 'print modal opens on Cmd+P');
-
-  // Close with Escape
-  await page.keyboard.press('Escape');
-  await new Promise(r => setTimeout(r, 200));
-  const isClosed = await page.$eval('#printModal', el => el.hidden);
-  assert(isClosed, 'print modal closes on Escape');
-
-  // --- Accessibility basics ---
-  console.log('\n♿ Accessibility');
-  const skipLink = await page.$('.skip-to-content');
-  assert(skipLink !== null, 'skip-to-content link exists');
-
-  const mainLandmark = await page.$('main');
-  assert(mainLandmark !== null, 'main landmark exists');
-
-  const navLandmark = await page.$('nav');
-  assert(navLandmark !== null, 'nav landmark exists');
-
-  const ariaLabels = await page.$$eval('[aria-label]', els => els.length);
-  assert(ariaLabels > 5, `${ariaLabels} elements have aria-label`);
-
-  // --- Cleanup ---
-  await browser.close();
-  server.close();
-
-  console.log(
-    `\n${passes + failures} tests, ${passes} passed, ${failures} failed\n`
-  );
-  process.exit(failures > 0 ? 1 : 0);
-}
-
-run().catch(err => {
-  console.error('E2E test error:', err);
-  if (browser) browser.close();
-  if (server) server.close();
-  process.exit(1);
+describe('Accessibility', () => {
+  it('skip-to-content link exists', async () =>
+    assert.ok((await page.$('.skip-to-content')) !== null));
+  it('main landmark exists', async () =>
+    assert.ok((await page.$('main')) !== null));
+  it('nav landmark exists', async () =>
+    assert.ok((await page.$('nav')) !== null));
+  it('has aria-label elements', async () => {
+    const count = await page.$$eval('[aria-label]', els => els.length);
+    assert.ok(count > 5);
+  });
 });
