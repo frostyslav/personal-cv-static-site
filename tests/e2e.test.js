@@ -153,9 +153,10 @@ async function run() {
 
   // Click first company header to toggle
   if (collapsibleHeaders.length > 0) {
+    // eslint-disable-next-line no-undef
     await page.evaluate(() =>
       document.querySelector('.collapsible-header').click()
-    ); // eslint-disable-line no-undef
+    );
     await new Promise(r => setTimeout(r, 200));
     assert(true, 'collapsible header click does not throw');
   }

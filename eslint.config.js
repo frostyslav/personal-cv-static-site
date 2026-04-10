@@ -1,29 +1,62 @@
 import js from '@eslint/js';
 
+const NODE_CJS_GLOBALS = {
+  require: 'readonly',
+  module: 'readonly',
+  exports: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  process: 'readonly',
+  console: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+};
+
+const BROWSER_GLOBALS = {
+  document: 'readonly',
+  window: 'readonly',
+  navigator: 'readonly',
+  localStorage: 'readonly',
+  requestAnimationFrame: 'readonly',
+  IntersectionObserver: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  console: 'readonly',
+  HTMLElement: 'readonly',
+};
+
 export default [
   js.configs.recommended,
+  // Browser ESM scripts (bundled by esbuild)
   {
-    files: ['scripts/**/*.js', 'utils/**/*.js'],
+    files: [
+      'scripts/main.js',
+      'scripts/theme.js',
+      'scripts/ui.js',
+      'scripts/navigation.js',
+      'scripts/print-handler.js',
+      'scripts/experience.js',
+      'scripts/skills.js',
+    ],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
-      globals: {
-        document: 'readonly',
-        window: 'readonly',
-        navigator: 'readonly',
-        localStorage: 'readonly',
-        requestAnimationFrame: 'readonly',
-        IntersectionObserver: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        console: 'readonly',
-        HTMLElement: 'readonly',
-      },
+      globals: BROWSER_GLOBALS,
     },
   },
+  // Shared utils (dual ESM/CJS)
+  {
+    files: ['utils/fuzzy-match.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: { ...BROWSER_GLOBALS, module: 'readonly' },
+    },
+  },
+  // Node CJS — build scripts, dev tooling, tests
   {
     files: [
-      'build-html.js',
+      'scripts/build-html.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',
       'scripts/dev-watch.js',
@@ -33,19 +66,10 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',
-      globals: {
-        require: 'readonly',
-        module: 'readonly',
-        exports: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        process: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-      },
+      globals: NODE_CJS_GLOBALS,
     },
   },
+  // Service worker template
   {
     files: ['templates/sw.template.js'],
     languageOptions: {

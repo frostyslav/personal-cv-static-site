@@ -96,8 +96,8 @@ async function fetchDate(browser, badge) {
     const dateText = await page.evaluate(() => {
       // Try multiple selectors Credly has used
       const el =
-        document.querySelector('.cr-badge-banner__issued-to-text') ||
-        document.querySelector('.badge-banner-issued-to-text');
+        document.querySelector('.cr-badge-banner__issued-to-text') || // eslint-disable-line no-undef
+        document.querySelector('.badge-banner-issued-to-text'); // eslint-disable-line no-undef
       return el ? el.textContent.trim() : null;
     });
 

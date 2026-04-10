@@ -58,9 +58,7 @@ function fuzzyMatch(query, text) {
 }
 
 // Support both ESM (esbuild bundle) and CJS (Node tests)
-/* eslint-disable no-undef */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { ALIASES, fuzzyMatch };
 }
-/* eslint-enable no-undef */
 export { ALIASES, fuzzyMatch };
