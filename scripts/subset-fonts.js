@@ -109,12 +109,17 @@ function determineIconFamily(iconName, cssContent) {
 }
 
 /**
- * Scan source files for FA icon class references.
- * Returns a Set of icon names (without the fa- prefix).
+ * Scan source files for FA icon class references and raw codepoints.
+ * Returns { icons: Set<string>, rawCodepoints: Set<string> }
+ * where icons are icon names and rawCodepoints are hex codepoints
+ * found in CSS content properties.
  */
 function scanForIcons(scanPaths) {
   const icons = new Set();
-  const pattern = /fa-([a-z][a-z0-9-]*)/g;
+  const rawCodepoints = new Set();
+  const classPattern = /fa-([a-z][a-z0-9-]*)/g;
+  // Matches CSS content: '\f0da' or content: "\f0da" (FA unicode codepoints)
+  const contentPattern = /content:\s*['"]\\([0-9a-f]{3,5})['"]/gi;
 
   for (const scanPath of scanPaths) {
     const fullPath = path.join(ROOT, scanPath);
@@ -123,17 +128,25 @@ function scanForIcons(scanPaths) {
     const files = getFiles(fullPath);
     for (const file of files) {
       const content = fs.readFileSync(file, 'utf8');
+
       let match;
-      while ((match = pattern.exec(content)) !== null) {
+      while ((match = classPattern.exec(content)) !== null) {
         const name = match[1];
         if (!isUtilityClass(name)) {
           icons.add(name);
         }
       }
+
+      // Scan CSS files for raw codepoints in content properties
+      if (file.endsWith('.css')) {
+        while ((match = contentPattern.exec(content)) !== null) {
+          rawCodepoints.add(match[1].toLowerCase());
+        }
+      }
     }
   }
 
-  return icons;
+  return { icons, rawCodepoints };
 }
 
 /**
@@ -200,8 +213,13 @@ function main() {
   console.log(`  Parsed ${codepointMap.size} icon definitions from FA CSS`);
 
   // Scan source files for icon usage
-  const usedIcons = scanForIcons(SCAN_PATHS);
+  const { icons: usedIcons, rawCodepoints } = scanForIcons(SCAN_PATHS);
   console.log(`  Found ${usedIcons.size} unique icon names in source files`);
+  if (rawCodepoints.size > 0) {
+    console.log(
+      `  Found ${rawCodepoints.size} raw codepoint(s) in CSS content properties`
+    );
+  }
 
   // Categorize icons by font family
   const familyIcons = { solid: [], brands: [], regular: [] };
@@ -215,6 +233,20 @@ function main() {
 
     const family = determineIconFamily(iconName, cssContent);
     familyIcons[family].push({ name: iconName, codepoint });
+  }
+
+  // Add raw codepoints (from CSS content properties) to solid by default
+  // since they're typically used with fa-font-solid
+  for (const cp of rawCodepoints) {
+    // Check if already included via class name
+    const alreadyIncluded = [
+      ...familyIcons.solid,
+      ...familyIcons.brands,
+      ...familyIcons.regular,
+    ].some(i => i.codepoint === cp);
+    if (!alreadyIncluded) {
+      familyIcons.solid.push({ name: `(raw U+${cp})`, codepoint: cp });
+    }
   }
 
   console.log(`\n  Solid icons: ${familyIcons.solid.length}`);
