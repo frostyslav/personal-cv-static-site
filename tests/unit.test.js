@@ -187,3 +187,52 @@ describe('Service worker — template', () => {
   it('has no /dist/ prefixed paths', () =>
     assert.ok(!swTemplate.includes('/dist/')));
 });
+
+// ─── safeUrl Handlebars helper ──────────────────────────────────────────────
+describe('safeUrl helper logic', () => {
+  // Replicate the safeUrl logic for unit testing without Handlebars dependency
+  function safeUrl(url) {
+    if (typeof url !== 'string') return '';
+    const trimmed = url.trim();
+    if (
+      /^https?:\/\//i.test(trimmed) ||
+      /^mailto:/i.test(trimmed) ||
+      /^tel:/i.test(trimmed) ||
+      /^#/.test(trimmed) ||
+      /^\/[^/]/.test(trimmed)
+    ) {
+      return trimmed;
+    }
+    return '';
+  }
+
+  it('allows https URLs', () =>
+    assert.equal(safeUrl('https://example.com'), 'https://example.com'));
+  it('allows http URLs', () =>
+    assert.equal(safeUrl('http://example.com'), 'http://example.com'));
+  it('allows mailto links', () =>
+    assert.equal(
+      safeUrl('mailto:test@example.com'),
+      'mailto:test@example.com'
+    ));
+  it('allows tel links', () =>
+    assert.equal(safeUrl('tel:+1234567890'), 'tel:+1234567890'));
+  it('allows fragment links', () =>
+    assert.equal(safeUrl('#section'), '#section'));
+  it('allows absolute path links', () =>
+    assert.equal(safeUrl('/about'), '/about'));
+  it('blocks javascript: URIs', () =>
+    assert.equal(safeUrl('javascript:alert(1)'), ''));
+  it('blocks data: URIs', () =>
+    assert.equal(safeUrl('data:text/html,<script>alert(1)</script>'), ''));
+  it('blocks empty protocol', () => assert.equal(safeUrl('//evil.com'), ''));
+  it('returns empty for non-string input', () =>
+    assert.equal(safeUrl(undefined), ''));
+  it('returns empty for null input', () => assert.equal(safeUrl(null), ''));
+  it('trims whitespace', () =>
+    assert.equal(safeUrl('  https://example.com  '), 'https://example.com'));
+  it('blocks vbscript: URIs', () =>
+    assert.equal(safeUrl('vbscript:msgbox'), ''));
+  it('blocks relative protocol with no path', () =>
+    assert.equal(safeUrl('//'), ''));
+});

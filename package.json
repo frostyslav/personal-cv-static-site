@@ -1,7 +1,8 @@
 {
   "scripts": {
     "prebuild": "node scripts/clean.js",
-    "build": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
+    "build": "node scripts/build-parallel.js",
+    "build:seq": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
     "build:html": "node scripts/build-html.js && npx prettier --write dist/index.html",
     "build:css": "npx lightningcss --bundle --minify --sourcemap css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --sourcemap --outfile=dist/scripts.min.js",
@@ -17,9 +18,10 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@axe-core/puppeteer": "^4.11.2",
     "@eslint/js": "^9.25.0",
-    "eslint": "^9.25.0",
     "esbuild": "^0.25.12",
+    "eslint": "^9.25.0",
     "handlebars": "^4.7.9",
     "html-validate": "^10.11.3",
     "husky": "^9.1.7",

@@ -17,6 +17,7 @@ const BROWSER_GLOBALS = {
   window: 'readonly',
   navigator: 'readonly',
   localStorage: 'readonly',
+  sessionStorage: 'readonly',
   requestAnimationFrame: 'readonly',
   IntersectionObserver: 'readonly',
   setTimeout: 'readonly',
@@ -37,6 +38,7 @@ export default [
       'scripts/print-handler.js',
       'scripts/experience.js',
       'scripts/skills.js',
+      'scripts/error-handler.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,
@@ -66,6 +68,7 @@ export default [
   {
     files: [
       'scripts/build-html.js',
+      'scripts/build-parallel.js',
       'scripts/clean.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',

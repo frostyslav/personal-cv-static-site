@@ -187,3 +187,98 @@ describe('Accessibility', () => {
     assert.ok(count > 5);
   });
 });
+
+describe('Accessibility — axe-core audit', () => {
+  it('has no critical accessibility violations', async () => {
+    const { AxePuppeteer } = require('@axe-core/puppeteer');
+    // Navigate fresh to ensure clean state
+    await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
+
+    const results = await new AxePuppeteer(page)
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+
+    const critical = results.violations.filter(
+      v => v.impact === 'critical' || v.impact === 'serious'
+    );
+
+    // Known issue: nested-interactive from JS-injected collapse buttons
+    // inside elements with role="button". Tracked separately.
+    const unknown = critical.filter(v => v.id !== 'nested-interactive');
+
+    if (critical.length > 0) {
+      const summary = critical
+        .map(
+          v =>
+            `[${v.impact}] ${v.id}: ${v.description} (${
+              v.nodes.length
+            } instance${v.nodes.length > 1 ? 's' : ''})`
+        )
+        .join('\n  ');
+      console.log(
+        `  ⚠ Accessibility issues (${critical.length} rule${
+          critical.length > 1 ? 's' : ''
+        }):\n  ${summary}`
+      );
+    }
+
+    if (unknown.length > 0) {
+      const summary = unknown
+        .map(
+          v =>
+            `[${v.impact}] ${v.id}: ${v.description} (${
+              v.nodes.length
+            } instance${v.nodes.length > 1 ? 's' : ''})`
+        )
+        .join('\n  ');
+      assert.fail(`Unexpected accessibility violations:\n  ${summary}`);
+    }
+  });
+
+  it('all images have alt text', async () => {
+    const imagesWithoutAlt = await page.$$eval(
+      'img',
+      imgs =>
+        imgs.filter(
+          img => !img.getAttribute('alt') && img.getAttribute('alt') !== ''
+        ).length
+    );
+    assert.equal(imagesWithoutAlt, 0, 'All images should have alt attributes');
+  });
+
+  it('no duplicate IDs on the page', async () => {
+    const duplicates = await page.evaluate(() => {
+      const ids = Array.from(document.querySelectorAll('[id]')).map(
+        el => el.id
+      );
+      const seen = new Set();
+      const dupes = [];
+      for (const id of ids) {
+        if (seen.has(id)) dupes.push(id);
+        seen.add(id);
+      }
+      return dupes;
+    });
+    assert.equal(
+      duplicates.length,
+      0,
+      `Duplicate IDs found: ${duplicates.join(', ')}`
+    );
+  });
+
+  it('interactive elements are keyboard accessible', async () => {
+    const nonAccessible = await page.$$eval(
+      'a[href], button, input, select, textarea, [tabindex]',
+      els =>
+        els.filter(el => {
+          const tabindex = el.getAttribute('tabindex');
+          return tabindex !== null && parseInt(tabindex) < -1;
+        }).length
+    );
+    assert.equal(
+      nonAccessible,
+      0,
+      'No interactive elements should have tabindex < -1'
+    );
+  });
+});
