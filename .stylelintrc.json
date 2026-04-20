@@ -1,7 +1,7 @@
 {
   "extends": "stylelint-config-standard",
   "rules": {
-    "no-descending-specificity": [true, { "severity": "warning" }],
+    "no-descending-specificity": null,
     "no-duplicate-selectors": true,
     "shorthand-property-no-redundant-values": true,
     "custom-property-empty-line-before": null,

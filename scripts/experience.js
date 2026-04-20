@@ -50,6 +50,7 @@
 
     // Details toggle button
     const detailsToggle = document.createElement('button');
+    detailsToggle.type = 'button';
     detailsToggle.className = 'details-toggle';
     detailsToggle.setAttribute('aria-expanded', 'false');
     setDetailsToggleContent(detailsToggle, false);
@@ -69,6 +70,7 @@
 
     // Collapse chevron on title
     const collapseBtn = document.createElement('button');
+    collapseBtn.type = 'button';
     collapseBtn.className = 'collapse-btn';
     collapseBtn.setAttribute('aria-label', 'Toggle details');
     collapseBtn.setAttribute('aria-expanded', String(!startCollapsed));
@@ -156,6 +158,7 @@
       const companyName = group.querySelector('.timeline-company');
       if (companyName) {
         const companyCollapseBtn = document.createElement('button');
+        companyCollapseBtn.type = 'button';
         companyCollapseBtn.className = 'collapse-btn company-collapse-btn';
         companyCollapseBtn.appendChild(createIcon('fa-solid fa-chevron-down'));
         companyCollapseBtn.setAttribute('aria-label', 'Toggle company details');

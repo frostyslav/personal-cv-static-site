@@ -40,6 +40,7 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
         : 'fa-solid fa-tag';
 
       const filterBtn = document.createElement('button');
+      filterBtn.type = 'button';
       filterBtn.className = 'category-filter-btn';
       filterBtn.setAttribute('data-category', categoryName);
       filterBtn.setAttribute('title', categoryName);
