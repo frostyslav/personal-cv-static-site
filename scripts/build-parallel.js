@@ -50,7 +50,7 @@ async function build() {
       resolve(
         run(
           'JS',
-          'npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js'
+          'npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js && npx esbuild scripts/sw-register.js --minify --outfile=dist/sw-register.js'
         )
       )
     ),

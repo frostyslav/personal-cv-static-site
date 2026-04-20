@@ -40,6 +40,7 @@ export default [
       'scripts/experience.js',
       'scripts/skills.js',
       'scripts/error-handler.js',
+      'scripts/sw-register.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,
@@ -78,6 +79,7 @@ export default [
       'scripts/dev-watch.js',
       'tests/**/*.js',
       'utils/fetch-cert-dates.js',
+      'svgo.config.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,

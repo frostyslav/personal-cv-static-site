@@ -69,8 +69,16 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
           activeCategory === 'all' || categoryTitle === activeCategory;
 
         skillTags.forEach(tag => {
-          const matchesSearch =
-            searchTerm === '' || fuzzyMatch(searchTerm, tag.textContent);
+          let matchesSearch = searchTerm === '';
+          if (!matchesSearch) {
+            try {
+              matchesSearch = fuzzyMatch(searchTerm, tag.textContent);
+            } catch {
+              matchesSearch = tag.textContent
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+            }
+          }
           const isVisible = categoryMatches && matchesSearch;
 
           tag.classList.toggle('hidden', !isVisible);

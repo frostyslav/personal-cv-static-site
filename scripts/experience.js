@@ -82,9 +82,11 @@
 
     if (title) {
       title.classList.add('collapsible-header');
-      title.setAttribute('role', 'button');
       title.setAttribute('tabindex', '0');
-      title.appendChild(collapseBtn);
+      title.setAttribute('aria-expanded', String(!startCollapsed));
+      title.insertAdjacentElement('afterend', collapseBtn);
+      collapseBtn.setAttribute('aria-hidden', 'true');
+      collapseBtn.setAttribute('tabindex', '-1');
     }
 
     if (startCollapsed) {
@@ -117,7 +119,7 @@
 
       const isCollapsed = item.classList.toggle('collapsed');
       const icon = collapseBtn.querySelector('i');
-      collapseBtn.setAttribute('aria-expanded', String(!isCollapsed));
+      if (title) title.setAttribute('aria-expanded', String(!isCollapsed));
 
       if (isCollapsed) {
         icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
@@ -131,7 +133,6 @@
       setDetailsToggleContent(detailsToggle, false);
     };
 
-    collapseBtn.addEventListener('click', toggleCollapse);
     if (title) {
       title.addEventListener('click', toggleCollapse);
       title.addEventListener('keydown', e => {
@@ -163,9 +164,14 @@
         );
 
         companyName.classList.add('collapsible-header');
-        companyName.setAttribute('role', 'button');
         companyName.setAttribute('tabindex', '0');
-        companyName.appendChild(companyCollapseBtn);
+        companyName.setAttribute(
+          'aria-expanded',
+          groupIndex === 0 ? 'true' : 'false'
+        );
+        companyName.insertAdjacentElement('afterend', companyCollapseBtn);
+        companyCollapseBtn.setAttribute('aria-hidden', 'true');
+        companyCollapseBtn.setAttribute('tabindex', '-1');
 
         if (groupIndex > 0) {
           group.classList.add('company-collapsed');
@@ -179,7 +185,7 @@
           e.stopPropagation();
           const isCollapsed = group.classList.toggle('company-collapsed');
           const icon = companyCollapseBtn.querySelector('i');
-          companyCollapseBtn.setAttribute('aria-expanded', !isCollapsed);
+          companyName.setAttribute('aria-expanded', String(!isCollapsed));
           if (isCollapsed) {
             icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
           } else {
@@ -187,7 +193,6 @@
           }
         };
 
-        companyCollapseBtn.addEventListener('click', toggleCompany);
         companyName.addEventListener('click', toggleCompany);
         companyName.addEventListener('keydown', e => {
           if (e.key === 'Enter' || e.key === ' ') {

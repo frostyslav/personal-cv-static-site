@@ -27,6 +27,7 @@ describe('Required files in dist/', () => {
   for (const file of [
     'index.html',
     'sw.js',
+    'sw-register.js',
     'favicon.svg',
     'vendor/fontawesome/css/all.min.css',
   ]) {
@@ -55,7 +56,8 @@ describe('HTML content', () => {
     assert.match(html, /styles\.min\.[a-f0-9]+\.css/));
   it('references fingerprinted JS bundle', () =>
     assert.match(html, /scripts\.min\.[a-f0-9]+\.js/));
-  it('references service worker', () => assert.ok(html.includes('sw.js')));
+  it('references service worker registration', () =>
+    assert.ok(html.includes('sw-register.js')));
   it('has noscript fallback', () => assert.ok(html.includes('<noscript>')));
   it('has print modal', () => assert.ok(html.includes('print-modal')));
 });
