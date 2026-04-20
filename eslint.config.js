@@ -8,6 +8,7 @@ const NODE_CJS_GLOBALS = {
   __filename: 'readonly',
   process: 'readonly',
   console: 'readonly',
+  Buffer: 'readonly',
   setTimeout: 'readonly',
   clearTimeout: 'readonly',
 };
@@ -39,6 +40,7 @@ export default [
       'scripts/experience.js',
       'scripts/skills.js',
       'scripts/error-handler.js',
+      'scripts/sw-register.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,
@@ -70,12 +72,14 @@ export default [
       'scripts/build-html.js',
       'scripts/build-parallel.js',
       'scripts/subset-fonts.js',
+      'scripts/subset-fa-css.js',
       'scripts/clean.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',
       'scripts/dev-watch.js',
       'tests/**/*.js',
       'utils/fetch-cert-dates.js',
+      'svgo.config.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,

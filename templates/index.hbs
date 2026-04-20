@@ -24,7 +24,7 @@
     />
     <meta name="twitter:image" content="{{sidebar.profile.photo.png}}" />
     <meta name="theme-color" content="#2563eb" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none';" />
     <link rel="canonical" href="{{site.baseUrl}}/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
@@ -51,8 +51,9 @@
       @media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.content{margin-left:0;padding:2rem 1.5rem}}
     </style>
     <link rel="stylesheet" href="styles.min.css" />
-    <link rel="preload" href="vendor/fontawesome/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" /></noscript>
+    <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />
+    <link rel="preload" href="vendor/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
     <noscript>
       <style>
         /* Ensure everything is visible when JS is disabled */
@@ -102,12 +103,12 @@
     <div class="container">
       {{> sidebar}}
 
-      <button class="sidebar-collapse-btn" aria-label="Collapse sidebar" aria-expanded="true">
+      <button type="button" class="sidebar-collapse-btn" aria-label="Collapse sidebar" aria-expanded="true">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
       <main class="content">
-        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <button type="button" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
@@ -136,7 +137,7 @@
       </main>
     </div>
 
-    <button class="back-to-top" aria-label="Back to top">
+    <button type="button" class="back-to-top" aria-label="Back to top">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
 
@@ -145,24 +146,20 @@
         <h2 id="printModalTitle">Print or Download</h2>
         <p>How would you like to get this CV?</p>
         <div class="print-modal-actions">
-          <button class="btn btn-primary" id="printModalDownload">
+          <button type="button" class="btn btn-primary" id="printModalDownload">
             <i class="fa-solid fa-file-pdf"></i> Download PDF
           </button>
-          <button class="btn btn-secondary" id="printModalPrint">
+          <button type="button" class="btn btn-secondary" id="printModalPrint">
             <i class="fa-solid fa-print"></i> Print Page
           </button>
         </div>
-        <button class="print-modal-close" id="printModalClose" aria-label="Close dialog">
+        <button type="button" class="print-modal-close" id="printModalClose" aria-label="Close dialog">
           <i class="fa-solid fa-times"></i>
         </button>
       </div>
     </div>
 
     <script src="scripts.min.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      }
-    </script>
+    <script src="sw-register.js"></script>
   </body>
 </html>

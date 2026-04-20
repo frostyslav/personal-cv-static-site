@@ -219,10 +219,13 @@
 
 /* Collapsible header layout */
 .collapsible-header {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   cursor: pointer;
+}
+
+.collapsible-header + .collapse-btn {
+  vertical-align: middle;
 }
 
 /* Details toggle link */
