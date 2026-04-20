@@ -8,6 +8,7 @@ const NODE_CJS_GLOBALS = {
   __filename: 'readonly',
   process: 'readonly',
   console: 'readonly',
+  Buffer: 'readonly',
   setTimeout: 'readonly',
   clearTimeout: 'readonly',
 };
@@ -70,6 +71,7 @@ export default [
       'scripts/build-html.js',
       'scripts/build-parallel.js',
       'scripts/subset-fonts.js',
+      'scripts/subset-fa-css.js',
       'scripts/clean.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',

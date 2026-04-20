@@ -2,12 +2,12 @@
   "scripts": {
     "prebuild": "node scripts/clean.js",
     "build": "node scripts/build-parallel.js",
-    "build:seq": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/fingerprint.js",
+    "build:seq": "npm run build:html && npm run build:css && npm run build:js && npm run build:assets && node scripts/subset-fa-css.js && node scripts/fingerprint.js",
     "build:html": "node scripts/build-html.js && npx prettier --write dist/index.html",
-    "build:css": "npx lightningcss --bundle --minify --sourcemap css/main.css -o dist/styles.min.css",
-    "build:js": "npx esbuild scripts/main.js --bundle --minify --sourcemap --outfile=dist/scripts.min.js",
-    "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && cp -r vendor dist/",
-    "dev": "npm run build && node scripts/dev-server.js",
+    "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
+    "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
+    "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && mkdir -p dist/vendor/fontawesome/css dist/vendor/fontawesome/webfonts && cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/ && cp vendor/fontawesome/webfonts/fa-solid-900.woff2 vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/ && npx svgo dist/favicon.svg --quiet",
+    "dev": "SOURCEMAPS=1 npm run build && node scripts/dev-server.js",
     "dev:watch": "node scripts/dev-watch.js",
     "subset-fonts": "node scripts/subset-fonts.js",
     "lint": "npx eslint . && npx stylelint \"css/**/*.css\"",
@@ -31,6 +31,7 @@
     "prettier": "^3.8.1",
     "puppeteer": "^24.40.0",
     "stylelint": "^16.18.0",
-    "stylelint-config-standard": "^37.0.0"
+    "stylelint-config-standard": "^37.0.0",
+    "svgo": "^4.0.1"
   }
 }
