@@ -82,6 +82,7 @@
 
     if (title) {
       title.classList.add('collapsible-header');
+      title.setAttribute('role', 'button');
       title.setAttribute('tabindex', '0');
       title.setAttribute('aria-expanded', String(!startCollapsed));
       title.insertAdjacentElement('afterend', collapseBtn);
@@ -164,6 +165,7 @@
         );
 
         companyName.classList.add('collapsible-header');
+        companyName.setAttribute('role', 'button');
         companyName.setAttribute('tabindex', '0');
         companyName.setAttribute(
           'aria-expanded',
