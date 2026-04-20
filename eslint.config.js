@@ -69,6 +69,7 @@ export default [
     files: [
       'scripts/build-html.js',
       'scripts/build-parallel.js',
+      'scripts/subset-fonts.js',
       'scripts/clean.js',
       'scripts/fingerprint.js',
       'scripts/dev-server.js',
