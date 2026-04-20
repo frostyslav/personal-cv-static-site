@@ -262,3 +262,6 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/osx,linux,windows,archives,visualstudiocode,node
 
 .vscode/settings.json
+
+# Font subset backups (full originals)
+*.woff2.full
