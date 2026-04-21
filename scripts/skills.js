@@ -147,8 +147,7 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
 
         const target = document.querySelector('#skills');
         if (target) {
-          const y =
-            target.getBoundingClientRect().top + window.pageYOffset - 100;
+          const y = target.getBoundingClientRect().top + window.scrollY - 100;
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
       });
