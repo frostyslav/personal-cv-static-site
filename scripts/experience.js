@@ -25,6 +25,35 @@
   }
 
   /**
+   * Replace a static element (e.g. <p> or <h3>) with a <button> that
+   * contains the same text content plus a chevron icon. This avoids
+   * the nested-interactive axe-core violation that occurred when we
+   * added role="button" to an element and then inserted a child <button>.
+   *
+   * @param {HTMLElement} original - The element to replace
+   * @param {string} chevronClass - Initial chevron icon class
+   * @returns {{ btn: HTMLButtonElement, chevronIcon: HTMLElement }}
+   */
+  function replaceWithButton(original, chevronClass) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = original.className + ' collapsible-header';
+
+    // Preserve the text content
+    const textSpan = document.createElement('span');
+    textSpan.textContent = original.textContent;
+    btn.appendChild(textSpan);
+
+    // Append chevron icon inside the button
+    const chevronIcon = createIcon(chevronClass);
+    chevronIcon.classList.add('collapse-chevron');
+    btn.appendChild(chevronIcon);
+
+    original.replaceWith(btn);
+    return { btn, chevronIcon };
+  }
+
+  /**
    * Shared helper: set up collapse/expand and details toggle on a position or
    * single timeline item.
    *
@@ -68,28 +97,20 @@
       item.appendChild(detailsToggle);
     }
 
-    // Collapse chevron on title
-    const collapseBtn = document.createElement('button');
-    collapseBtn.type = 'button';
-    collapseBtn.className = 'collapse-btn';
-    collapseBtn.setAttribute('aria-label', 'Toggle details');
-    collapseBtn.setAttribute('aria-expanded', String(!startCollapsed));
-    collapseBtn.appendChild(
-      createIcon(
+    // Replace the title element with a <button> containing a chevron
+    let headerBtn = null;
+    let chevronIcon = null;
+
+    if (title) {
+      const result = replaceWithButton(
+        title,
         startCollapsed
           ? 'fa-solid fa-chevron-right'
           : 'fa-solid fa-chevron-down'
-      )
-    );
-
-    if (title) {
-      title.classList.add('collapsible-header');
-      title.setAttribute('role', 'button');
-      title.setAttribute('tabindex', '0');
-      title.setAttribute('aria-expanded', String(!startCollapsed));
-      title.insertAdjacentElement('afterend', collapseBtn);
-      collapseBtn.setAttribute('aria-hidden', 'true');
-      collapseBtn.setAttribute('tabindex', '-1');
+      );
+      headerBtn = result.btn;
+      chevronIcon = result.chevronIcon;
+      headerBtn.setAttribute('aria-expanded', String(!startCollapsed));
     }
 
     if (startCollapsed) {
@@ -115,34 +136,25 @@
       }
     });
 
-    // Title/chevron: full collapse/expand
-    const toggleCollapse = e => {
-      e.preventDefault();
-      e.stopPropagation();
+    // Header button: full collapse/expand
+    if (headerBtn) {
+      headerBtn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const isCollapsed = item.classList.toggle('collapsed');
-      const icon = collapseBtn.querySelector('i');
-      if (title) title.setAttribute('aria-expanded', String(!isCollapsed));
+        const isCollapsed = item.classList.toggle('collapsed');
+        headerBtn.setAttribute('aria-expanded', String(!isCollapsed));
 
-      if (isCollapsed) {
-        icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-      } else {
-        icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-      }
-
-      // Reset summary sections when toggling
-      summarySections.forEach(s => s.classList.remove('visible'));
-      detailsToggle.setAttribute('aria-expanded', 'false');
-      setDetailsToggleContent(detailsToggle, false);
-    };
-
-    if (title) {
-      title.addEventListener('click', toggleCollapse);
-      title.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleCollapse(e);
+        if (isCollapsed) {
+          chevronIcon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+        } else {
+          chevronIcon.classList.replace('fa-chevron-right', 'fa-chevron-down');
         }
+
+        // Reset summary sections when toggling
+        summarySections.forEach(s => s.classList.remove('visible'));
+        detailsToggle.setAttribute('aria-expanded', 'false');
+        setDetailsToggleContent(detailsToggle, false);
       });
     }
   }
@@ -157,52 +169,38 @@
     companyGroups.forEach((group, groupIndex) => {
       const companyName = group.querySelector('.timeline-company');
       if (companyName) {
-        const companyCollapseBtn = document.createElement('button');
-        companyCollapseBtn.type = 'button';
-        companyCollapseBtn.className = 'collapse-btn company-collapse-btn';
-        companyCollapseBtn.appendChild(createIcon('fa-solid fa-chevron-down'));
-        companyCollapseBtn.setAttribute('aria-label', 'Toggle company details');
-        companyCollapseBtn.setAttribute(
+        const startCollapsed = groupIndex > 0;
+        const { btn: companyBtn, chevronIcon } = replaceWithButton(
+          companyName,
+          startCollapsed
+            ? 'fa-solid fa-chevron-right'
+            : 'fa-solid fa-chevron-down'
+        );
+        companyBtn.setAttribute('aria-label', 'Toggle company details');
+        companyBtn.setAttribute(
           'aria-expanded',
-          groupIndex === 0 ? 'true' : 'false'
+          startCollapsed ? 'false' : 'true'
         );
 
-        companyName.classList.add('collapsible-header');
-        companyName.setAttribute('role', 'button');
-        companyName.setAttribute('tabindex', '0');
-        companyName.setAttribute(
-          'aria-expanded',
-          groupIndex === 0 ? 'true' : 'false'
-        );
-        companyName.insertAdjacentElement('afterend', companyCollapseBtn);
-        companyCollapseBtn.setAttribute('aria-hidden', 'true');
-        companyCollapseBtn.setAttribute('tabindex', '-1');
-
-        if (groupIndex > 0) {
+        if (startCollapsed) {
           group.classList.add('company-collapsed');
-          companyCollapseBtn
-            .querySelector('i')
-            .classList.replace('fa-chevron-down', 'fa-chevron-right');
         }
 
-        const toggleCompany = e => {
+        companyBtn.addEventListener('click', e => {
           e.preventDefault();
           e.stopPropagation();
           const isCollapsed = group.classList.toggle('company-collapsed');
-          const icon = companyCollapseBtn.querySelector('i');
-          companyName.setAttribute('aria-expanded', String(!isCollapsed));
+          companyBtn.setAttribute('aria-expanded', String(!isCollapsed));
           if (isCollapsed) {
-            icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
+            chevronIcon.classList.replace(
+              'fa-chevron-down',
+              'fa-chevron-right'
+            );
           } else {
-            icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-          }
-        };
-
-        companyName.addEventListener('click', toggleCompany);
-        companyName.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggleCompany(e);
+            chevronIcon.classList.replace(
+              'fa-chevron-right',
+              'fa-chevron-down'
+            );
           }
         });
       }

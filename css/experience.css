@@ -139,10 +139,6 @@
   display: none;
 }
 
-.company-collapse-btn {
-  font-size: 1.2rem;
-}
-
 .position-timeline {
   margin-top: 1rem;
   padding-left: 1.5rem;
@@ -174,26 +170,18 @@
   margin-bottom: 0;
 }
 
-/* Collapse button */
-.collapse-btn {
-  background: none;
-  border: none;
+/* Collapse chevron inside collapsible-header buttons */
+.collapse-chevron {
   color: var(--primary-color);
   font-size: 1rem;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
   margin-left: 0.5rem;
-  transition: var(--transition);
+  transition: transform 0.3s ease;
   flex-shrink: 0;
 }
 
-.collapse-btn:hover {
+.collapsible-header:hover .collapse-chevron {
   color: var(--primary-hover);
   transform: scale(1.15);
-}
-
-.collapse-btn i {
-  transition: transform 0.3s ease;
 }
 
 .position-item.collapsed .experience-section {
@@ -217,15 +205,17 @@
   display: block;
 }
 
-/* Collapsible header layout */
+/* Collapsible header — replaces the original static element with a <button> */
 .collapsible-header {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-}
-
-.collapsible-header + .collapse-btn {
-  vertical-align: middle;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  padding: 0;
 }
 
 /* Details toggle link */

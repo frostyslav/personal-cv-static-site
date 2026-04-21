@@ -6,12 +6,12 @@
     <title>{{sidebar.profile.name}} - {{sidebar.profile.title}}</title>
     <meta
       name="description"
-      content="CV of {{sidebar.profile.name}} — {{sidebar.profile.title}} with 15+ years of expertise in DevOps, cloud migration, and infrastructure. AWS, Azure, GCP certified."
+      content="CV of {{sidebar.profile.name}} — {{sidebar.profile.title}} with {{yearsSince site.careerStartYear}}+ years of expertise in DevOps, cloud migration, and infrastructure. AWS, Azure, GCP certified."
     />
     <meta property="og:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
     <meta
       property="og:description"
-      content="Professional CV — 15+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+      content="Professional CV — {{yearsSince site.careerStartYear}}+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{site.baseUrl}}/" />
@@ -20,7 +20,7 @@
     <meta name="twitter:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
     <meta
       name="twitter:description"
-      content="Professional CV — 15+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+      content="Professional CV — {{yearsSince site.careerStartYear}}+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
     />
     <meta name="twitter:image" content="{{sidebar.profile.photo.png}}" />
     <meta name="theme-color" content="#2563eb" />
@@ -62,8 +62,7 @@
         .theme-toggle { display: none; }
         .back-to-top { display: none; }
         .details-toggle { display: none; }
-        .collapse-btn { display: none; }
-        .company-collapse-btn { display: none; }
+        .collapsible-header .collapse-chevron { display: none; }
         .experience-section.summary-section { display: block !important; }
         .position-item.collapsed .experience-section,
         .position-item.collapsed .timeline-project { display: block !important; }

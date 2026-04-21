@@ -124,7 +124,26 @@ const data = {
 
 validateData(data);
 
+// Replace {{yearsOfExperience}} placeholder in about paragraphs
+if (data.site.careerStartYear && data.about?.paragraphs) {
+  const years = new Date().getFullYear() - data.site.careerStartYear;
+  const rounded = Math.floor(years / 5) * 5;
+  data.about.paragraphs = data.about.paragraphs.map(p =>
+    p.replace(/\{\{yearsOfExperience\}\}/g, String(rounded))
+  );
+}
+
 // Register helpers
+
+/**
+ * {{yearsSince year}} — computes the number of full years from a given year
+ * to the current year. Used for dynamic "X+ years of experience" text.
+ */
+Handlebars.registerHelper('yearsSince', function (year) {
+  if (typeof year !== 'number' || year < 1900) return '';
+  const total = new Date().getFullYear() - year;
+  return Math.floor(total / 5) * 5;
+});
 
 /**
  * {{safeUrl value}} — outputs a URL without HTML-escaping (so & stays &),
