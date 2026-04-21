@@ -48,7 +48,7 @@ export default [
       globals: BROWSER_GLOBALS,
     },
   },
-  // Shared utils — pure ESM (browser bundle via esbuild)
+  // Shared utils — ESM wrapper (browser bundle via esbuild)
   {
     files: ['utils/fuzzy-match.js'],
     languageOptions: {
@@ -57,7 +57,7 @@ export default [
       globals: BROWSER_GLOBALS,
     },
   },
-  // Shared utils — CJS wrapper for Node tests
+  // Shared utils — CJS canonical source (used by Node tests directly)
   {
     files: ['utils/fuzzy-match.cjs'],
     languageOptions: {
