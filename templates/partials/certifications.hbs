@@ -3,13 +3,13 @@
 
   {{#each certifications}}
   <div class="cert-group {{cssClass}}">
-    <h4 class="cert-group-title">{{group}}</h4>
+    <h3 class="cert-group-title">{{group}}</h3>
     <div class="cert-group-grid">
       {{#each certs}}
       <a href="{{safeUrl href}}" target="_blank" rel="noopener noreferrer" class="certification-card">
-        <img src="{{image}}" alt="{{alt}}" loading="lazy" class="certification-logo" />
+        <img src="{{image}}" alt="" loading="lazy" class="certification-logo" />
         <div class="certification-content">
-          <h3 class="certification-title">{{title}}</h3>
+          <h4 class="certification-title">{{title}}</h4>
           <span class="certification-date">Issued: {{issued}}</span>
         </div>
       </a>

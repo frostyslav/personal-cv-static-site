@@ -56,8 +56,7 @@
    The --dark-* values are defined on :root above; these selectors simply
    map them onto the active custom properties. */
 
-[data-theme='dark'],
-:root:not([data-theme='light']):where(.prefers-dark) {
+[data-theme='dark'] {
   --primary-color: var(--dark-primary-color);
   --primary-hover: var(--dark-primary-hover);
   --primary-light: var(--dark-primary-light);

@@ -3,7 +3,7 @@
     <div class="avatar">
       <picture>
         <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
-        <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" loading="lazy" />
+        <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" />
       </picture>
     </div>
     <h1 class="name">{{sidebar.profile.name}}</h1>
@@ -32,7 +32,7 @@
         <span class="language-name" id="lang-{{@index}}">{{name}}</span>
         <span class="language-level">{{level}}</span>
       </div>
-      <div class="language-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-labelledby="lang-{{@index}}">
+      <div class="language-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-labelledby="lang-{{@index}}" aria-valuetext="{{name}}, {{percent}}% — {{level}}">
         <div class="language-progress" style="width: {{percent}}%"></div>
       </div>
     {{#if certUrl}}
@@ -43,7 +43,7 @@
     {{/each}}
   </div>
 
-  <nav class="nav">
+  <nav class="nav" aria-label="Main navigation">
     {{#each sidebar.nav}}
     <a href="{{href}}" class="nav-link{{#if @first}} active{{/if}}">{{text}}</a>
     {{/each}}

@@ -25,6 +25,7 @@
     <meta name="twitter:image" content="{{sidebar.profile.photo.png}}" />
     <meta name="theme-color" content="#2563eb" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none';" />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href="{{site.baseUrl}}/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
@@ -53,6 +54,7 @@
     <link rel="stylesheet" href="styles.min.css" />
     <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />
     <link rel="preload" href="vendor/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="vendor/fontawesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
     <noscript>
       <style>
@@ -79,7 +81,8 @@
         "image": "{{sidebar.profile.photo.png}}",
         "sameAs": [
           {{#each sidebar.social}}{{#if external}}"{{safeUrl href}}"{{#unless @last}},
-          {{/unless}}{{/if}}{{/each}}
+          {{/unless}}{{/if}}{{/each}}{{#if site.credlyProfileUrl}},
+          "{{site.credlyProfileUrl}}"{{/if}}
         ],
         "worksFor": {
           "@type": "Organization",
