@@ -11,6 +11,9 @@ const crypto = require('crypto');
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
+/** Number of hex characters to keep from SHA-256 digests (32 bits of entropy). */
+const HASH_LENGTH = 8;
+
 const ASSETS_TO_FINGERPRINT = [
   { original: 'styles.min.css', pattern: /styles\.min\.css/g },
   { original: 'scripts.min.js', pattern: /scripts\.min\.js/g },
@@ -18,7 +21,11 @@ const ASSETS_TO_FINGERPRINT = [
 
 function hashFile(filePath) {
   const content = fs.readFileSync(filePath);
-  return crypto.createHash('sha256').update(content).digest('hex').slice(0, 8);
+  return crypto
+    .createHash('sha256')
+    .update(content)
+    .digest('hex')
+    .slice(0, HASH_LENGTH);
 }
 
 function fingerprint() {
@@ -62,7 +69,7 @@ function fingerprint() {
     .createHash('sha256')
     .update(Object.values(manifest).sort().join(','))
     .digest('hex')
-    .slice(0, 8);
+    .slice(0, HASH_LENGTH);
 
   const swTemplate = fs.readFileSync(
     path.join(ROOT, 'templates', 'sw.template.js'),

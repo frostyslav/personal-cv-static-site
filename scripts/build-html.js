@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const Handlebars = require('handlebars');
+const { validate, dataSchema } = require('./data-schema');
 
 // Load YAML data files with error handling
 function loadYaml(filename) {
@@ -18,97 +19,14 @@ function loadYaml(filename) {
   }
 }
 
-// Validate required data fields
+// Validate merged data against the declarative schema
 function validateData(data) {
-  const errors = [];
-
-  if (!data.sidebar?.profile?.name)
-    errors.push('sidebar.profile.name is required');
-  if (!data.sidebar?.profile?.title)
-    errors.push('sidebar.profile.title is required');
-  if (!data.sidebar?.nav?.length)
-    errors.push('sidebar.nav must have at least one entry');
-  if (!data.about?.paragraphs?.length)
-    errors.push('about.paragraphs must have at least one entry');
-  if (!data.experience?.groups && !data.experience?.singles) {
-    errors.push('experience must have groups or singles');
-  }
-  if (!data.education?.groups && !data.education?.singles) {
-    errors.push('education must have groups or singles');
-  }
-  if (!Array.isArray(data.skills) || !data.skills.length) {
-    errors.push('skills must be a non-empty array');
-  }
-  if (!Array.isArray(data.certifications) || !data.certifications.length) {
-    errors.push('certifications must be a non-empty array');
-  }
-
-  // Validate URLs and emails in data
-  validateUrls(data, errors);
+  const errors = validate(data, dataSchema);
 
   if (errors.length) {
     console.error('✗ Data validation failed:');
     errors.forEach(e => console.error(`  - ${e}`));
     process.exit(1);
-  }
-}
-
-// Validate URL and email formats in data
-function validateUrls(data, errors) {
-  const urlPattern = /^https?:\/\/.+/i;
-  const emailPattern = /^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/i;
-  const pathPattern = /^\/[^\s]+$/;
-
-  function checkUrl(value, context) {
-    if (typeof value !== 'string' || !value) return;
-    const trimmed = value.trim();
-    if (
-      !urlPattern.test(trimmed) &&
-      !emailPattern.test(trimmed) &&
-      !pathPattern.test(trimmed) &&
-      !trimmed.startsWith('#') &&
-      !trimmed.startsWith('tel:')
-    ) {
-      errors.push(`Invalid URL in ${context}: "${trimmed}"`);
-    }
-  }
-
-  // Site URLs
-  if (data.site?.baseUrl) checkUrl(data.site.baseUrl, 'site.baseUrl');
-
-  // Sidebar social links
-  if (data.sidebar?.social) {
-    data.sidebar.social.forEach((item, i) => {
-      if (item.href) checkUrl(item.href, `sidebar.social[${i}].href`);
-    });
-  }
-
-  // Sidebar profile photo URLs
-  if (data.sidebar?.profile?.photo) {
-    const photo = data.sidebar.profile.photo;
-    if (photo.webp) checkUrl(photo.webp, 'sidebar.profile.photo.webp');
-    if (photo.png) checkUrl(photo.png, 'sidebar.profile.photo.png');
-  }
-
-  // Sidebar location URL
-  if (data.sidebar?.profile?.location?.url) {
-    checkUrl(data.sidebar.profile.location.url, 'sidebar.profile.location.url');
-  }
-
-  // Language cert URLs
-  if (data.sidebar?.languages) {
-    data.sidebar.languages.forEach((lang, i) => {
-      if (lang.certUrl)
-        checkUrl(lang.certUrl, `sidebar.languages[${i}].certUrl`);
-    });
-  }
-
-  // Certification verify URLs
-  if (data.certifications) {
-    data.certifications.forEach((cert, i) => {
-      if (cert.verifyUrl)
-        checkUrl(cert.verifyUrl, `certifications[${i}].verifyUrl`);
-    });
   }
 }
 

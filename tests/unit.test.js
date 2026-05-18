@@ -92,82 +92,139 @@ describe('Shared module', () => {
     assert.equal(typeof fuzzyMatch, 'function'));
 });
 
-// ─── Build validation logic ─────────────────────────────────────────────────
-describe('build-html — data validation', () => {
-  function validateData(data) {
-    const errors = [];
-    if (!data.sidebar?.profile?.name)
-      errors.push('sidebar.profile.name is required');
-    if (!data.sidebar?.profile?.title)
-      errors.push('sidebar.profile.title is required');
-    if (!data.sidebar?.nav?.length)
-      errors.push('sidebar.nav must have at least one entry');
-    if (!data.about?.paragraphs?.length)
-      errors.push('about.paragraphs must have at least one entry');
-    if (!data.experience?.groups && !data.experience?.singles)
-      errors.push('experience must have groups or singles');
-    if (!data.education?.groups && !data.education?.singles)
-      errors.push('education must have groups or singles');
-    if (!Array.isArray(data.skills) || !data.skills.length)
-      errors.push('skills must be a non-empty array');
-    if (!Array.isArray(data.certifications) || !data.certifications.length)
-      errors.push('certifications must be a non-empty array');
-    return errors;
-  }
+// ─── Build validation logic (schema-based) ──────────────────────────────────
+describe('data-schema — validate()', () => {
+  const {
+    validate,
+    dataSchema,
+    isValidUrl,
+  } = require('../scripts/data-schema');
 
   const validData = {
-    sidebar: { profile: { name: 'Test', title: 'Dev' }, nav: [{ href: '#' }] },
+    site: {
+      baseUrl: 'https://example.com',
+      cvPdfPath: '/files/cv.pdf',
+      careerStartYear: 2007,
+    },
+    sidebar: {
+      profile: { name: 'Test', title: 'Dev' },
+      nav: [{ href: '#about', text: 'About' }],
+    },
     about: { paragraphs: ['Hello'] },
-    experience: { groups: [{}] },
+    experience: {
+      groups: [
+        {
+          company: 'Acme',
+          date: '2020',
+          title: 'Dev',
+          positions: [{ date: '2020', title: 'Dev' }],
+        },
+      ],
+    },
     education: { groups: [{}] },
-    skills: [{ name: 'JS' }],
-    certifications: [{ name: 'AWS' }],
+    skills: [
+      {
+        title: 'Cloud',
+        icon: 'fa-solid fa-cloud',
+        color: 'blue',
+        tags: ['AWS'],
+      },
+    ],
+    certifications: [
+      {
+        group: 'AWS',
+        certs: [
+          {
+            title: 'SA Pro',
+            image: 'https://img.example.com/sa.webp',
+            href: 'https://credly.com/badge',
+          },
+        ],
+      },
+    ],
   };
 
   it('valid data passes validation', () => {
-    assert.equal(validateData(validData).length, 0);
+    assert.equal(validate(validData, dataSchema).length, 0);
   });
 
   it('catches missing sidebar.profile.name', () => {
     const d = JSON.parse(JSON.stringify(validData));
     d.sidebar.profile.name = '';
-    assert.ok(validateData(d).includes('sidebar.profile.name is required'));
+    const errors = validate(d, dataSchema);
+    assert.ok(
+      errors.some(e => e.includes('profile.name') && e.includes('required'))
+    );
   });
 
   it('catches empty about.paragraphs', () => {
     const d = JSON.parse(JSON.stringify(validData));
     d.about.paragraphs = [];
+    const errors = validate(d, dataSchema);
     assert.ok(
-      validateData(d).includes('about.paragraphs must have at least one entry')
+      errors.some(e => e.includes('paragraphs') && e.includes('at least'))
     );
   });
 
   it('catches missing experience groups/singles', () => {
     const d = JSON.parse(JSON.stringify(validData));
     delete d.experience.groups;
-    assert.ok(
-      validateData(d).includes('experience must have groups or singles')
-    );
+    const errors = validate(d, dataSchema);
+    assert.ok(errors.some(e => e.includes('experience')));
   });
 
   it('catches empty skills array', () => {
     const d = JSON.parse(JSON.stringify(validData));
     d.skills = [];
-    assert.ok(validateData(d).includes('skills must be a non-empty array'));
+    const errors = validate(d, dataSchema);
+    assert.ok(errors.some(e => e.includes('skills') && e.includes('at least')));
   });
 
-  it('catches all 8 errors on empty data', () => {
-    assert.equal(validateData({}).length, 8);
+  it('catches invalid URL format', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    d.site.baseUrl = 'not-a-url';
+    const errors = validate(d, dataSchema);
+    assert.ok(
+      errors.some(e => e.includes('baseUrl') && e.includes('invalid URL'))
+    );
+  });
+
+  it('catches missing required fields on empty data', () => {
+    const errors = validate({}, dataSchema);
+    assert.ok(errors.length >= 7, `Expected >= 7 errors, got ${errors.length}`);
   });
 
   it('experience.singles is accepted as alternative to groups', () => {
     const d = JSON.parse(JSON.stringify(validData));
     delete d.experience.groups;
-    d.experience.singles = [{}];
-    assert.equal(
-      validateData(d).filter(e => e.includes('experience')).length,
-      0
+    d.experience.singles = [{ company: 'X', date: '2020', title: 'Y' }];
+    const errors = validate(d, dataSchema);
+    assert.equal(errors.filter(e => e.includes('experience')).length, 0);
+  });
+
+  it('validates certification URLs', () => {
+    const d = JSON.parse(JSON.stringify(validData));
+    d.certifications[0].certs[0].href = 'javascript:alert(1)';
+    const errors = validate(d, dataSchema);
+    assert.ok(
+      errors.some(e => e.includes('href') && e.includes('invalid URL'))
     );
+  });
+
+  it('isValidUrl accepts all safe schemes', () => {
+    assert.ok(isValidUrl('https://example.com'));
+    assert.ok(isValidUrl('http://example.com'));
+    assert.ok(isValidUrl('mailto:a@b.com'));
+    assert.ok(isValidUrl('tel:+123'));
+    assert.ok(isValidUrl('#section'));
+    assert.ok(isValidUrl('/path'));
+  });
+
+  it('isValidUrl rejects dangerous schemes', () => {
+    assert.ok(!isValidUrl('javascript:alert(1)'));
+    assert.ok(!isValidUrl('data:text/html,x'));
+    assert.ok(!isValidUrl(''));
+    assert.ok(!isValidUrl(null));
   });
 });
 
