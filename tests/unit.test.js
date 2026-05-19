@@ -5,9 +5,15 @@
  * These tests exercise the fuzzy matching algorithm and build-html
  * validation logic without needing a browser environment.
  */
-const { describe, it } = require('node:test');
-const assert = require('node:assert/strict');
-const { ALIASES, fuzzyMatch } = require('../utils/fuzzy-match.cjs');
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { ALIASES, fuzzyMatch } from '../utils/fuzzy-match.js';
+import { validate, dataSchema, isValidUrl } from '../scripts/data-schema.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ─── Fuzzy Match: Exact substring ────────────────────────────────────────────
 describe('fuzzyMatch — exact substring', () => {
@@ -94,12 +100,6 @@ describe('Shared module', () => {
 
 // ─── Build validation logic (schema-based) ──────────────────────────────────
 describe('data-schema — validate()', () => {
-  const {
-    validate,
-    dataSchema,
-    isValidUrl,
-  } = require('../scripts/data-schema');
-
   const validData = {
     site: {
       baseUrl: 'https://example.com',
@@ -230,8 +230,8 @@ describe('data-schema — validate()', () => {
 
 // ─── Service worker template validation ─────────────────────────────────────
 describe('Service worker — template', () => {
-  const swTemplate = require('fs').readFileSync(
-    require('path').join(__dirname, '..', 'templates', 'sw.template.js'),
+  const swTemplate = fs.readFileSync(
+    path.join(__dirname, '..', 'templates', 'sw.template.js'),
     'utf8'
   );
 

@@ -29,27 +29,8 @@
     <link rel="canonical" href="{{site.baseUrl}}/" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
-      /* Critical CSS — inlined to avoid render-blocking */
-      *{margin:0;padding:0;box-sizing:border-box}
-      :root{--primary-color:#2563eb;--text-primary:#1f2937;--text-secondary:#4b5563;--bg-primary:#ffffff;--bg-secondary:#f9fafb;--border-color:#e5e7eb;--sidebar-width:320px;--transition:all .3s ease;color-scheme:light dark;--dark-primary-color:#3b82f6;--dark-text-primary:#f3f4f6;--dark-text-secondary:#d1d5db;--dark-bg-primary:#1f2937;--dark-bg-secondary:#111827;--dark-border-color:#374151}
-      [data-theme='dark']{--primary-color:var(--dark-primary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--border-color:var(--dark-border-color)}
-      @media(prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--border-color:var(--dark-border-color)}}
-      body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.6;color:var(--text-primary);background:var(--bg-secondary)}
-      .container{display:flex;min-height:100vh}
-      .sidebar{width:var(--sidebar-width);background:var(--bg-primary);padding:2rem;display:flex;flex-direction:column;gap:2.5rem;border-right:1px solid var(--border-color);position:fixed;height:100vh;overflow-y:auto;z-index:100}
-      .content{flex:1;margin-left:var(--sidebar-width);padding:3rem;max-width:1200px}
-      .section{margin-bottom:3.5rem;opacity:1;transform:none}
-      .section-title{font-size:2rem;font-weight:800;margin-bottom:1.5rem;color:var(--text-primary);position:relative;padding-bottom:.75rem}
-      .section-title::after{content:'';position:absolute;bottom:0;left:0;width:80px;height:3px;background:var(--primary-color)}
-      .profile{text-align:center}
-      .avatar{width:150px;height:150px;margin:0 auto 1.5rem;border-radius:50%;overflow:hidden;border:4px solid var(--primary-color)}
-      .avatar img{width:100%;height:100%;object-fit:cover}
-      .name{font-size:1.75rem;font-weight:700;margin-bottom:.5rem;color:var(--text-primary)}
-      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-      .skip-to-content{position:absolute;top:-100%;left:1rem;z-index:9999;padding:.75rem 1.5rem;background:var(--secondary-color);color:var(--bg-secondary);border-radius:0 0 .5rem .5rem;text-decoration:none;font-weight:600;transition:top .2s ease}
-      .skip-to-content:focus{top:0}
-      @media(max-width:1024px){.sidebar{transform:translateX(-100%)}.content{margin-left:0;padding:5rem 2rem 2rem}}
-      @media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.content{margin-left:0;padding:2rem 1.5rem}}
+      /* Critical CSS — auto-extracted from source (do not edit manually) */
+      @media (prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--primary-hover:var(--dark-primary-hover);--primary-light:var(--dark-primary-light);--secondary-color:var(--dark-secondary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--text-tertiary:var(--dark-text-tertiary);--gradient-primary-color:var(--dark-gradient-primary);--gradient-secondary-color:var(--dark-gradient-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--bg-hover:var(--dark-bg-hover);--border-color:var(--dark-border-color);--border-hover:var(--dark-border-hover);--shadow-color:var(--dark-shadow-color);--shadow-primary:var(--dark-shadow-primary);--shadow-primary-lg:var(--dark-shadow-primary-lg);--shadow-primary-sm:var(--dark-shadow-primary-sm)}}@media(max-width:1024px){.content{padding:5rem 2.5rem 2rem}}@media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.sidebar-collapse-btn{display:none}.content{margin-left:0;padding:5rem 2rem 2rem}}@media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.sidebar.active{transform:none}.content{margin-left:0;padding:2rem 1.5rem}}
     </style>
     <link rel="stylesheet" href="styles.min.css" />
     <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />

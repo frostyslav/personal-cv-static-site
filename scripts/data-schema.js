@@ -20,7 +20,7 @@ const PATH_PATTERN = /^\/[^\s]+$/;
 const TEL_PATTERN = /^tel:/i;
 const FRAGMENT_PATTERN = /^#/;
 
-function isValidUrl(value) {
+export function isValidUrl(value) {
   if (typeof value !== 'string') return false;
   const v = value.trim();
   return (
@@ -39,7 +39,7 @@ function isValidUrl(value) {
  * @param {string} path   - dot-separated path for error messages
  * @returns {string[]}
  */
-function validate(data, schema, path = '') {
+export function validate(data, schema, path = '') {
   const errors = [];
 
   if (schema.type === 'oneOf') {
@@ -221,6 +221,8 @@ const positionSchema = {
   },
 };
 
+// Used by experienceSchema via 'oneOf' — kept for documentation
+// eslint-disable-next-line no-unused-vars
 const experienceGroupSchema = {
   type: 'object',
   required: true,
@@ -237,6 +239,7 @@ const experienceGroupSchema = {
   },
 };
 
+// eslint-disable-next-line no-unused-vars
 const experienceSingleSchema = {
   type: 'object',
   required: true,
@@ -306,7 +309,7 @@ const certificationsSchema = {
 /**
  * Top-level schema for the merged data object passed to templates.
  */
-const dataSchema = {
+export const dataSchema = {
   type: 'object',
   required: true,
   fields: {
@@ -319,5 +322,3 @@ const dataSchema = {
     certifications: certificationsSchema,
   },
 };
-
-module.exports = { validate, dataSchema, isValidUrl };

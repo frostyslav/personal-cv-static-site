@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const yaml = require('js-yaml');
-const Handlebars = require('handlebars');
-const { validate, dataSchema } = require('./data-schema');
+import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+import Handlebars from 'handlebars';
+import { validate, dataSchema } from './data-schema.js';
 
 // Load YAML data files with error handling
 function loadYaml(filename) {

@@ -2,12 +2,14 @@
  * Smoke tests — verify the build produces valid, complete output.
  * Run with: npm test
  */
-const { describe, it, before } = require('node:test');
-const assert = require('node:assert/strict');
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { describe, it, before } from 'node:test';
+import assert from 'node:assert/strict';
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, '..', 'dist');
 let html, css, js, sw, cssBundle, jsBundle;
 

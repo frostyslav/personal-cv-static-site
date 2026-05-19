@@ -4,13 +4,15 @@
  *
  * Requires a build to exist in dist/ (runs npm run build first).
  */
-const { describe, it, before, after } = require('node:test');
-const assert = require('node:assert/strict');
-const { execSync } = require('child_process');
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import { describe, it, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import { execSync } from 'child_process';
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, '..', 'dist');
 const PORT = 9222;
 let server, browser, page;
@@ -58,8 +60,11 @@ before(async () => {
     });
   }
   await startServer();
-  const puppeteer = require('puppeteer');
-  browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const puppeteer = await import('puppeteer');
+  browser = await puppeteer.default.launch({
+    headless: true,
+    args: ['--no-sandbox'],
+  });
   page = await browser.newPage();
   await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
 });
@@ -106,7 +111,11 @@ describe('Skills search', () => {
     // Clear any previous value
     await input.click({ clickCount: 3 });
     await input.type('k8s');
-    await new Promise(r => setTimeout(r, 300));
+    // Wait for the filter to apply (debounced input)
+    await page.waitForFunction(
+      () => document.querySelectorAll('.skill-tag:not(.hidden)').length > 0,
+      { timeout: 2000 }
+    );
     const tags = await page.$$eval('.skill-tag:not(.hidden)', els =>
       els.map(e => e.textContent.trim())
     );
@@ -122,7 +131,10 @@ describe('Skills search', () => {
     const clearBtn = await page.$('#clearSearch');
     if (clearBtn) {
       await clearBtn.click();
-      await new Promise(r => setTimeout(r, 200));
+      await page.waitForFunction(
+        () => document.querySelectorAll('.skill-tag.hidden').length === 0,
+        { timeout: 2000 }
+      );
     }
   });
 });
@@ -136,7 +148,11 @@ describe('Experience collapse', () => {
     await page.evaluate(() =>
       document.querySelector('.collapsible-header').click()
     );
-    await new Promise(r => setTimeout(r, 200));
+    // Wait for the collapse animation to settle
+    await page.waitForFunction(
+      () => document.querySelector('.collapsible-header') !== null,
+      { timeout: 1000 }
+    );
     assert.ok(true);
   });
 });
@@ -144,13 +160,19 @@ describe('Experience collapse', () => {
 describe('Back to top', () => {
   it('visible after scrolling and scrolls back', async () => {
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await new Promise(r => setTimeout(r, 500));
+    // Wait for the back-to-top button to become visible
+    await page.waitForFunction(
+      () =>
+        document.querySelector('.back-to-top')?.classList.contains('visible'),
+      { timeout: 2000 }
+    );
     const isVisible = await page.$eval('.back-to-top', el =>
       el.classList.contains('visible')
     );
     assert.ok(isVisible);
     await page.evaluate(() => document.querySelector('.back-to-top').click());
-    await new Promise(r => setTimeout(r, 2000));
+    // Wait for scroll to complete
+    await page.waitForFunction(() => window.scrollY < 200, { timeout: 3000 });
     const scrollY = await page.evaluate(() => window.scrollY);
     assert.ok(scrollY < 200);
   });
@@ -165,11 +187,19 @@ describe('Print modal', () => {
     await page.keyboard.down('Meta');
     await page.keyboard.press('p');
     await page.keyboard.up('Meta');
-    await new Promise(r => setTimeout(r, 200));
+    // Wait for modal to open
+    await page.waitForFunction(
+      () => !document.querySelector('#printModal').hidden,
+      { timeout: 2000 }
+    );
     const isShown = await page.$eval('#printModal', el => !el.hidden);
     assert.ok(isShown);
     await page.keyboard.press('Escape');
-    await new Promise(r => setTimeout(r, 200));
+    // Wait for modal to close
+    await page.waitForFunction(
+      () => document.querySelector('#printModal').hidden,
+      { timeout: 2000 }
+    );
     const isClosed = await page.$eval('#printModal', el => el.hidden);
     assert.ok(isClosed);
   });
@@ -190,7 +220,7 @@ describe('Accessibility', () => {
 
 describe('Accessibility — axe-core audit', () => {
   it('has no critical accessibility violations', async () => {
-    const { AxePuppeteer } = require('@axe-core/puppeteer');
+    const { AxePuppeteer } = await import('@axe-core/puppeteer');
     // Navigate fresh to ensure clean state
     await page.goto(`http://localhost:${PORT}`, { waitUntil: 'networkidle0' });
 

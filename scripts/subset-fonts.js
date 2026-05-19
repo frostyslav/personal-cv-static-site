@@ -6,10 +6,12 @@
  * Prerequisites: pip install fonttools brotli
  * Run with: node scripts/subset-fonts.js
  */
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const FA_CSS = path.join(ROOT, 'vendor/fontawesome/css/all.min.css');
 const WEBFONTS_DIR = path.join(ROOT, 'vendor/fontawesome/webfonts');
@@ -35,9 +37,6 @@ const FONTS = [
 
 /**
  * Parse the FA CSS to build a map of icon-name -> codepoint.
- * Handles patterns like:
- *   .fa-arrow-up { --fa: '\f062'; }
- *   .fa-github-square, .fa-square-github { --fa: '\f092'; }
  */
 function parseCSSCodepoints(cssContent) {
   const map = new Map();
@@ -45,28 +44,25 @@ function parseCSSCodepoints(cssContent) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    // Match lines that define --fa with a codepoint
     const cpMatch = line.match(/--fa:\s*'\\([0-9a-f]+)'/i);
     if (!cpMatch) continue;
 
     const codepoint = cpMatch[1];
 
-    // Look backwards for the selector(s) — they may span multiple lines
-    // Find the icon class names associated with this codepoint
     let j = i - 1;
     while (j >= 0 && !lines[j].includes('}') && !lines[j].includes('@')) {
       j--;
     }
-    j++; // move past the closing brace or start
+    j++;
 
     for (let k = j; k <= i; k++) {
       const selectorLine = lines[k];
       const classMatches = selectorLine.matchAll(/\.fa-([a-z0-9-]+)/g);
       for (const m of classMatches) {
         const iconName = m[1];
-        // Skip utility classes (sizes, modifiers)
-        if (isUtilityClass(iconName)) continue;
-        map.set(iconName, codepoint);
+        if (!isUtilityClass(iconName)) {
+          map.set(iconName, codepoint);
+        }
       }
     }
   }
@@ -84,19 +80,16 @@ function isUtilityClass(name) {
 }
 
 /**
- * Determine which FA family section an icon belongs to by checking
- * where it appears in the CSS relative to the brands/regular markers.
+ * Determine which FA family section an icon belongs to.
  */
 function determineIconFamily(iconName, cssContent) {
-  // Brand icons are defined between the .fa-brands declaration and the
-  // .fa-regular declaration. We check by position in the file.
   const brandsStart = cssContent.indexOf('.fa-brands,\n.fa-classic.fa-brands,');
   const regularStart = cssContent.indexOf(
     '.fa-regular,\n.fa-classic.fa-regular,'
   );
 
   const iconDef = cssContent.indexOf(`.fa-${iconName}`);
-  if (iconDef === -1) return 'solid'; // fallback
+  if (iconDef === -1) return 'solid';
 
   if (brandsStart !== -1 && regularStart !== -1) {
     if (iconDef > brandsStart && iconDef < regularStart) return 'brands';
@@ -110,15 +103,11 @@ function determineIconFamily(iconName, cssContent) {
 
 /**
  * Scan source files for FA icon class references and raw codepoints.
- * Returns { icons: Set<string>, rawCodepoints: Set<string> }
- * where icons are icon names and rawCodepoints are hex codepoints
- * found in CSS content properties.
  */
 function scanForIcons(scanPaths) {
   const icons = new Set();
   const rawCodepoints = new Set();
   const classPattern = /fa-([a-z][a-z0-9-]*)/g;
-  // Matches CSS content: '\f0da' or content: "\f0da" (FA unicode codepoints)
   const contentPattern = /content:\s*['"]\\([0-9a-f]{3,5})['"]/gi;
 
   for (const scanPath of scanPaths) {
@@ -137,7 +126,6 @@ function scanForIcons(scanPaths) {
         }
       }
 
-      // Scan CSS files for raw codepoints in content properties
       if (file.endsWith('.css')) {
         while ((match = contentPattern.exec(content)) !== null) {
           rawCodepoints.add(match[1].toLowerCase());
@@ -158,7 +146,6 @@ function getFiles(dir) {
   for (const entry of entries) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip node_modules, dist, vendor
       if (['node_modules', 'dist', '.git'].includes(entry.name)) continue;
       results.push(...getFiles(full));
     } else if (/\.(js|hbs|yaml|yml|html|css)$/.test(entry.name)) {
@@ -190,6 +177,11 @@ function subsetFont(inputFile, outputFile, unicodes) {
   ].join(' ');
 
   execSync(cmd, { stdio: 'pipe' });
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return `${bytes}B`;
+  return `${(bytes / 1024).toFixed(1)}KB`;
 }
 
 // --- Main ---
@@ -226,19 +218,14 @@ function main() {
 
   for (const iconName of usedIcons) {
     const codepoint = codepointMap.get(iconName);
-    if (!codepoint) {
-      // Could be a modifier class that slipped through, or a typo
-      continue;
-    }
+    if (!codepoint) continue;
 
     const family = determineIconFamily(iconName, cssContent);
     familyIcons[family].push({ name: iconName, codepoint });
   }
 
-  // Add raw codepoints (from CSS content properties) to solid by default
-  // since they're typically used with fa-font-solid
+  // Add raw codepoints to solid by default
   for (const cp of rawCodepoints) {
-    // Check if already included via class name
     const alreadyIncluded = [
       ...familyIcons.solid,
       ...familyIcons.brands,
@@ -305,11 +292,6 @@ function main() {
   }
 
   console.log('\n  Done. Original fonts backed up as *.woff2.full');
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes}B`;
-  return `${(bytes / 1024).toFixed(1)}KB`;
 }
 
 main();
