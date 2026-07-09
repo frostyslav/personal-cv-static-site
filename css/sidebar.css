@@ -49,6 +49,16 @@
   transition: var(--transition);
 }
 
+/* Print-only contact line — hidden on screen */
+.print-contact {
+  display: none;
+}
+
+.print-sep {
+  margin: 0 0.5em;
+  color: #9ca3af;
+}
+
 .hero-location-link:hover {
   color: var(--primary-color);
 }

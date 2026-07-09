@@ -53,7 +53,7 @@
   {{/each}}
 
   {{#each experience.singles}}
-  <div class="timeline-item">
+  <div class="timeline-item{{#if printHide}} print-hide{{/if}}">
     <div class="timeline-date">{{dateRange date}}</div>
     <p class="timeline-company">{{company}}</p>
     <h3 class="timeline-title">{{title}}</h3>
