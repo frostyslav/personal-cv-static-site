@@ -19,6 +19,10 @@
         icon.className =
           theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
       }
+      const label = btn.querySelector('.theme-toggle-label');
+      if (label) {
+        label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      }
       btn.setAttribute(
         'aria-label',
         theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'

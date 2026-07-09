@@ -1,95 +1,27 @@
-/* Responsive Design */
+/* Responsive Design — single-page layout */
 
 /* Ultra-wide screens */
 @media (min-width: 1920px) {
-  .content {
-    max-width: 1600px;
-  }
-
   .skills-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-
-  .certifications-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
-/* Tablet landscape - smoother transition */
+/* Tablet landscape */
 @media (min-width: 769px) and (max-width: 1024px) {
   .skills-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-
-  .certifications-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-
-  .content {
-    padding: 5rem 2.5rem 2rem;
-  }
 }
 
 @media (max-width: 1024px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-
-  .sidebar-collapse-btn {
-    display: none;
-  }
-
-  .content {
-    margin-left: 0;
-    padding: 5rem 2rem 2rem;
-  }
-
-  .mobile-menu-toggle {
-    display: flex;
-  }
-
   .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .certifications-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
-    transform: none;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .sidebar.active {
-    transform: none;
-  }
-
-  .content {
-    margin-left: 0;
-    padding: 2rem 1.5rem;
-  }
-
-  .mobile-menu-toggle {
-    display: none;
-  }
-
   .section-title {
     font-size: 1.75rem;
   }
@@ -98,11 +30,7 @@
     grid-template-columns: 1fr;
   }
 
-  .certifications-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cert-group-grid {
+  .cert-grid {
     grid-template-columns: 1fr;
   }
 
@@ -129,15 +57,6 @@
 }
 
 @media (max-width: 480px) {
-  .avatar {
-    width: 120px;
-    height: 120px;
-  }
-
-  .name {
-    font-size: 1.5rem;
-  }
-
   .section-title {
     font-size: 1.5rem;
   }
@@ -150,39 +69,8 @@
     padding-left: 1.5rem;
   }
 
-  .certifications-grid {
+  .cert-grid {
     grid-template-columns: 1fr;
-  }
-
-  .cert-group-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Larger phones - 2 column certifications */
-@media (min-width: 481px) and (max-width: 768px) {
-  .certifications-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .cert-group-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .certification-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .certification-logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  .certification-title {
-    font-size: 0.95rem;
   }
 }
 
@@ -201,22 +89,27 @@
 
 /* Print styles */
 @media print {
-  .sidebar,
-  .mobile-menu-toggle,
+  .hero-photo,
+  .social-links,
+  .btn-download,
   .back-to-top,
   .details-toggle,
   .collapse-chevron,
   .skills-filter-container,
-  .sidebar-collapse-btn,
+  .skills-toggle-container,
   .skip-to-content,
-  .theme-toggle {
+  .theme-toggle,
+  .cv-footer {
     display: none !important;
   }
 
-  .content {
-    margin-left: 0;
-    padding: 1rem;
+  .page {
     max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .content {
+    padding: 0;
   }
 
   .section {
@@ -239,7 +132,6 @@
     break-inside: avoid;
   }
 
-  /* Override all JS-driven collapse states so content is fully visible */
   .position-item.collapsed .experience-section,
   .position-item.collapsed .details-toggle,
   .position-item.collapsed .timeline-project {
@@ -253,27 +145,18 @@
 
   .company-collapsed .position-timeline {
     display: block !important;
-    opacity: 1 !important;
-    height: auto !important;
-    overflow: visible !important;
-    visibility: visible !important;
   }
 
   .experience-section.summary-section {
     display: block !important;
-    opacity: 1 !important;
-    height: auto !important;
-    overflow: visible !important;
-    visibility: visible !important;
   }
 
-  /* Ensure collapsible headers render as plain text in print */
+  .skills-extra {
+    display: block !important;
+  }
+
   .collapsible-header {
     cursor: default !important;
-  }
-
-  .certification-card {
-    break-inside: avoid;
   }
 
   body {

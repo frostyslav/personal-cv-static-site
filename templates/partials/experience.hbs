@@ -15,6 +15,14 @@
         <h3 class="timeline-title">{{title}}</h3>
         <p class="timeline-project">Project: {{project}}</p>
 
+        {{#if technologies}}
+        <ul class="tech-tags" aria-label="Technologies used">
+          {{#each technologies}}
+          <li class="tech-tag">{{this}}</li>
+          {{/each}}
+        </ul>
+        {{/if}}
+
         <div class="experience-section">
           <h4 class="experience-section-title">Project Overview</h4>
           <p class="timeline-description">{{overview}}</p>
@@ -54,6 +62,14 @@
     <p class="timeline-project">Project: {{project}}</p>
     {{/if}}
 
+    {{#if technologies}}
+    <ul class="tech-tags" aria-label="Technologies used">
+      {{#each technologies}}
+      <li class="tech-tag">{{this}}</li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
     <div class="experience-section">
       <h4 class="experience-section-title">Project Overview</h4>
       <p class="timeline-description">{{overview}}</p>
@@ -79,4 +95,28 @@
     </div>
   </div>
   {{/each}}
+
+  {{#if experience.earlyCareer}}
+  <div class="early-career">
+    <h3 class="early-career-title">Earlier Career</h3>
+    <div class="early-career-list">
+      {{#each experience.earlyCareer}}
+      <div class="early-career-item">
+        <div class="early-career-date">{{date}}</div>
+        <div class="early-career-content">
+          <span class="early-career-role">{{title}}</span>
+          <span class="early-career-separator">·</span>
+          <span class="early-career-company">{{company}}</span>
+          {{#if location}}
+          <span class="early-career-location">{{location}}</span>
+          {{/if}}
+          {{#if description}}
+          <p class="early-career-description">{{description}}</p>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
 </section>

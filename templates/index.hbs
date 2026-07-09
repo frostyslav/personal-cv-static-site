@@ -32,7 +32,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
       /* Critical CSS — auto-extracted from source (do not edit manually) */
-      @media (prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--primary-hover:var(--dark-primary-hover);--primary-light:var(--dark-primary-light);--secondary-color:var(--dark-secondary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--text-tertiary:var(--dark-text-tertiary);--gradient-primary-color:var(--dark-gradient-primary);--gradient-secondary-color:var(--dark-gradient-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--bg-hover:var(--dark-bg-hover);--border-color:var(--dark-border-color);--border-hover:var(--dark-border-hover);--shadow-color:var(--dark-shadow-color);--shadow-primary:var(--dark-shadow-primary);--shadow-primary-lg:var(--dark-shadow-primary-lg);--shadow-primary-sm:var(--dark-shadow-primary-sm)}}@media(max-width:1024px){.content{padding:5rem 2.5rem 2rem}}@media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.sidebar-collapse-btn{display:none}.content{margin-left:0;padding:5rem 2rem 2rem}}@media(max-width:768px){.sidebar{position:static;width:100%;height:auto;transform:none;border-right:none;border-bottom:1px solid var(--border-color)}.sidebar.active{transform:none}.content{margin-left:0;padding:2rem 1.5rem}}
+      @media (prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--primary-hover:var(--dark-primary-hover);--primary-light:var(--dark-primary-light);--secondary-color:var(--dark-secondary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--text-tertiary:var(--dark-text-tertiary);--gradient-primary-color:var(--dark-gradient-primary);--gradient-secondary-color:var(--dark-gradient-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--bg-hover:var(--dark-bg-hover);--border-color:var(--dark-border-color);--border-hover:var(--dark-border-hover);--shadow-color:var(--dark-shadow-color);--shadow-primary:var(--dark-shadow-primary);--shadow-primary-lg:var(--dark-shadow-primary-lg);--shadow-primary-sm:var(--dark-shadow-primary-sm)}}
     </style>
     <link rel="stylesheet" href="styles.min.css" />
     <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />
@@ -41,9 +41,10 @@
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
     <noscript>
       <style>
-        /* Ensure everything is visible when JS is disabled */
         .section.js-animate { opacity: 1 !important; transform: none !important; }
         .skills-filter-container { display: none; }
+        .skills-toggle-container { display: none; }
+        .skills-extra { display: block !important; }
         .theme-toggle { display: none; }
         .back-to-top { display: none; }
         .details-toggle { display: none; }
@@ -85,40 +86,74 @@
   </head>
   <body>
     <a href="#about" class="skip-to-content">Skip to content</a>
-    <div class="container">
-      {{> sidebar}}
 
-      <button type="button" class="sidebar-collapse-btn" aria-label="Collapse sidebar" aria-expanded="true">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
+    <div class="page">
+      <header class="hero">
+        <div class="hero-top">
+          <div class="hero-text">
+            <h1 class="hero-name">{{sidebar.profile.name}}</h1>
+            <p class="hero-title">{{sidebar.profile.title}}</p>
+            <p class="hero-location">
+              {{sidebar.profile.location.text}}
+            </p>
+            <div class="hero-links">
+              {{#each sidebar.social}}
+              <a href="{{safeUrl href}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="hero-btn hero-btn-outline" aria-label="{{label}}"><i class="{{icon}}"></i> {{label}}</a>
+              {{/each}}
+              <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled"><i class="fa-solid fa-file-pdf"></i> Download PDF</a>
+              <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="Switch to dark mode"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">Dark</span></button>
+            </div>
+          </div>
+          <picture class="hero-photo">
+            <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
+            <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" />
+          </picture>
+        </div>
+        {{#if sidebar.languages}}
+        <div class="languages-bar">
+          {{#each sidebar.languages}}
+          {{#if certUrl}}
+          <a href="{{safeUrl certUrl}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link">
+          {{else}}
+          <div class="language-item">
+          {{/if}}
+            <div class="language-info">
+              <span class="language-name">{{name}}</span>
+              <span class="language-level">{{level}}{{#if certUrl}} <span class="lang-link-icon">↗</span>{{/if}}</span>
+            </div>
+            <div class="language-bar" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" aria-label="{{name}}, {{percent}}% — {{level}}">
+              <div class="language-progress" style="width: {{percent}}%"></div>
+            </div>
+          {{#if certUrl}}
+          </a>
+          {{else}}
+          </div>
+          {{/if}}
+          {{/each}}
+        </div>
+        {{/if}}
+      </header>
 
-      <main class="content">
-        <button type="button" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <section id="about" class="section">
-          <h2 class="section-title">About Me</h2>
+      <main class="content" id="about">
+        <section class="section">
+          <h2 class="section-title">Summary</h2>
           {{#each about.paragraphs}}
           <p class="section-text">{{this}}</p>
           {{/each}}
         </section>
 
-        <section id="qualifications" class="section">
-          <h2 class="section-title">Core Qualifications</h2>
-          <ul class="qualifications-list">
-            {{#each about.qualifications}}
-            <li>{{this}}</li>
-            {{/each}}
-          </ul>
-        </section>
-
         {{> experience}}
         {{> education}}
-        {{> skills}}
         {{> certifications}}
+        {{> skills}}
+
+        <footer class="cv-footer">
+          <p class="cv-footer-text">
+            Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>P</kbd> for an ATS-friendly printout, or
+            <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer">download the PDF</a>.
+            Certification badges verify on <a href="{{safeUrl site.credlyProfileUrl}}" target="_blank" rel="noopener noreferrer">Credly</a>.
+          </p>
+        </footer>
       </main>
     </div>
 

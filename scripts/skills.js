@@ -12,8 +12,24 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
       '.skills-category-filters'
     );
     const skillCategories = document.querySelectorAll('.skill-category');
+    const skillsGrid = document.querySelector('.skills-grid');
+    const showAllBtn = document.getElementById('skillsShowAll');
 
     if (!searchInput || !clearSearchBtn || !categoryFiltersContainer) return;
+
+    // Show all / collapse toggle for non-featured skills
+    if (showAllBtn && skillsGrid) {
+      showAllBtn.addEventListener('click', () => {
+        const isExpanded = skillsGrid.classList.toggle('skills-expanded');
+        showAllBtn.setAttribute('aria-expanded', String(isExpanded));
+        const label = showAllBtn.querySelector('span');
+        if (label) {
+          label.textContent = isExpanded
+            ? 'Show fewer skills'
+            : 'Show all skills';
+        }
+      });
+    }
 
     // Create aria-live region for search result announcements
     const liveRegion = document.createElement('div');
@@ -58,6 +74,16 @@ import { fuzzyMatch } from '../utils/fuzzy-match.js';
     function filterSkills() {
       const searchTerm = searchInput.value.trim();
       let visibleCount = 0;
+
+      // When searching or filtering by category, expand all skills
+      if (searchTerm || activeCategory !== 'all') {
+        skillsGrid.classList.add('skills-expanded');
+        if (showAllBtn) {
+          showAllBtn.setAttribute('aria-expanded', 'true');
+          const label = showAllBtn.querySelector('span');
+          if (label) label.textContent = 'Show fewer skills';
+        }
+      }
 
       skillCategories.forEach(category => {
         const categoryTitle = category

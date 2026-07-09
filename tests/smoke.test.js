@@ -52,8 +52,7 @@ describe('HTML content', () => {
     assert.ok(html.includes('skip-to-content')));
   it('has structured data', () => assert.ok(html.includes('schema.org')));
   it('has main landmark', () => assert.ok(html.includes('<main')));
-  it('has aside landmark', () => assert.ok(html.includes('<aside')));
-  it('has nav landmark', () => assert.ok(html.includes('<nav')));
+  it('has header landmark', () => assert.ok(html.includes('<header')));
   it('references fingerprinted CSS bundle', () =>
     assert.match(html, /styles\.min\.[a-f0-9]+\.css/));
   it('references fingerprinted JS bundle', () =>
@@ -67,7 +66,6 @@ describe('HTML content', () => {
 describe('Sections', () => {
   for (const id of [
     'about',
-    'qualifications',
     'experience',
     'education',
     'skills',

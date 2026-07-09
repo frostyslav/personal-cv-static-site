@@ -19,7 +19,7 @@
 
   <div class="skills-grid">
     {{#each skills}}
-    <div class="skill-category color-{{color}}">
+    <div class="skill-category color-{{color}}{{#unless featured}} skills-extra{{/unless}}" data-featured="{{#if featured}}true{{else}}false{{/if}}">
       <h3 class="skill-category-title">
         <i class="{{icon}}"></i> {{title}}
       </h3>
@@ -30,5 +30,12 @@
       </div>
     </div>
     {{/each}}
+  </div>
+
+  <div class="skills-toggle-container">
+    <button type="button" class="skills-show-all-btn" id="skillsShowAll" aria-expanded="false">
+      <i class="fa-solid fa-chevron-down"></i>
+      <span>Show all skills</span>
+    </button>
   </div>
 </section>
