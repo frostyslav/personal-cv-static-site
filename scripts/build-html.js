@@ -68,6 +68,72 @@ Handlebars.registerHelper('yearsSince', function (year) {
  * but only if the value looks like a safe URL. Blocks javascript: URIs and
  * other potentially dangerous schemes.
  */
+/**
+ * {{dateRange dateStr}} — converts a date range string like "Nov 2023 - Present"
+ * into semantic <time> elements with machine-readable datetime attributes.
+ * Supports formats: "Mon YYYY - Mon YYYY", "Mon YYYY - Present", "YYYY - YYYY".
+ */
+Handlebars.registerHelper('dateRange', function (dateStr) {
+  if (typeof dateStr !== 'string') return '';
+
+  const monthMap = {
+    Jan: '01',
+    Feb: '02',
+    Mar: '03',
+    Apr: '04',
+    May: '05',
+    Jun: '06',
+    Jul: '07',
+    Aug: '08',
+    Sep: '09',
+    Oct: '10',
+    Nov: '11',
+    Dec: '12',
+  };
+
+  function parseDate(part) {
+    const trimmed = part.trim();
+    if (trimmed.toLowerCase() === 'present') {
+      return { display: 'Present', datetime: '' };
+    }
+    // "Mon YYYY" format
+    const monthYear = trimmed.match(/^([A-Za-z]{3})\s+(\d{4})$/);
+    if (monthYear) {
+      const mon = monthMap[monthYear[1]];
+      const year = monthYear[2];
+      return { display: trimmed, datetime: `${year}-${mon}` };
+    }
+    // "YYYY" format
+    const yearOnly = trimmed.match(/^(\d{4})$/);
+    if (yearOnly) {
+      return { display: trimmed, datetime: yearOnly[1] };
+    }
+    return { display: trimmed, datetime: '' };
+  }
+
+  const parts = dateStr.split('-').map(p => p.trim());
+  if (parts.length === 2) {
+    const start = parseDate(parts[0]);
+    const end = parseDate(parts[1]);
+    const startTag = start.datetime
+      ? `<time datetime="${start.datetime}">${start.display}</time>`
+      : start.display;
+    const endTag = end.datetime
+      ? `<time datetime="${end.datetime}">${end.display}</time>`
+      : end.display;
+    return new Handlebars.SafeString(`${startTag} - ${endTag}`);
+  }
+
+  // Fallback: single date or unrecognised format
+  const single = parseDate(dateStr);
+  if (single.datetime) {
+    return new Handlebars.SafeString(
+      `<time datetime="${single.datetime}">${single.display}</time>`
+    );
+  }
+  return dateStr;
+});
+
 Handlebars.registerHelper('safeUrl', function (url) {
   if (typeof url !== 'string') return '';
   const trimmed = url.trim();

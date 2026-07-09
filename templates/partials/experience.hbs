@@ -3,7 +3,7 @@
 
   {{#each experience.groups}}
   <div class="timeline-item company-group">
-    <div class="timeline-date">{{date}}</div>
+    <div class="timeline-date">{{dateRange date}}</div>
     <p class="timeline-company">{{company}}</p>
     <h3 class="company-position">{{title}}</h3>
     <p class="timeline-location">{{location}}</p>
@@ -11,8 +11,8 @@
     <div class="position-timeline">
       {{#each positions}}
       <div class="position-item">
-        <div class="position-date">{{date}}</div>
-        <h3 class="timeline-title">{{title}}</h3>
+        <div class="position-date">{{dateRange date}}</div>
+        <h4 class="timeline-title">{{title}}</h4>
         <p class="timeline-project">Project: {{project}}</p>
 
         {{#if technologies}}
@@ -24,22 +24,22 @@
         {{/if}}
 
         <div class="experience-section">
-          <h4 class="experience-section-title">Project Overview</h4>
+          <h5 class="experience-section-title">Project Overview</h5>
           <p class="timeline-description">{{overview}}</p>
         </div>
 
         <div class="experience-section">
-          <h4 class="experience-section-title">Team Focus</h4>
+          <h5 class="experience-section-title">Team Focus</h5>
           <p class="timeline-description">{{teamFocus}}</p>
         </div>
 
         <div class="experience-section">
-          <h4 class="experience-section-title">Role Focus</h4>
+          <h5 class="experience-section-title">Role Focus</h5>
           <p class="timeline-description">{{roleFocus}}</p>
         </div>
 
         <div class="experience-section">
-          <h4 class="experience-section-title">Results & Impact</h4>
+          <h5 class="experience-section-title">Results & Impact</h5>
           <ul class="timeline-description">
             {{#each results}}
             <li>{{this}}</li>
@@ -54,7 +54,7 @@
 
   {{#each experience.singles}}
   <div class="timeline-item">
-    <div class="timeline-date">{{date}}</div>
+    <div class="timeline-date">{{dateRange date}}</div>
     <p class="timeline-company">{{company}}</p>
     <h3 class="timeline-title">{{title}}</h3>
     <p class="timeline-location">{{location}}</p>
@@ -102,7 +102,7 @@
     <div class="early-career-list">
       {{#each experience.earlyCareer}}
       <div class="early-career-item">
-        <div class="early-career-date">{{date}}</div>
+        <div class="early-career-date">{{dateRange date}}</div>
         <div class="early-career-content">
           <span class="early-career-role">{{title}}</span>
           <span class="early-career-separator">·</span>

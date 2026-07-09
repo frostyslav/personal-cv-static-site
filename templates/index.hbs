@@ -93,18 +93,20 @@
           <div class="hero-text">
             <h1 class="hero-name">{{sidebar.profile.name}}</h1>
             <p class="hero-title">{{sidebar.profile.title}}</p>
+            <address class="hero-contact">
             <p class="hero-location">
               <a href="{{safeUrl sidebar.profile.location.url}}" target="_blank" rel="noopener noreferrer" class="hero-location-link">
                 {{sidebar.profile.location.text}}
               </a>
             </p>
-            <div class="hero-links">
+            </address>
+            <nav class="hero-links" aria-label="Contact and profile links">
               {{#each sidebar.social}}
               <a href="{{safeUrl href}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="hero-btn hero-btn-outline" aria-label="{{label}}"><i class="{{icon}}"></i> {{label}}</a>
               {{/each}}
-              <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled"><i class="fa-solid fa-file-pdf"></i> Download PDF</a>
+              <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled" aria-label="Download PDF"><i class="fa-solid fa-file-pdf"></i> Download PDF</a>
               <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="Switch to dark mode"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">Dark</span></button>
-            </div>
+            </nav>
           </div>
           <picture class="hero-photo">
             <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
@@ -115,7 +117,7 @@
         <div class="languages-bar">
           {{#each sidebar.languages}}
           {{#if certUrl}}
-          <a href="{{safeUrl certUrl}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link">
+          <a href="{{safeUrl certUrl}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link" aria-label="{{name}} — {{level}} (view certificate)">
           {{else}}
           <div class="language-item">
           {{/if}}
