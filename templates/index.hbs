@@ -94,7 +94,9 @@
             <h1 class="hero-name">{{sidebar.profile.name}}</h1>
             <p class="hero-title">{{sidebar.profile.title}}</p>
             <p class="hero-location">
-              {{sidebar.profile.location.text}}
+              <a href="{{safeUrl sidebar.profile.location.url}}" target="_blank" rel="noopener noreferrer" class="hero-location-link">
+                {{sidebar.profile.location.text}}
+              </a>
             </p>
             <div class="hero-links">
               {{#each sidebar.social}}

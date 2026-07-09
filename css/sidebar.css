@@ -39,6 +39,16 @@
   margin-bottom: 0.75rem;
 }
 
+.hero-location-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.hero-location-link:hover {
+  color: var(--primary-color);
+}
+
 .hero-links {
   display: flex;
   align-items: center;
