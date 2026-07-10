@@ -5,10 +5,12 @@
  *
  * Output: dist/files/CV_Rostyslav_Fridman.pdf
  */
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, '..', 'dist');
 const OUTPUT_DIR = path.join(DIST, 'files');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'CV_Rostyslav_Fridman.pdf');
@@ -22,6 +24,7 @@ const MIME = {
   '.woff2': 'font/woff2',
   '.txt': 'text/plain',
   '.xml': 'application/xml',
+  '.webp': 'image/webp',
 };
 
 function startServer() {
@@ -56,8 +59,8 @@ async function generatePdf() {
   const server = await startServer();
 
   try {
-    const puppeteer = require('puppeteer');
-    const browser = await puppeteer.launch({
+    const puppeteer = await import('puppeteer');
+    const browser = await puppeteer.default.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });

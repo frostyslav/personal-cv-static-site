@@ -63,6 +63,7 @@ export default [
       'scripts/subset-fa-css.js',
       'scripts/clean.js',
       'scripts/fingerprint.js',
+      'scripts/generate-pdf.js',
       'scripts/dev-server.js',
       'scripts/dev-watch.js',
       'tests/**/*.js',
