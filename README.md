@@ -2,11 +2,11 @@
 
 A data-driven, offline-capable CV/resume website built with Handlebars templates, YAML content files, and a zero-framework Node.js build pipeline.
 
-Live: https://cv.rostyslav.eu
+Live: <https://cv.rostyslav.eu>
 
 ## Architecture
 
-```
+```text
 data/*.yaml          → Content (experience, skills, certifications, etc.)
 templates/**/*.hbs   → Handlebars templates and partials
 css/*.css            → Modular stylesheets (bundled by Lightning CSS)
@@ -31,7 +31,7 @@ npm install
 | Command             | Description                                                                  |
 | ------------------- | ---------------------------------------------------------------------------- |
 | `npm run build`     | Full production build (parallel: HTML + CSS + JS + assets, then fingerprint) |
-| `npm run dev`       | Build once, then serve at http://localhost:3000                              |
+| `npm run dev`       | Build once, then serve at <http://localhost:3000>                            |
 | `npm run dev:watch` | Build, serve, and rebuild on file changes                                    |
 | `npm run lint`      | ESLint + Stylelint                                                           |
 | `npm test`          | Smoke tests (builds first, validates output)                                 |
@@ -67,7 +67,7 @@ The `prebuild` hook cleans `dist/` before each build.
 
 ## Project Structure
 
-```
+```text
 scripts/
   build-html.js       — Loads YAML, validates, compiles Handlebars → dist/index.html
   build-parallel.js   — Orchestrates parallel build steps
