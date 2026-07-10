@@ -412,12 +412,9 @@
     display: none !important;
   }
 
-  .experience-section {
-    margin-bottom: 4pt !important;
-  }
-
   /* Hide Project Overview, Team Focus, Role Focus — keep only Results & Impact */
   .experience-section {
+    margin-bottom: 4pt !important;
     display: none !important;
   }
 

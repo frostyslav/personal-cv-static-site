@@ -338,12 +338,9 @@
   }
 }
 
-/* Skills show/hide toggle — all categories visible (no toggle needed) */
+/* Skills show/hide toggle */
 .skills-toggle-container {
   display: none;
-}
-
-.skills-toggle-container {
   text-align: center;
   margin-top: 1.5rem;
 }
