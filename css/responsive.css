@@ -493,6 +493,7 @@
     font-size: 8pt !important;
     min-width: 85pt !important;
     white-space: nowrap !important;
+    color: #333 !important;
   }
 
   .early-career-content {
@@ -504,6 +505,11 @@
   }
 
   .early-career-separator {
+    font-size: 0 !important;
+  }
+
+  .early-career-separator::before {
+    content: ' — ' !important;
     font-size: 9pt !important;
   }
 
@@ -608,10 +614,7 @@
   }
 
   .certification-content {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: baseline !important;
-    gap: 0 !important;
+    display: inline !important;
   }
 
   .certification-title {
@@ -619,7 +622,9 @@
     font-weight: 500 !important;
     line-height: 1.4 !important;
     -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
     overflow: visible !important;
+    display: inline !important;
   }
 
   .certification-title::after {
@@ -631,6 +636,7 @@
     font-size: 8.5pt !important;
     color: #555 !important;
     white-space: nowrap !important;
+    display: inline !important;
   }
 
   .certification-link-icon {
