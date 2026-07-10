@@ -1,7 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const yaml = require('js-yaml');
-const Handlebars = require('handlebars');
+import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+import Handlebars from 'handlebars';
+import { validate, dataSchema } from './data-schema.js';
 
 // Load YAML data files with error handling
 function loadYaml(filename) {
@@ -18,97 +19,14 @@ function loadYaml(filename) {
   }
 }
 
-// Validate required data fields
+// Validate merged data against the declarative schema
 function validateData(data) {
-  const errors = [];
-
-  if (!data.sidebar?.profile?.name)
-    errors.push('sidebar.profile.name is required');
-  if (!data.sidebar?.profile?.title)
-    errors.push('sidebar.profile.title is required');
-  if (!data.sidebar?.nav?.length)
-    errors.push('sidebar.nav must have at least one entry');
-  if (!data.about?.paragraphs?.length)
-    errors.push('about.paragraphs must have at least one entry');
-  if (!data.experience?.groups && !data.experience?.singles) {
-    errors.push('experience must have groups or singles');
-  }
-  if (!data.education?.groups && !data.education?.singles) {
-    errors.push('education must have groups or singles');
-  }
-  if (!Array.isArray(data.skills) || !data.skills.length) {
-    errors.push('skills must be a non-empty array');
-  }
-  if (!Array.isArray(data.certifications) || !data.certifications.length) {
-    errors.push('certifications must be a non-empty array');
-  }
-
-  // Validate URLs and emails in data
-  validateUrls(data, errors);
+  const errors = validate(data, dataSchema);
 
   if (errors.length) {
     console.error('✗ Data validation failed:');
     errors.forEach(e => console.error(`  - ${e}`));
     process.exit(1);
-  }
-}
-
-// Validate URL and email formats in data
-function validateUrls(data, errors) {
-  const urlPattern = /^https?:\/\/.+/i;
-  const emailPattern = /^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/i;
-  const pathPattern = /^\/[^\s]+$/;
-
-  function checkUrl(value, context) {
-    if (typeof value !== 'string' || !value) return;
-    const trimmed = value.trim();
-    if (
-      !urlPattern.test(trimmed) &&
-      !emailPattern.test(trimmed) &&
-      !pathPattern.test(trimmed) &&
-      !trimmed.startsWith('#') &&
-      !trimmed.startsWith('tel:')
-    ) {
-      errors.push(`Invalid URL in ${context}: "${trimmed}"`);
-    }
-  }
-
-  // Site URLs
-  if (data.site?.baseUrl) checkUrl(data.site.baseUrl, 'site.baseUrl');
-
-  // Sidebar social links
-  if (data.sidebar?.social) {
-    data.sidebar.social.forEach((item, i) => {
-      if (item.href) checkUrl(item.href, `sidebar.social[${i}].href`);
-    });
-  }
-
-  // Sidebar profile photo URLs
-  if (data.sidebar?.profile?.photo) {
-    const photo = data.sidebar.profile.photo;
-    if (photo.webp) checkUrl(photo.webp, 'sidebar.profile.photo.webp');
-    if (photo.png) checkUrl(photo.png, 'sidebar.profile.photo.png');
-  }
-
-  // Sidebar location URL
-  if (data.sidebar?.profile?.location?.url) {
-    checkUrl(data.sidebar.profile.location.url, 'sidebar.profile.location.url');
-  }
-
-  // Language cert URLs
-  if (data.sidebar?.languages) {
-    data.sidebar.languages.forEach((lang, i) => {
-      if (lang.certUrl)
-        checkUrl(lang.certUrl, `sidebar.languages[${i}].certUrl`);
-    });
-  }
-
-  // Certification verify URLs
-  if (data.certifications) {
-    data.certifications.forEach((cert, i) => {
-      if (cert.verifyUrl)
-        checkUrl(cert.verifyUrl, `certifications[${i}].verifyUrl`);
-    });
   }
 }
 
@@ -150,6 +68,72 @@ Handlebars.registerHelper('yearsSince', function (year) {
  * but only if the value looks like a safe URL. Blocks javascript: URIs and
  * other potentially dangerous schemes.
  */
+/**
+ * {{dateRange dateStr}} — converts a date range string like "Nov 2023 - Present"
+ * into semantic <time> elements with machine-readable datetime attributes.
+ * Supports formats: "Mon YYYY - Mon YYYY", "Mon YYYY - Present", "YYYY - YYYY".
+ */
+Handlebars.registerHelper('dateRange', function (dateStr) {
+  if (typeof dateStr !== 'string') return '';
+
+  const monthMap = {
+    Jan: '01',
+    Feb: '02',
+    Mar: '03',
+    Apr: '04',
+    May: '05',
+    Jun: '06',
+    Jul: '07',
+    Aug: '08',
+    Sep: '09',
+    Oct: '10',
+    Nov: '11',
+    Dec: '12',
+  };
+
+  function parseDate(part) {
+    const trimmed = part.trim();
+    if (trimmed.toLowerCase() === 'present') {
+      return { display: 'Present', datetime: '' };
+    }
+    // "Mon YYYY" format
+    const monthYear = trimmed.match(/^([A-Za-z]{3})\s+(\d{4})$/);
+    if (monthYear) {
+      const mon = monthMap[monthYear[1]];
+      const year = monthYear[2];
+      return { display: trimmed, datetime: `${year}-${mon}` };
+    }
+    // "YYYY" format
+    const yearOnly = trimmed.match(/^(\d{4})$/);
+    if (yearOnly) {
+      return { display: trimmed, datetime: yearOnly[1] };
+    }
+    return { display: trimmed, datetime: '' };
+  }
+
+  const parts = dateStr.split('-').map(p => p.trim());
+  if (parts.length === 2) {
+    const start = parseDate(parts[0]);
+    const end = parseDate(parts[1]);
+    const startTag = start.datetime
+      ? `<time datetime="${start.datetime}">${start.display}</time>`
+      : start.display;
+    const endTag = end.datetime
+      ? `<time datetime="${end.datetime}">${end.display}</time>`
+      : end.display;
+    return new Handlebars.SafeString(`${startTag} - ${endTag}`);
+  }
+
+  // Fallback: single date or unrecognised format
+  const single = parseDate(dateStr);
+  if (single.datetime) {
+    return new Handlebars.SafeString(
+      `<time datetime="${single.datetime}">${single.display}</time>`
+    );
+  }
+  return dateStr;
+});
+
 Handlebars.registerHelper('safeUrl', function (url) {
   if (typeof url !== 'string') return '';
   const trimmed = url.trim();

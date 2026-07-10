@@ -6,10 +6,10 @@
  *
  * Usage:
  *   npx puppeteer browsers install chrome
- *   node scripts/fetch-cert-dates.js
+ *   node utils/fetch-cert-dates.js
  */
 
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 
 const BADGES = [
   {
@@ -94,7 +94,6 @@ async function fetchDate(browser, badge) {
     );
 
     const dateText = await page.evaluate(() => {
-      // Try multiple selectors Credly has used
       const el =
         document.querySelector('.cr-badge-banner__issued-to-text') ||
         document.querySelector('.badge-banner-issued-to-text');

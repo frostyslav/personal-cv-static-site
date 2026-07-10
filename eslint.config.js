@@ -1,16 +1,12 @@
 import js from '@eslint/js';
 
-const NODE_CJS_GLOBALS = {
-  require: 'readonly',
-  module: 'readonly',
-  exports: 'readonly',
-  __dirname: 'readonly',
-  __filename: 'readonly',
+const NODE_ESM_GLOBALS = {
   process: 'readonly',
   console: 'readonly',
   Buffer: 'readonly',
   setTimeout: 'readonly',
   clearTimeout: 'readonly',
+  URL: 'readonly',
 };
 
 const BROWSER_GLOBALS = {
@@ -48,7 +44,7 @@ export default [
       globals: BROWSER_GLOBALS,
     },
   },
-  // Shared utils — ESM wrapper (browser bundle via esbuild)
+  // Shared utils — ESM
   {
     files: ['utils/fuzzy-match.js'],
     languageOptions: {
@@ -57,20 +53,12 @@ export default [
       globals: BROWSER_GLOBALS,
     },
   },
-  // Shared utils — CJS canonical source (used by Node tests directly)
-  {
-    files: ['utils/fuzzy-match.cjs'],
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: 'commonjs',
-      globals: NODE_CJS_GLOBALS,
-    },
-  },
-  // Node CJS — build scripts, dev tooling, tests
+  // Node ESM — build scripts, dev tooling, tests
   {
     files: [
       'scripts/build-html.js',
       'scripts/build-parallel.js',
+      'scripts/extract-critical-css.js',
       'scripts/subset-fonts.js',
       'scripts/subset-fa-css.js',
       'scripts/clean.js',
@@ -79,13 +67,12 @@ export default [
       'scripts/dev-watch.js',
       'tests/**/*.js',
       'utils/fetch-cert-dates.js',
-      'svgo.config.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,
-      sourceType: 'commonjs',
+      sourceType: 'module',
       globals: {
-        ...NODE_CJS_GLOBALS,
+        ...NODE_ESM_GLOBALS,
         // page.evaluate() callbacks run in the browser but ESLint
         // parses them as regular code — allow browser globals here.
         document: 'readonly',
@@ -106,6 +93,18 @@ export default [
         Response: 'readonly',
         Request: 'readonly',
         URL: 'readonly',
+      },
+    },
+  },
+  // SVGO config (CJS — required by svgo CLI)
+  {
+    files: ['svgo.config.cjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'commonjs',
+      globals: {
+        module: 'readonly',
+        require: 'readonly',
       },
     },
   },

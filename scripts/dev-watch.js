@@ -4,10 +4,12 @@
  *
  * Usage: node scripts/dev-watch.js
  */
-const { execSync, spawn } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync, spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const WATCH_DIRS = ['css', 'scripts', 'templates', 'data'];
 const DEBOUNCE_MS = 300;

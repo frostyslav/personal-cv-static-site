@@ -6,9 +6,11 @@
  * Run after assets are copied to dist:
  *   node scripts/subset-fa-css.js
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const FA_CSS_SRC = path.join(ROOT, 'vendor/fontawesome/css/all.min.css');
 const FA_CSS_DIST = path.join(ROOT, 'dist/vendor/fontawesome/css/all.min.css');

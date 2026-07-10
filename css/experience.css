@@ -30,14 +30,14 @@
 }
 
 .timeline-date {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--secondary-color);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .timeline-title {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
   color: var(--text-primary);
@@ -46,13 +46,13 @@
 
 /* Single timeline items (not in company-group) should match company-position size */
 .timeline-item:not(.company-group) .timeline-title {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 .timeline-company {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   color: var(--text-primary);
   margin-bottom: 0;
   font-weight: 600;
@@ -69,7 +69,7 @@
 }
 
 .company-position {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-top: 0;
@@ -93,12 +93,13 @@
 
 .timeline-description {
   color: var(--text-secondary);
-  line-height: 1.8;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 .timeline-description li {
   margin-left: 1.25rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   line-height: 1.6;
 }
 
@@ -118,7 +119,7 @@
 
 /* Company Group - Multiple positions at same company */
 .company-group .timeline-company {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
@@ -159,7 +160,7 @@
 }
 
 .position-item .timeline-title {
-  font-size: 1.15rem;
+  font-size: 1rem;
 }
 
 .position-item .timeline-title:hover {
@@ -240,6 +241,128 @@
 
 .details-toggle i {
   font-size: 0.7rem;
+}
+
+/* Per-role technology tags */
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+  list-style: none;
+  padding: 0;
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: #e8f0fe;
+  color: #1a56db;
+  border: 1px solid #c3d9f7;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tech-tag {
+    background: #1e3a5f;
+    color: #93c5fd;
+    border-color: #2d5a8e;
+  }
+}
+
+[data-theme='dark'] .tech-tag {
+  background: #1e3a5f;
+  color: #93c5fd;
+  border-color: #2d5a8e;
+}
+
+/* Early Career section */
+.early-career {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border-color);
+}
+
+.early-career-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.early-career-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.early-career-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+}
+
+.early-career-date {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 140px;
+}
+
+.early-career-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.early-career-role {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.early-career-separator {
+  color: var(--text-secondary);
+  margin: 0 0.25rem;
+}
+
+.early-career-company {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.early-career-location {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+  width: 100%;
+  margin-top: 0.1rem;
+}
+
+.early-career-description {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  width: 100%;
+  margin: 0.2rem 0 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .early-career-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .early-career-date {
+    min-width: auto;
+  }
 }
 
 @keyframes fadeIn {

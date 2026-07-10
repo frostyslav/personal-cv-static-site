@@ -56,8 +56,7 @@
    The --dark-* values are defined on :root above; these selectors simply
    map them onto the active custom properties. */
 
-[data-theme='dark'],
-:root:not([data-theme='light']):where(.prefers-dark) {
+[data-theme='dark'] {
   --primary-color: var(--dark-primary-color);
   --primary-hover: var(--dark-primary-hover);
   --primary-light: var(--dark-primary-light);
@@ -110,11 +109,25 @@ body {
 }
 
 .container {
-  display: flex;
+  display: block;
   min-height: 100vh;
 }
 
-/* Screen reader only utility */
+/* Single-page layout */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Theme toggle — pill style inline with hero links */
+.theme-toggle {
+  cursor: pointer;
+}
+
+.theme-toggle .theme-toggle-label {
+  pointer-events: none;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -173,30 +186,6 @@ body {
 /* Utility: hidden class for JS-driven visibility toggling */
 .hidden {
   display: none;
-}
-
-/* Theme toggle button */
-.theme-toggle {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: var(--transition);
-  font-size: 1rem;
-  margin: 0 auto;
-  flex-shrink: 0;
-}
-
-.theme-toggle:hover {
-  background: var(--bg-hover);
-  color: var(--primary-hover);
-  border-color: var(--primary-hover);
 }
 
 /* Respect prefers-reduced-motion globally */

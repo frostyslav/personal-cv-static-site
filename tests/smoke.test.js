@@ -2,12 +2,14 @@
  * Smoke tests — verify the build produces valid, complete output.
  * Run with: npm test
  */
-const { describe, it, before } = require('node:test');
-const assert = require('node:assert/strict');
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { describe, it, before } from 'node:test';
+import assert from 'node:assert/strict';
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, '..', 'dist');
 let html, css, js, sw, cssBundle, jsBundle;
 
@@ -50,8 +52,7 @@ describe('HTML content', () => {
     assert.ok(html.includes('skip-to-content')));
   it('has structured data', () => assert.ok(html.includes('schema.org')));
   it('has main landmark', () => assert.ok(html.includes('<main')));
-  it('has aside landmark', () => assert.ok(html.includes('<aside')));
-  it('has nav landmark', () => assert.ok(html.includes('<nav')));
+  it('has header landmark', () => assert.ok(html.includes('<header')));
   it('references fingerprinted CSS bundle', () =>
     assert.match(html, /styles\.min\.[a-f0-9]+\.css/));
   it('references fingerprinted JS bundle', () =>
@@ -65,7 +66,6 @@ describe('HTML content', () => {
 describe('Sections', () => {
   for (const id of [
     'about',
-    'qualifications',
     'experience',
     'education',
     'skills',
