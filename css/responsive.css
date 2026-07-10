@@ -92,7 +92,7 @@
   /* === Page setup === */
   @page {
     size: portrait;
-    margin: 15mm 18mm;
+    margin: 8mm;
   }
 
   *,
@@ -127,10 +127,7 @@
   .print-modal-overlay,
   .collapsible-header .collapse-chevron,
   .promotion-badge,
-  .lang-link-icon,
-  #skills,
-  .early-career,
-  .print-hide {
+  .lang-link-icon {
     display: none !important;
   }
 
@@ -149,7 +146,7 @@
   .hero {
     padding: 0 0 8pt !important;
     margin-bottom: 10pt !important;
-    border-bottom: 1.5pt solid #333 !important;
+    border-bottom: none !important;
   }
 
   .hero-top {
@@ -201,6 +198,7 @@
   .languages-bar {
     display: flex !important;
     flex-wrap: wrap;
+    justify-content: center !important;
     gap: 4pt 16pt !important;
     margin-top: 6pt !important;
   }
@@ -262,12 +260,11 @@
     color: #000 !important;
     page-break-after: avoid;
     break-after: avoid;
+    border-bottom: 1.5pt solid #000 !important;
   }
 
   .section-title::after {
-    width: 40pt !important;
-    height: 2pt !important;
-    background: #333 !important;
+    display: none !important;
   }
 
   .section-text {
@@ -335,6 +332,25 @@
     margin-bottom: 1pt !important;
   }
 
+  .position-item .timeline-title {
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+    margin-bottom: 0 !important;
+    color: #000 !important;
+    display: inline !important;
+  }
+
+  .position-item .timeline-project {
+    font-size: 9pt !important;
+    color: #333 !important;
+    margin-bottom: 3pt !important;
+    display: inline !important;
+  }
+
+  .position-item .timeline-project::before {
+    content: ' — ' !important;
+  }
+
   .timeline-title {
     font-size: 9.5pt !important;
     font-weight: 600 !important;
@@ -375,14 +391,13 @@
   }
 
   .position-item {
-    margin-bottom: 10pt !important;
+    margin-bottom: 8pt !important;
     page-break-inside: auto;
   }
 
-  /* Reveal all collapsed content */
-  .position-item.collapsed .experience-section,
+  /* Reveal collapsed timeline-project in print */
   .position-item.collapsed .timeline-project {
-    display: block !important;
+    display: inline !important;
     opacity: 1 !important;
     height: auto !important;
     overflow: visible !important;
@@ -394,36 +409,60 @@
   }
 
   .experience-section.summary-section {
-    display: block !important;
+    display: none !important;
   }
 
   .experience-section {
     margin-bottom: 4pt !important;
   }
 
-  .experience-section-title {
+  /* Hide Project Overview, Team Focus, Role Focus — keep only Results & Impact */
+  .experience-section {
+    display: none !important;
+  }
+
+  .experience-section.experience-results {
+    display: block !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .experience-section.experience-results > .experience-section-title {
+    display: none !important;
+  }
+
+  /* Tech tags — inline text for print */
+  .tech-tags {
+    display: block !important;
+    gap: 0 !important;
+    margin-bottom: 4pt !important;
+    margin-top: 2pt !important;
+    padding: 0 !important;
+  }
+
+  .tech-tags::before {
+    content: 'Technologies: ' !important;
     font-size: 8.5pt !important;
     font-weight: 600 !important;
     color: #333 !important;
-    margin-bottom: 2pt !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.3pt !important;
-  }
-
-  /* Tech tags — compact inline */
-  .tech-tags {
-    gap: 3pt !important;
-    margin-bottom: 4pt !important;
-    margin-top: 2pt !important;
   }
 
   .tech-tag {
-    font-size: 7.5pt !important;
-    padding: 1pt 5pt !important;
-    background: #f3f4f6 !important;
-    color: #1f2937 !important;
-    border: 0.5pt solid #ccc !important;
-    border-radius: 8pt !important;
+    display: inline !important;
+    font-size: 8.5pt !important;
+    padding: 0 !important;
+    background: none !important;
+    color: #333 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-weight: 400 !important;
+  }
+
+  .tech-tag::after {
+    content: ', ' !important;
+  }
+
+  .tech-tag:last-child::after {
+    content: '' !important;
   }
 
   /* === Early Career — compact === */
@@ -435,20 +474,36 @@
 
   .early-career-title {
     font-size: 10pt !important;
-    margin-bottom: 6pt !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .early-career-list {
+    gap: 2pt !important;
   }
 
   .early-career-item {
+    display: flex !important;
+    flex-direction: row !important;
     gap: 8pt !important;
-    margin-bottom: 3pt !important;
+    margin-bottom: 0 !important;
+    align-items: baseline !important;
   }
 
   .early-career-date {
     font-size: 8pt !important;
-    min-width: 90pt !important;
+    min-width: 85pt !important;
+    white-space: nowrap !important;
+  }
+
+  .early-career-content {
+    display: inline !important;
   }
 
   .early-career-role {
+    font-size: 9pt !important;
+  }
+
+  .early-career-separator {
     font-size: 9pt !important;
   }
 
@@ -456,58 +511,200 @@
     font-size: 9pt !important;
   }
 
-  .early-career-location {
-    font-size: 8pt !important;
-  }
-
+  .early-career-location,
   .early-career-description {
-    font-size: 8pt !important;
+    display: none !important;
   }
 
-  /* === Education === */
+  /* === Education — one line per degree === */
   #education .timeline-item {
-    margin-bottom: 8pt !important;
+    margin-bottom: 0 !important;
+  }
+
+  #education .timeline-item > .timeline-date,
+  #education .timeline-item > .timeline-company,
+  #education .timeline-item > .timeline-location {
+    display: none !important;
   }
 
   #education .position-timeline {
-    margin-top: 4pt !important;
+    margin-top: 0 !important;
+    padding-left: 0 !important;
+    border-left: none !important;
   }
 
   #education .position-item {
-    margin-bottom: 4pt !important;
+    margin-bottom: 2pt !important;
   }
 
-  /* === Certifications — compact grid for print === */
+  #education .position-date {
+    display: inline !important;
+    font-size: 8pt !important;
+  }
+
+  #education .position-date::after {
+    content: ' · ' !important;
+  }
+
+  #education .timeline-title {
+    display: inline !important;
+    font-size: 8.5pt !important;
+  }
+
+  #education .timeline-title::after {
+    content: ', National Aviation University' !important;
+    font-weight: 400 !important;
+    font-size: 8pt !important;
+    color: #555 !important;
+  }
+
+  /* Singles in education (second degree entry) */
+  #education .timeline-item:not(.company-group) > .timeline-date {
+    display: inline !important;
+    font-size: 8pt !important;
+  }
+
+  #education .timeline-item:not(.company-group) > .timeline-date::after {
+    content: ' · ' !important;
+  }
+
+  #education .timeline-item:not(.company-group) > .timeline-title {
+    display: inline !important;
+    font-size: 8.5pt !important;
+  }
+
+  #education .timeline-item:not(.company-group) > .timeline-title::after {
+    content: ', National Aviation University' !important;
+    font-weight: 400 !important;
+    font-size: 8pt !important;
+    color: #555 !important;
+  }
+
+  #education .timeline-item:not(.company-group) > .timeline-location {
+    display: none !important;
+  }
+
+  /* === Certifications — compact list for print === */
   .cert-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 4pt !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3pt !important;
   }
 
   .certification-item {
-    padding: 4pt 6pt !important;
-    border: 0.5pt solid #ccc !important;
-    border-radius: 3pt !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
     text-decoration: none !important;
     color: inherit !important;
   }
 
   .certification-logo {
-    width: 22pt !important;
-    height: 22pt !important;
+    display: none !important;
+  }
+
+  .certification-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    gap: 0 !important;
   }
 
   .certification-title {
-    font-size: 8pt !important;
-    line-height: 1.3 !important;
+    font-size: 8.5pt !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
     -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+  }
+
+  .certification-title::after {
+    content: ' — ' !important;
+    font-weight: 400 !important;
   }
 
   .certification-date {
-    font-size: 7pt !important;
+    font-size: 8.5pt !important;
+    color: #555 !important;
+    white-space: nowrap !important;
   }
 
   .certification-link-icon {
     display: none !important;
+  }
+
+  /* === Skills — inline text list for print === */
+  #skills {
+    page-break-inside: auto;
+  }
+
+  .skills-extra {
+    display: block !important;
+  }
+
+  .skills-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3pt !important;
+  }
+
+  .skill-category {
+    display: block !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: none !important;
+  }
+
+  .skill-category:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .skill-category-title {
+    display: inline !important;
+    font-size: 8.5pt !important;
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+    color: #000 !important;
+  }
+
+  .skill-category-title::after {
+    content: ' ' !important;
+  }
+
+  .skill-category-title i {
+    display: none !important;
+  }
+
+  #skills .skill-tags {
+    display: inline !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #skills .skill-tag {
+    display: inline !important;
+    font-size: 8.5pt !important;
+    padding: 0 !important;
+    background: none !important;
+    color: #333 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-weight: 400 !important;
+  }
+
+  #skills .skill-tag::after {
+    content: ', ' !important;
+  }
+
+  #skills .skill-tag:last-child::after {
+    content: '' !important;
   }
 
   /* === Links === */
