@@ -549,7 +549,7 @@
   }
 
   #education .position-date::after {
-    content: ' · ' !important;
+    content: ' — ' !important;
   }
 
   #education .timeline-title {
@@ -571,7 +571,7 @@
   }
 
   #education .timeline-item:not(.company-group) > .timeline-date::after {
-    content: ' · ' !important;
+    content: ' — ' !important;
   }
 
   #education .timeline-item:not(.company-group) > .timeline-title {
@@ -680,7 +680,9 @@
   }
 
   .skill-category-title::after {
-    content: ' ' !important;
+    content: ':' !important;
+    font-weight: 400 !important;
+    margin-left: -0.3em !important;
   }
 
   .skill-category-title i {
