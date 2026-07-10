@@ -1,0 +1,15 @@
+[default]
+locale = "en"
+
+[default.extend-identifiers]
+HashiCorp = "HashiCorp"
+AKS = "AKS"
+aks = "aks"
+
+[files]
+extend-exclude = [
+    "*.lock",
+    "dist/**",
+    "node_modules/**",
+    "vendor/**",
+]

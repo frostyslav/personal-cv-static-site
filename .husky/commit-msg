@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Run commitlint via prek on commit message
+uvx prek run --hook-stage commit-msg --commit-msg-filename "$1"
