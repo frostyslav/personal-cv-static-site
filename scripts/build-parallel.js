@@ -76,7 +76,8 @@ async function build() {
         'cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/',
         'cp vendor/fontawesome/webfonts/fa-solid-900.woff2 dist/vendor/fontawesome/webfonts/',
         'cp vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/',
-        'npx svgo dist/favicon.svg --config svgo.config.cjs --quiet',
+        'cp -r images dist/images',
+        'npx svgo dist/favicon.svg --quiet',
       ].join(' && ')
     ),
   ]);
