@@ -109,8 +109,8 @@
     color: #1f2937 !important;
     font-size: 10pt;
     line-height: 1.4;
-    filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   /* === Hide interactive/decorative/non-print elements === */
