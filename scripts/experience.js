@@ -69,7 +69,12 @@
     experienceSections.forEach(section => {
       const heading = section.querySelector('.experience-section-title');
       const text = heading ? heading.textContent.trim().toLowerCase() : '';
-      if (text.includes('results') || text.includes('impact')) {
+      if (
+        text.includes('results') ||
+        text.includes('impact') ||
+        text.includes('ergebnisse') ||
+        text.includes('auswirkungen')
+      ) {
         resultsSections.push(section);
       } else {
         summarySections.push(section);

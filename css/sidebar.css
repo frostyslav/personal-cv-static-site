@@ -91,6 +91,12 @@
   font-size: 0.9rem;
 }
 
+/* Make lang toggle and theme toggle compact icon+label pills */
+.lang-toggle,
+.theme-toggle {
+  padding: 0.5rem 0.75rem;
+}
+
 .hero-btn-outline {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -183,6 +189,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 0.5rem;
 }
 
 .language-name {

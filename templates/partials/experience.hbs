@@ -1,5 +1,5 @@
 <section id="experience" class="section">
-  <h2 class="section-title">Experience</h2>
+  <h2 class="section-title">{{t "experience"}}</h2>
 
   {{#each experience.groups}}
   <div class="timeline-item company-group">
@@ -13,10 +13,10 @@
       <div class="position-item">
         <div class="position-date">{{dateRange date}}</div>
         <h4 class="timeline-title">{{title}}</h4>
-        <p class="timeline-project">Project: {{project}}</p>
+        <p class="timeline-project">{{t "project"}} {{project}}</p>
 
         {{#if technologies}}
-        <ul class="tech-tags" aria-label="Technologies used">
+        <ul class="tech-tags" aria-label="{{t "technologiesUsed"}}">
           {{#each technologies}}
           <li class="tech-tag">{{this}}</li>
           {{/each}}
@@ -24,22 +24,22 @@
         {{/if}}
 
         <div class="experience-section">
-          <h5 class="experience-section-title">Project Overview</h5>
+          <h5 class="experience-section-title">{{t "projectOverview"}}</h5>
           <p class="timeline-description">{{overview}}</p>
         </div>
 
         <div class="experience-section">
-          <h5 class="experience-section-title">Team Focus</h5>
+          <h5 class="experience-section-title">{{t "teamFocus"}}</h5>
           <p class="timeline-description">{{teamFocus}}</p>
         </div>
 
         <div class="experience-section">
-          <h5 class="experience-section-title">Role Focus</h5>
+          <h5 class="experience-section-title">{{t "roleFocus"}}</h5>
           <p class="timeline-description">{{roleFocus}}</p>
         </div>
 
         <div class="experience-section experience-results">
-          <h5 class="experience-section-title">Results & Impact</h5>
+          <h5 class="experience-section-title">{{t "resultsImpact"}}</h5>
           <ul class="timeline-description">
             {{#each results}}
             <li>{{this}}</li>
@@ -59,11 +59,11 @@
     <h3 class="timeline-title">{{title}}</h3>
     <p class="timeline-location">{{location}}</p>
     {{#if project}}
-    <p class="timeline-project">Project: {{project}}</p>
+    <p class="timeline-project">{{t "project"}} {{project}}</p>
     {{/if}}
 
     {{#if technologies}}
-    <ul class="tech-tags" aria-label="Technologies used">
+    <ul class="tech-tags" aria-label="{{t "technologiesUsed"}}">
       {{#each technologies}}
       <li class="tech-tag">{{this}}</li>
       {{/each}}
@@ -71,22 +71,22 @@
     {{/if}}
 
     <div class="experience-section">
-      <h4 class="experience-section-title">Project Overview</h4>
+      <h4 class="experience-section-title">{{t "projectOverview"}}</h4>
       <p class="timeline-description">{{overview}}</p>
     </div>
 
     <div class="experience-section">
-      <h4 class="experience-section-title">Team Focus</h4>
+      <h4 class="experience-section-title">{{t "teamFocus"}}</h4>
       <p class="timeline-description">{{teamFocus}}</p>
     </div>
 
     <div class="experience-section">
-      <h4 class="experience-section-title">Role Focus</h4>
+      <h4 class="experience-section-title">{{t "roleFocus"}}</h4>
       <p class="timeline-description">{{roleFocus}}</p>
     </div>
 
     <div class="experience-section experience-results">
-      <h4 class="experience-section-title">Results & Impact</h4>
+      <h4 class="experience-section-title">{{t "resultsImpact"}}</h4>
       <ul class="timeline-description">
         {{#each results}}
         <li>{{this}}</li>
@@ -98,7 +98,7 @@
 
   {{#if experience.earlyCareer}}
   <div class="early-career">
-    <h3 class="early-career-title">Earlier Career</h3>
+    <h3 class="early-career-title">{{t "earlierCareer"}}</h3>
     <div class="early-career-list">
       {{#each experience.earlyCareer}}
       <div class="early-career-item">

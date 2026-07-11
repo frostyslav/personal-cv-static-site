@@ -57,7 +57,7 @@ async function build() {
   await Promise.all([
     runAsync(
       'HTML',
-      'node scripts/extract-critical-css.js && node scripts/build-html.js && npx prettier --write dist/index.html'
+      'node scripts/extract-critical-css.js && node scripts/build-html.js --locale en && node scripts/build-html.js --locale de && npx prettier --write dist/index.html dist/de/index.html'
     ),
     runAsync(
       'CSS',

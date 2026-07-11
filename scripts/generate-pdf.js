@@ -1,9 +1,11 @@
 /**
- * Generate a PDF version of the CV using Puppeteer.
+ * Generate PDF versions of the CV using Puppeteer.
  * Serves the built dist/ folder locally, then prints to PDF
  * with print media emulation (same as browser Ctrl+P).
  *
- * Output: dist/files/CV_Rostyslav_Fridman.pdf
+ * Output:
+ *   dist/files/CV_Rostyslav_Fridman.pdf    (English)
+ *   dist/files/CV_Rostyslav_Fridman_DE.pdf (German)
  */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -13,8 +15,12 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, '..', 'dist');
 const OUTPUT_DIR = path.join(DIST, 'files');
-const OUTPUT_FILE = path.join(OUTPUT_DIR, 'CV_Rostyslav_Fridman.pdf');
 const PORT = 9333;
+
+const PAGES = [
+  { url: '/', output: 'CV_Rostyslav_Fridman.pdf' },
+  { url: '/de/', output: 'CV_Rostyslav_Fridman_DE.pdf' },
+];
 
 const MIME = {
   '.html': 'text/html',
@@ -30,11 +36,10 @@ const MIME = {
 function startServer() {
   return new Promise(resolve => {
     const server = http.createServer((req, res) => {
-      const urlPath = req.url.split('?')[0];
-      const filePath = path.join(
-        DIST,
-        urlPath === '/' ? 'index.html' : urlPath
-      );
+      let urlPath = req.url.split('?')[0];
+      // Serve index.html for directory paths
+      if (urlPath.endsWith('/')) urlPath += 'index.html';
+      const filePath = path.join(DIST, urlPath);
       if (!filePath.startsWith(DIST)) {
         res.writeHead(403);
         return res.end();
@@ -64,34 +69,40 @@ async function generatePdf() {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    const page = await browser.newPage();
-
-    // Emulate print media to trigger @media print styles
-    await page.emulateMediaType('print');
-
-    await page.goto(`http://localhost:${PORT}`, {
-      waitUntil: 'networkidle0',
-    });
 
     // Ensure output directory exists
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-    await page.pdf({
-      path: OUTPUT_FILE,
-      format: 'A4',
-      printBackground: true,
-      margin: {
-        top: '10mm',
-        right: '10mm',
-        bottom: '10mm',
-        left: '10mm',
-      },
-    });
+    for (const { url, output } of PAGES) {
+      const outputFile = path.join(OUTPUT_DIR, output);
+      const page = await browser.newPage();
+
+      // Emulate print media to trigger @media print styles
+      await page.emulateMediaType('print');
+
+      await page.goto(`http://localhost:${PORT}${url}`, {
+        waitUntil: 'networkidle0',
+      });
+
+      await page.pdf({
+        path: outputFile,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '10mm',
+          right: '10mm',
+          bottom: '10mm',
+          left: '10mm',
+        },
+      });
+
+      await page.close();
+      console.log(
+        `✓ PDF generated: ${path.relative(process.cwd(), outputFile)}`
+      );
+    }
 
     await browser.close();
-    console.log(
-      `✓ PDF generated: ${path.relative(process.cwd(), OUTPUT_FILE)}`
-    );
   } finally {
     server.close();
   }

@@ -66,6 +66,24 @@ function fingerprint() {
   }
   fs.writeFileSync(htmlPath, html);
 
+  // Rewrite references in locale HTML files (e.g., dist/de/index.html)
+  const deHtmlPath = path.join(DIST, 'de', 'index.html');
+  if (fs.existsSync(deHtmlPath)) {
+    let deHtml = fs.readFileSync(deHtmlPath, 'utf8');
+    for (const asset of ASSETS_TO_FINGERPRINT) {
+      deHtml = deHtml.replace(asset.pattern, `../${manifest[asset.original]}`);
+    }
+    // Also fix relative paths for vendor assets and other resources
+    deHtml = deHtml.replace(/href="vendor\//g, 'href="../vendor/');
+    deHtml = deHtml.replace(/src="vendor\//g, 'src="../vendor/');
+    deHtml = deHtml.replace(/href="favicon\.svg"/g, 'href="../favicon.svg"');
+    deHtml = deHtml.replace(
+      /src="sw-register\.js"/g,
+      'src="../sw-register.js"'
+    );
+    fs.writeFileSync(deHtmlPath, deHtml);
+  }
+
   // Generate sw.js from template with actual fingerprinted values
   const cacheHash = crypto
     .createHash('sha256')
