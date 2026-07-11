@@ -29,7 +29,10 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let filePath = path.join(DIST, req.url === '/' ? 'index.html' : req.url);
+  let urlPath = req.url.split('?')[0];
+  // Serve index.html for directory paths
+  if (urlPath.endsWith('/')) urlPath += 'index.html';
+  let filePath = path.join(DIST, urlPath);
 
   // Prevent directory traversal
   if (!filePath.startsWith(DIST)) {
@@ -43,10 +46,9 @@ const server = http.createServer((req, res) => {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      // Fallback to index.html for SPA-like behavior
       if (err.code === 'ENOENT') {
         res.writeHead(404);
-        res.end('Not found');
+        res.end('File not found');
       } else {
         res.writeHead(500);
         res.end('Server error');

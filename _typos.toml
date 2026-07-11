@@ -12,4 +12,6 @@ extend-exclude = [
     "dist/**",
     "node_modules/**",
     "vendor/**",
+    "data/de/**",
+    "data/i18n.yaml",
 ]

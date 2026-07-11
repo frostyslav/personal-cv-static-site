@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{i18n.lang}}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,7 +85,7 @@
     </script>
   </head>
   <body>
-    <a href="#about" class="skip-to-content">Skip to content</a>
+    <a href="#about" class="skip-to-content">{{t "skipToContent"}}</a>
 
     <div class="page">
       <header class="hero">
@@ -111,8 +111,9 @@
               {{#each sidebar.social}}
               <a href="{{safeUrl href}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="hero-btn hero-btn-outline" aria-label="{{label}}"><i class="{{icon}}"></i> {{label}}</a>
               {{/each}}
-              <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled" aria-label="Download PDF"><i class="fa-solid fa-file-pdf"></i> Download PDF</a>
-              <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="Switch to dark mode"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">Dark</span></button>
+              <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled" aria-label="{{t "downloadPdf"}}"><i class="fa-solid fa-file-pdf"></i> {{t "downloadPdf"}}</a>
+              <a href="{{i18n.altLangUrl}}" class="hero-btn hero-btn-outline lang-toggle" aria-label="{{i18n.altLangLabel}}" title="{{i18n.altLangLabel}}"><i class="fa-solid fa-language"></i> {{i18n.altLangLabel}}</a>
+              <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="Switch to dark mode" title="{{t "dark"}}"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">{{t "dark"}}</span></button>
             </nav>
           </div>
           <picture class="hero-photo">
@@ -147,7 +148,7 @@
 
       <main class="content" id="about">
         <section class="section">
-          <h2 class="section-title">Summary</h2>
+          <h2 class="section-title">{{t "summary"}}</h2>
           {{#each about.paragraphs}}
           <p class="section-text">{{this}}</p>
           {{/each}}
@@ -160,28 +161,28 @@
 
         <footer class="cv-footer">
           <p class="cv-footer-text">
-            Press <kbd>Ctrl</kbd>/<kbd>⌘</kbd>+<kbd>P</kbd> for an ATS-friendly printout, or
-            <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer">download the PDF</a>.
-            Certification badges verify on <a href="{{safeUrl site.credlyProfileUrl}}" target="_blank" rel="noopener noreferrer">Credly</a>.
+            {{{t "footerText"}}}
+            <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer">{{t "footerDownload"}}</a>.
+            {{t "footerCredly"}} <a href="{{safeUrl site.credlyProfileUrl}}" target="_blank" rel="noopener noreferrer">Credly</a>.
           </p>
         </footer>
       </main>
     </div>
 
-    <button type="button" class="back-to-top" aria-label="Back to top">
+    <button type="button" class="back-to-top" aria-label="{{t "backToTop"}}">
       <i class="fa-solid fa-arrow-up"></i>
     </button>
 
     <div class="print-modal-overlay" id="printModal" role="dialog" aria-modal="true" aria-labelledby="printModalTitle" tabindex="-1" hidden data-pdf-url="{{site.baseUrl}}{{site.cvPdfPath}}">
       <div class="print-modal">
-        <h2 id="printModalTitle">Print or Download</h2>
-        <p>How would you like to get this CV?</p>
+        <h2 id="printModalTitle">{{t "printOrDownload"}}</h2>
+        <p>{{t "printOrDownloadDesc"}}</p>
         <div class="print-modal-actions">
           <button type="button" class="btn btn-primary" id="printModalDownload">
-            <i class="fa-solid fa-file-pdf"></i> Download PDF
+            <i class="fa-solid fa-file-pdf"></i> {{t "downloadPdfLong"}}
           </button>
           <button type="button" class="btn btn-secondary" id="printModalPrint">
-            <i class="fa-solid fa-print"></i> Print Page
+            <i class="fa-solid fa-print"></i> {{t "printPage"}}
           </button>
         </div>
         <button type="button" class="print-modal-close" id="printModalClose" aria-label="Close dialog">

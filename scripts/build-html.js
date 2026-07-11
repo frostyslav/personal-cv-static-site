@@ -4,6 +4,13 @@ import yaml from 'js-yaml';
 import Handlebars from 'handlebars';
 import { validate, dataSchema } from './data-schema.js';
 
+// Parse --locale flag (default: en)
+const args = process.argv.slice(2);
+const localeIdx = args.indexOf('--locale');
+const locale =
+  localeIdx !== -1 && args[localeIdx + 1] ? args[localeIdx + 1] : 'en';
+const outputDir = locale === 'en' ? 'dist' : path.join('dist', locale);
+
 // Load YAML data files with error handling
 function loadYaml(filename) {
   const filePath = path.join('data', filename);
@@ -19,6 +26,20 @@ function loadYaml(filename) {
   }
 }
 
+// Load locale-specific YAML, falling back to default
+function loadLocalizedYaml(filename) {
+  const localePath = path.join('data', locale, filename);
+  if (locale !== 'en' && fs.existsSync(localePath)) {
+    try {
+      return yaml.load(fs.readFileSync(localePath, 'utf8'));
+    } catch (e) {
+      console.error(`✗ Invalid YAML in ${localePath}: ${e.message}`);
+      process.exit(1);
+    }
+  }
+  return loadYaml(filename);
+}
+
 // Validate merged data against the declarative schema
 function validateData(data) {
   const errors = validate(data, dataSchema);
@@ -30,14 +51,19 @@ function validateData(data) {
   }
 }
 
+// Load i18n strings
+const i18nAll = loadYaml('i18n.yaml');
+const i18n = i18nAll[locale] || i18nAll.en;
+
 const data = {
-  site: loadYaml('site.yaml'),
-  sidebar: loadYaml('sidebar.yaml'),
-  about: loadYaml('about.yaml'),
-  experience: loadYaml('experience.yaml'),
-  education: loadYaml('education.yaml'),
-  skills: loadYaml('skills.yaml'),
+  site: loadLocalizedYaml('site.yaml'),
+  sidebar: loadLocalizedYaml('sidebar.yaml'),
+  about: loadLocalizedYaml('about.yaml'),
+  experience: loadLocalizedYaml('experience.yaml'),
+  education: loadLocalizedYaml('education.yaml'),
+  skills: loadLocalizedYaml('skills.yaml'),
   certifications: loadYaml('certifications.yaml'),
+  i18n,
 };
 
 validateData(data);
@@ -61,6 +87,13 @@ Handlebars.registerHelper('yearsSince', function (year) {
   if (typeof year !== 'number' || year < 1900) return '';
   const total = new Date().getFullYear() - year;
   return Math.floor(total / 5) * 5;
+});
+
+/**
+ * {{t key}} — returns the i18n string for the current locale.
+ */
+Handlebars.registerHelper('t', function (key) {
+  return i18n[key] || key;
 });
 
 /**
@@ -89,19 +122,27 @@ Handlebars.registerHelper('dateRange', function (dateStr) {
     Oct: '10',
     Nov: '11',
     Dec: '12',
+    Mär: '03',
+    Okt: '10',
+    Dez: '12',
   };
 
   function parseDate(part) {
     const trimmed = part.trim();
-    if (trimmed.toLowerCase() === 'present') {
-      return { display: 'Present', datetime: '' };
+    if (
+      trimmed.toLowerCase() === 'present' ||
+      trimmed.toLowerCase() === 'heute'
+    ) {
+      return { display: trimmed, datetime: '' };
     }
     // "Mon YYYY" format
-    const monthYear = trimmed.match(/^([A-Za-z]{3})\s+(\d{4})$/);
+    const monthYear = trimmed.match(/^([A-Za-zä]{3,4})\s+(\d{4})$/);
     if (monthYear) {
       const mon = monthMap[monthYear[1]];
       const year = monthYear[2];
-      return { display: trimmed, datetime: `${year}-${mon}` };
+      if (mon) {
+        return { display: trimmed, datetime: `${year}-${mon}` };
+      }
     }
     // "YYYY" format
     const yearOnly = trimmed.match(/^(\d{4})$/);
@@ -159,6 +200,9 @@ for (const file of fs.readdirSync(partialsDir)) {
   Handlebars.registerPartial(name, content);
 }
 
+// Ensure output directory exists
+fs.mkdirSync(outputDir, { recursive: true });
+
 // Compile and render
 try {
   const templateSrc = fs.readFileSync(
@@ -169,8 +213,8 @@ try {
   const html = template(data);
   // Remove trailing whitespace from each line (Handlebars leaves indentation on blank lines)
   const cleaned = html.replace(/[ \t]+$/gm, '');
-  fs.writeFileSync(path.join('dist', 'index.html'), cleaned);
-  console.log('✓ dist/index.html generated from templates + data');
+  fs.writeFileSync(path.join(outputDir, 'index.html'), cleaned);
+  console.log(`✓ ${outputDir}/index.html generated (locale: ${locale})`);
 } catch (e) {
   console.error(`✗ Template compilation failed: ${e.message}`);
   process.exit(1);
