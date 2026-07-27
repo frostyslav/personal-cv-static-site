@@ -60,6 +60,7 @@ const data = {
   sidebar: loadLocalizedYaml('sidebar.yaml'),
   about: loadLocalizedYaml('about.yaml'),
   experience: loadLocalizedYaml('experience.yaml'),
+  projects: loadLocalizedYaml('projects.yaml'),
   education: loadLocalizedYaml('education.yaml'),
   skills: loadLocalizedYaml('skills.yaml'),
   certifications: loadYaml('certifications.yaml'),
@@ -190,6 +191,17 @@ Handlebars.registerHelper('safeUrl', function (url) {
   }
   console.warn(`⚠ Blocked unsafe URL in template: ${trimmed}`);
   return '';
+});
+
+/**
+ * {{linkIcon url}} — returns an appropriate FA icon class based on the URL domain.
+ */
+Handlebars.registerHelper('linkIcon', function (url) {
+  if (typeof url !== 'string') return 'fa-solid fa-link';
+  if (url.includes('github.com')) return 'fab fa-github';
+  if (url.includes('youtube.com') || url.includes('youtu.be'))
+    return 'fab fa-youtube';
+  return 'fa-solid fa-link';
 });
 
 // Register partials

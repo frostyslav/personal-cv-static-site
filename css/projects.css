@@ -1,0 +1,72 @@
+/* Projects section — compact list */
+.projects-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.projects-list li {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.projects-list a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.projects-list a:hover {
+  text-decoration: underline;
+}
+
+.projects-list a i {
+  font-size: 0.8em;
+  color: var(--text-tertiary);
+}
+
+.project-desc {
+  color: var(--text-secondary);
+}
+
+/* Print */
+@media print {
+  .projects-list {
+    gap: 2pt;
+  }
+
+  .projects-list li {
+    font-size: 8.5pt;
+  }
+
+  .projects-list a i {
+    display: none;
+  }
+
+  .projects-list a::after {
+    content: ' (' attr(href) ')';
+    font-weight: 400;
+    font-size: 7.5pt;
+    color: #555;
+  }
+}
+
+.projects-subsection-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--text-primary);
+}
+
+@media print {
+  .projects-subsection-title {
+    font-size: 9pt;
+    margin: 6pt 0 2pt;
+  }
+}

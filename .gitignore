@@ -268,3 +268,6 @@ $RECYCLE.BIN/
 
 # Static PDFs (stored in Cloudflare R2)
 files/
+
+# Kiro IDE configuration
+.kiro/
