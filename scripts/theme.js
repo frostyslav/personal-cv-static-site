@@ -21,12 +21,18 @@
       }
       const label = btn.querySelector('.theme-toggle-label');
       if (label) {
-        label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+        const labelText =
+          theme === 'dark'
+            ? btn.dataset.labelLight || 'Light'
+            : btn.dataset.labelDark || 'Dark';
+        label.textContent = labelText;
       }
-      btn.setAttribute(
-        'aria-label',
-        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-      );
+      const ariaText =
+        theme === 'dark'
+          ? btn.dataset.ariaDark || 'Switch to light mode'
+          : btn.dataset.ariaLight || 'Switch to dark mode';
+      btn.setAttribute('aria-label', ariaText);
+      btn.setAttribute('title', label ? label.textContent : '');
     }
   }
 

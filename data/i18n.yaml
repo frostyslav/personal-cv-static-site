@@ -22,6 +22,8 @@ en:
   downloadPdfLong: Download PDF
   dark: Dark
   light: Light
+  switchToDark: Switch to dark mode
+  switchToLight: Switch to light mode
   skipToContent: Skip to content
   backToTop: Back to top
   technologiesUsed: Technologies used
@@ -63,6 +65,8 @@ de:
   downloadPdfLong: PDF herunterladen
   dark: Dunkel
   light: Hell
+  switchToDark: Zum Dunkelmodus wechseln
+  switchToLight: Zum Hellmodus wechseln
   skipToContent: Zum Inhalt springen
   backToTop: Nach oben
   technologiesUsed: Verwendete Technologien

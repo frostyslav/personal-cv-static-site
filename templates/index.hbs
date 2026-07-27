@@ -113,7 +113,7 @@
               {{/each}}
               <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled" aria-label="{{t "downloadPdf"}}"><i class="fa-solid fa-file-pdf"></i> {{t "downloadPdf"}}</a>
               <a href="{{i18n.altLangUrl}}" class="hero-btn hero-btn-outline lang-toggle" aria-label="{{i18n.altLangLabel}}" title="{{i18n.altLangLabel}}"><i class="fa-solid fa-language"></i> {{i18n.altLangLabel}}</a>
-              <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="Switch to dark mode" title="{{t "dark"}}"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">{{t "dark"}}</span></button>
+              <button type="button" class="hero-btn hero-btn-outline theme-toggle" aria-label="{{t "switchToDark"}}" title="{{t "dark"}}" data-label-dark="{{t "dark"}}" data-label-light="{{t "light"}}" data-aria-dark="{{t "switchToLight"}}" data-aria-light="{{t "switchToDark"}}"><i class="fa-solid fa-moon"></i> <span class="theme-toggle-label">{{t "dark"}}</span></button>
             </nav>
           </div>
           <picture class="hero-photo">
