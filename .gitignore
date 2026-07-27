@@ -265,3 +265,6 @@ $RECYCLE.BIN/
 
 # Font subset backups (full originals)
 *.woff2.full
+
+# Static PDFs (stored in Cloudflare R2)
+files/
