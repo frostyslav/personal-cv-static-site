@@ -22,9 +22,14 @@ en:
   downloadPdfLong: Download PDF
   dark: Dark
   light: Light
+  switchToDark: Switch to dark mode
+  switchToLight: Switch to light mode
   skipToContent: Skip to content
   backToTop: Back to top
   technologiesUsed: Technologies used
+  projects: Projects & Speaking
+  projectsList: Open Source & Projects
+  community: Conference Speaking
   printOrDownload: Print or Download
   printOrDownloadDesc: How would you like to get this CV?
   printPage: Print Page
@@ -61,9 +66,14 @@ de:
   downloadPdfLong: PDF herunterladen
   dark: Dunkel
   light: Hell
+  switchToDark: Zum Dunkelmodus wechseln
+  switchToLight: Zum Hellmodus wechseln
   skipToContent: Zum Inhalt springen
   backToTop: Nach oben
   technologiesUsed: Verwendete Technologien
+  projects: Projekte & Vorträge
+  projectsList: Open Source & Projekte
+  community: Konferenzvorträge
   printOrDownload: Drucken oder Herunterladen
   printOrDownloadDesc: Wie möchten Sie diesen Lebenslauf erhalten?
   printPage: Seite drucken

@@ -281,6 +281,77 @@
   border-color: #2d5a8e;
 }
 
+/* Inline project links (press releases, talks, case studies) */
+.project-inline-links {
+  margin-left: 0.5rem;
+}
+
+.project-inline-links a {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  margin-left: 0.4rem;
+}
+
+.project-inline-links a:hover {
+  text-decoration: underline;
+}
+
+.project-inline-links a i {
+  font-size: 0.75em;
+  margin-right: 0.15rem;
+}
+
+/* Per-role project/repository links */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-bottom: 1rem;
+  margin-top: 0.25rem;
+  list-style: none;
+  padding: 0;
+}
+
+.project-links li {
+  display: inline-block;
+}
+
+.project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #1a56db;
+  text-decoration: none;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: background 0.15s;
+}
+
+.project-links a:hover {
+  background: #e8f0fe;
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .project-links a {
+    color: #93c5fd;
+  }
+
+  :root:not([data-theme='light']) .project-links a:hover {
+    background: #1e3a5f;
+  }
+}
+
+[data-theme='dark'] .project-links a {
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .project-links a:hover {
+  background: #1e3a5f;
+}
+
 /* Early Career section */
 .early-career {
   margin-top: 3rem;
@@ -415,5 +486,62 @@
   }
   50% {
     box-shadow: 0 2px 16px rgba(108, 181, 109, 0.5);
+  }
+}
+
+/* Education section — compact list (same pattern as Early Career) */
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.education-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+}
+
+.education-date {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  font-weight: 500;
+  min-width: 7rem;
+  white-space: nowrap;
+}
+
+.education-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem;
+}
+
+.education-degree {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.education-institution {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.education-location {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  width: 100%;
+  margin-top: 0.1rem;
+}
+
+@media (max-width: 768px) {
+  .education-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .education-date {
+    min-width: auto;
   }
 }

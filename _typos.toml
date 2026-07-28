@@ -5,6 +5,7 @@ locale = "en"
 HashiCorp = "HashiCorp"
 AKS = "AKS"
 aks = "aks"
+Braket = "Braket"
 
 [files]
 extend-exclude = [

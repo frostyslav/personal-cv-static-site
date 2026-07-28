@@ -462,6 +462,60 @@
     content: '' !important;
   }
 
+  /* Project inline links — compact for print */
+  .project-inline-links a {
+    font-size: 8pt !important;
+    color: #1a56db !important;
+  }
+
+  .project-inline-links a i {
+    display: none !important;
+  }
+
+  .project-inline-links a::after {
+    content: ' (' attr(href) ')';
+    font-size: 7pt;
+    color: #555;
+  }
+
+  /* Project links — inline text for print */
+  .project-links {
+    display: block !important;
+    gap: 0 !important;
+    margin-bottom: 4pt !important;
+    margin-top: 2pt !important;
+    padding: 0 !important;
+  }
+
+  .project-links::before {
+    content: 'Links: ' !important;
+    font-size: 8.5pt !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+  }
+
+  .project-links li {
+    display: inline !important;
+  }
+
+  .project-links a {
+    font-size: 8.5pt !important;
+    color: #1a56db !important;
+    padding: 0 !important;
+  }
+
+  .project-links li::after {
+    content: ', ' !important;
+  }
+
+  .project-links li:last-child::after {
+    content: '' !important;
+  }
+
+  .project-links a i {
+    display: none !important;
+  }
+
   /* === Early Career — compact === */
   .early-career {
     margin-top: 12pt !important;
@@ -519,71 +573,37 @@
     display: none !important;
   }
 
-  /* === Education — one line per degree === */
-  #education .timeline-item {
-    margin-bottom: 0 !important;
+  /* === Education — compact list for print === */
+  .education-list {
+    gap: 2pt !important;
   }
 
-  #education .timeline-item > .timeline-date,
-  #education .timeline-item > .timeline-company,
-  #education .timeline-item > .timeline-location {
-    display: none !important;
+  .education-item {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
+    align-items: baseline !important;
   }
 
-  #education .position-timeline {
-    margin-top: 0 !important;
-    padding-left: 0 !important;
-    border-left: none !important;
-  }
-
-  #education .position-item {
-    margin-bottom: 2pt !important;
-  }
-
-  #education .position-date {
-    display: inline !important;
+  .education-date {
     font-size: 8pt !important;
+    min-width: 5rem !important;
+    color: #333 !important;
   }
 
-  #education .position-date::after {
-    content: ' — ' !important;
-  }
-
-  #education .timeline-title {
+  .education-content {
     display: inline !important;
-    font-size: 8.5pt !important;
   }
 
-  #education .timeline-title::after {
-    content: ', National Aviation University' !important;
-    font-weight: 400 !important;
-    font-size: 8pt !important;
-    color: #555 !important;
+  .education-degree {
+    font-size: 9pt !important;
   }
 
-  /* Singles in education (second degree entry) */
-  #education .timeline-item:not(.company-group) > .timeline-date {
-    display: inline !important;
-    font-size: 8pt !important;
+  .education-institution {
+    font-size: 9pt !important;
   }
 
-  #education .timeline-item:not(.company-group) > .timeline-date::after {
-    content: ' — ' !important;
-  }
-
-  #education .timeline-item:not(.company-group) > .timeline-title {
-    display: inline !important;
-    font-size: 8.5pt !important;
-  }
-
-  #education .timeline-item:not(.company-group) > .timeline-title::after {
-    content: ', National Aviation University' !important;
-    font-weight: 400 !important;
-    font-size: 8pt !important;
-    color: #555 !important;
-  }
-
-  #education .timeline-item:not(.company-group) > .timeline-location {
+  .education-location {
     display: none !important;
   }
 
