@@ -462,6 +462,22 @@
     content: '' !important;
   }
 
+  /* Project inline links — compact for print */
+  .project-inline-links a {
+    font-size: 8pt !important;
+    color: #1a56db !important;
+  }
+
+  .project-inline-links a i {
+    display: none !important;
+  }
+
+  .project-inline-links a::after {
+    content: ' (' attr(href) ')';
+    font-size: 7pt;
+    color: #555;
+  }
+
   /* Project links — inline text for print */
   .project-links {
     display: block !important;

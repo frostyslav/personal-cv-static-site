@@ -281,6 +281,27 @@
   border-color: #2d5a8e;
 }
 
+/* Inline project links (press releases, talks, case studies) */
+.project-inline-links {
+  margin-left: 0.5rem;
+}
+
+.project-inline-links a {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  margin-left: 0.4rem;
+}
+
+.project-inline-links a:hover {
+  text-decoration: underline;
+}
+
+.project-inline-links a i {
+  font-size: 0.75em;
+  margin-right: 0.15rem;
+}
+
 /* Per-role project/repository links */
 .project-links {
   display: flex;
