@@ -18,10 +18,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const KEEP_SOURCEMAPS = process.env.SOURCEMAPS === '1';
+const IMAGES_DIR = process.env.CV_IMAGES_DIR || path.join(ROOT, 'images');
 
 // Read locales from i18n config
+const dataRoot = process.env.CV_DATA_DIR || path.join(ROOT, 'data');
 const i18nConfig = yaml.load(
-  fs.readFileSync(path.join(ROOT, 'data', 'i18n.yaml'), 'utf8')
+  fs.readFileSync(path.join(dataRoot, 'i18n.yaml'), 'utf8')
 );
 const defaultLocale = i18nConfig.defaultLocale || 'en';
 const locales = i18nConfig.locales || [defaultLocale];
@@ -94,7 +96,7 @@ async function build() {
         'cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/',
         'cp vendor/fontawesome/webfonts/fa-solid-900.woff2 dist/vendor/fontawesome/webfonts/',
         'cp vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/',
-        'cp -r images dist/images',
+        `cp -r ${IMAGES_DIR} dist/images`,
         'npx svgo dist/favicon.svg --quiet',
       ].join(' && ')
     ),
@@ -102,6 +104,7 @@ async function build() {
 
   // Phase 2: Post-processing (sequential — depends on phase 1 output)
   runSync('FA CSS subset', 'node scripts/subset-fa-css.js');
+  runSync('Font subset', 'node scripts/subset-fonts.js --dist');
   runSync('Fingerprint', 'node scripts/fingerprint.js');
 
   // Phase 3: Remove source maps unless explicitly requested

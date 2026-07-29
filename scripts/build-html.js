@@ -10,16 +10,19 @@ const localeIdx = args.indexOf('--locale');
 const locale =
   localeIdx !== -1 && args[localeIdx + 1] ? args[localeIdx + 1] : 'en';
 
+// Data directory — override with CV_DATA_DIR env variable for private data
+const dataRoot = process.env.CV_DATA_DIR || 'data';
+
 // Load i18n to determine defaultLocale and compute output paths
 const i18nRaw = yaml.load(
-  fs.readFileSync(path.join('data', 'i18n.yaml'), 'utf8')
+  fs.readFileSync(path.join(dataRoot, 'i18n.yaml'), 'utf8')
 );
 const defaultLocale = i18nRaw.defaultLocale || 'en';
 const outputDir = locale === defaultLocale ? 'dist' : path.join('dist', locale);
 
 // Load YAML data files with error handling
 function loadYaml(filename) {
-  const filePath = path.join('data', filename);
+  const filePath = path.join(dataRoot, filename);
   if (!fs.existsSync(filePath)) {
     console.error(`✗ Missing data file: ${filePath}`);
     process.exit(1);
@@ -32,9 +35,9 @@ function loadYaml(filename) {
   }
 }
 
-// Load locale-specific YAML from data/<locale>/
+// Load locale-specific YAML from <dataRoot>/<locale>/
 function loadLocalizedYaml(filename) {
-  const localePath = path.join('data', locale, filename);
+  const localePath = path.join(dataRoot, locale, filename);
   if (!fs.existsSync(localePath)) {
     console.error(`✗ Missing localized data file: ${localePath}`);
     process.exit(1);
@@ -87,6 +90,26 @@ if (data.site.careerStartYear && data.about?.paragraphs) {
   data.about.paragraphs = data.about.paragraphs.map(p =>
     p.replace(/\{\{yearsOfExperience\}\}/g, String(rounded))
   );
+}
+
+// Interpolate i18n meta placeholders with actual data
+if (data.site.careerStartYear) {
+  const years = new Date().getFullYear() - data.site.careerStartYear;
+  const rounded = Math.floor(years / 5) * 5;
+  const replacements = {
+    name: data.sidebar.profile.name,
+    title: data.sidebar.profile.title,
+    years: String(rounded),
+  };
+  for (const [key, val] of Object.entries(replacements)) {
+    const re = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+    if (i18n.metaDescription) {
+      i18n.metaDescription = i18n.metaDescription.replace(re, val);
+    }
+    if (i18n.ogDescription) {
+      i18n.ogDescription = i18n.ogDescription.replace(re, val);
+    }
+  }
 }
 
 // Register helpers

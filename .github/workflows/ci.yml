@@ -21,6 +21,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Install pyftsubset for font subsetting
+        run: pip install fonttools brotli
+
       - name: Security audit
         run: npm audit --omit=dev
 
@@ -52,8 +55,17 @@ jobs:
     permissions:
       contents: read
       deployments: write
+    env:
+      CV_DATA_DIR: data-private/data
+      CV_IMAGES_DIR: data-private/images
     steps:
       - uses: actions/checkout@v6
+
+      - uses: actions/checkout@v6
+        with:
+          repository: frostyslav/personal-cv-data
+          ssh-key: ${{ secrets.DATA_REPO_KEY }}
+          path: data-private
 
       - uses: actions/setup-node@v6
         with:
@@ -61,6 +73,9 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
+
+      - name: Install pyftsubset for font subsetting
+        run: pip install fonttools brotli
 
       - name: Build
         run: npm run build

@@ -16,7 +16,8 @@ const FA_CSS_SRC = path.join(ROOT, 'vendor/fontawesome/css/all.min.css');
 const FA_CSS_DIST = path.join(ROOT, 'dist/vendor/fontawesome/css/all.min.css');
 
 // Directories to scan for icon usage
-const SCAN_PATHS = ['templates', 'scripts', 'data', 'css'];
+const dataDir = process.env.CV_DATA_DIR || 'data';
+const SCAN_PATHS = ['templates', 'scripts', dataDir, 'css'];
 
 /**
  * Recursively get all scannable files.

@@ -11,8 +11,9 @@ import yaml from 'js-yaml';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 
+const dataRoot = process.env.CV_DATA_DIR || path.join(ROOT, 'data');
 const i18nConfig = yaml.load(
-  fs.readFileSync(path.join(ROOT, 'data', 'i18n.yaml'), 'utf8')
+  fs.readFileSync(path.join(dataRoot, 'i18n.yaml'), 'utf8')
 );
 const defaultLocale = i18nConfig.defaultLocale || 'en';
 const locales = i18nConfig.locales || [defaultLocale];

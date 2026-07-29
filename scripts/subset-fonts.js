@@ -14,10 +14,15 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const FA_CSS = path.join(ROOT, 'vendor/fontawesome/css/all.min.css');
-const WEBFONTS_DIR = path.join(ROOT, 'vendor/fontawesome/webfonts');
+// When --dist flag is passed, subset fonts in dist/ instead of vendor/
+const targetDist = process.argv.includes('--dist');
+const WEBFONTS_DIR = targetDist
+  ? path.join(ROOT, 'dist/vendor/fontawesome/webfonts')
+  : path.join(ROOT, 'vendor/fontawesome/webfonts');
 
 // Directories/files to scan for icon usage
-const SCAN_PATHS = ['templates', 'scripts', 'data', 'css'];
+const dataDir = process.env.CV_DATA_DIR || 'data';
+const SCAN_PATHS = ['templates', 'scripts', dataDir, 'css'];
 
 // Font files and which icon families they serve
 const FONTS = [
@@ -193,6 +198,12 @@ function main() {
   try {
     execSync('pyftsubset --help', { stdio: 'pipe' });
   } catch {
+    if (targetDist) {
+      console.log(
+        '  pyftsubset not found — skipping font subsetting (full fonts will be used)'
+      );
+      return;
+    }
     console.error(
       'Error: pyftsubset not found. Install with: pip install fonttools brotli'
     );
@@ -272,15 +283,15 @@ function main() {
       continue;
     }
 
-    // Back up original if not already backed up
-    if (!fs.existsSync(backupFile)) {
+    // Back up original if not already backed up (skip for dist mode)
+    if (!targetDist && !fs.existsSync(backupFile)) {
       fs.copyFileSync(inputFile, backupFile);
     }
 
-    const originalSize = fs.statSync(backupFile).size;
+    const originalSize = fs.statSync(targetDist ? inputFile : backupFile).size;
     const unicodes = icons.map(i => i.codepoint);
 
-    subsetFont(backupFile, inputFile, unicodes);
+    subsetFont(targetDist ? inputFile : backupFile, inputFile, unicodes);
 
     const newSize = fs.statSync(inputFile).size;
     const savings = ((1 - newSize / originalSize) * 100).toFixed(1);
@@ -291,7 +302,10 @@ function main() {
     );
   }
 
-  console.log('\n  Done. Original fonts backed up as *.woff2.full');
+  console.log(
+    '\n  Done.' +
+      (targetDist ? '' : ' Original fonts backed up as *.woff2.full')
+  );
 }
 
 main();

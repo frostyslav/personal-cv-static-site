@@ -6,22 +6,22 @@
     <title>{{sidebar.profile.name}} - {{sidebar.profile.title}}</title>
     <meta
       name="description"
-      content="CV of {{sidebar.profile.name}} — {{sidebar.profile.title}} with {{yearsSince site.careerStartYear}}+ years of expertise in DevOps, cloud migration, and infrastructure. AWS, Azure, GCP certified."
+      content="{{t "metaDescription"}}"
     />
     <meta property="og:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
     <meta
       property="og:description"
-      content="Professional CV — {{yearsSince site.careerStartYear}}+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+      content="{{t "ogDescription"}}"
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{site.baseUrl}}/" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content="{{i18n.lang}}" />
     <meta property="og:image" content="{{sidebar.profile.photo.webp}}" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
     <meta
       name="twitter:description"
-      content="Professional CV — {{yearsSince site.careerStartYear}}+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes)."
+      content="{{t "ogDescription"}}"
     />
     <meta name="twitter:image" content="{{sidebar.profile.photo.webp}}" />
     <meta name="author" content="{{sidebar.profile.name}}" />
