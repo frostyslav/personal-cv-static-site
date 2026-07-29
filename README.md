@@ -18,12 +18,16 @@ The build compiles YAML data into HTML via Handlebars, bundles and minifies CSS/
 
 ## Prerequisites
 
-- Node.js 25.x (see `.nvmrc`)
+- Node.js 22+ (see `.nvmrc`)
 - npm
+- (Optional) Python with `fonttools` and `brotli` for font subsetting
 
 ```sh
 nvm use        # or asdf install
 npm install
+
+# Optional: enable automatic font subsetting during build
+pip install fonttools brotli
 ```
 
 ## Scripts
@@ -42,26 +46,106 @@ npm install
 
 ## Editing Content
 
-All content lives in `data/` as YAML files:
+Content is separated from the template. This repo ships with **example data** (Jane Doe) in `data/` so it builds out of the box. To use your own content, point the build at an external data directory via environment variables.
 
-| File                       | Content                                         |
-| -------------------------- | ----------------------------------------------- |
-| `data/sidebar.yaml`        | Profile info, photo, navigation, social links   |
-| `data/about.yaml`          | About paragraphs and core qualifications        |
-| `data/experience.yaml`     | Work history (grouped by company or standalone) |
-| `data/education.yaml`      | Education entries                               |
-| `data/skills.yaml`         | Skill categories and tags                       |
-| `data/certifications.yaml` | Professional certifications                     |
-| `data/site.yaml`           | Base URL and PDF path                           |
+### Quick start (example data)
 
-After editing, run `npm run build` to regenerate `dist/`.
+```sh
+npm run build    # builds with data/ (example content)
+```
+
+### Using your own data (private repo pattern)
+
+Store your personal content in a separate (private) repository with this structure:
+
+```text
+your-cv-data/
+├── data/
+│   ├── en/
+│   │   ├── about.yaml
+│   │   ├── education.yaml
+│   │   ├── experience.yaml
+│   │   ├── projects.yaml
+│   │   ├── sidebar.yaml
+│   │   ├── site.yaml
+│   │   └── skills.yaml
+│   ├── de/                  ← additional locales (optional)
+│   │   └── ...
+│   ├── certifications.yaml  ← shared across locales
+│   └── i18n.yaml            ← UI strings and locale config
+└── images/
+    ├── photo.webp
+    └── certs/
+        └── *.webp
+```
+
+Then point the build at it:
+
+```sh
+# Option A: .env file (gitignored, recommended for local dev)
+echo 'CV_DATA_DIR=../your-cv-data/data' >> .env
+echo 'CV_IMAGES_DIR=../your-cv-data/images' >> .env
+npm run build
+
+# Option B: inline environment variables
+CV_DATA_DIR=../your-cv-data/data CV_IMAGES_DIR=../your-cv-data/images npm run build
+```
+
+The `.env` file is loaded automatically via `node --env-file-if-exists=.env` (Node 22+).
+
+### Data files reference
+
+| File                           | Content                                         |
+| ------------------------------ | ----------------------------------------------- |
+| `<locale>/sidebar.yaml`       | Profile info, photo, social links, languages    |
+| `<locale>/about.yaml`         | Summary paragraphs                              |
+| `<locale>/experience.yaml`    | Work history (grouped by company or standalone) |
+| `<locale>/education.yaml`     | Education entries                               |
+| `<locale>/skills.yaml`        | Skill categories and tags                       |
+| `<locale>/projects.yaml`      | Open-source projects and speaking engagements   |
+| `<locale>/site.yaml`          | Base URL, PDF path, career start year           |
+| `certifications.yaml`         | Professional certifications (shared)            |
+| `i18n.yaml`                   | Locale config, UI strings, meta descriptions    |
+
+### Internationalization
+
+Locales are configured in `i18n.yaml`:
+
+```yaml
+defaultLocale: en
+locales: [en, de]
+```
+
+The default locale is served at `/`, others at `/<locale>/`. Change `defaultLocale` to serve a different language at the root. Add new locales by creating a `data/<locale>/` directory and adding the locale to the `locales` array.
+
+### CI/CD with private data
+
+The deploy workflow checks out the private data repo and sets the env vars:
+
+```yaml
+- uses: actions/checkout@v6
+  with:
+    repository: your-org/your-cv-data
+    ssh-key: ${{ secrets.DATA_REPO_KEY }}
+    path: data-private
+
+- name: Build
+  env:
+    CV_DATA_DIR: data-private/data
+    CV_IMAGES_DIR: data-private/images
+  run: npm run build
+```
+
+You'll need a `DATA_REPO_KEY` secret — an SSH deploy key with read access to the private data repo. The CI build-and-test job uses the example data (no secret needed), so external contributors can open PRs without access to your personal content.
 
 ## Build Pipeline
 
 The build runs in two phases:
 
 1. **Parallel phase** — HTML compilation, CSS bundling (Lightning CSS), JS bundling (esbuild), and static asset copy all run concurrently.
-2. **Sequential phase** — Asset fingerprinting renames bundles with content hashes, rewrites references in `index.html`, and generates `sw.js` from the service worker template.
+2. **Sequential phase** — FontAwesome CSS subsetting, woff2 font subsetting (only glyphs used), asset fingerprinting with content hashes, and service worker generation.
+
+Font subsetting requires `pyftsubset` (`pip install fonttools brotli`). If not installed, the build succeeds with full (non-subset) fonts.
 
 The `prebuild` hook cleans `dist/` before each build.
 
@@ -70,7 +154,10 @@ The `prebuild` hook cleans `dist/` before each build.
 ```text
 scripts/
   build-html.js       — Loads YAML, validates, compiles Handlebars → dist/index.html
+  build-all-locales.js — Builds HTML for all configured locales
   build-parallel.js   — Orchestrates parallel build steps
+  subset-fonts.js     — Subsets woff2 fonts to only used glyphs (requires pyftsubset)
+  subset-fa-css.js    — Strips unused icon definitions from FA CSS
   fingerprint.js      — Content-hash renaming + service worker generation
   clean.js            — Removes dist/
   dev-server.js       — Minimal static file server (Node built-ins only)
@@ -79,10 +166,11 @@ scripts/
   error-handler.js    — Global error/rejection handler
   theme.js            — Dark mode toggle with system preference sync
   ui.js               — Section animations, back-to-top button
-  navigation.js       — Mobile menu, active nav highlighting
+  navigation.js       — Placeholder (sidebar removed)
   experience.js       — Collapsible experience sections
   skills.js           — Skills search with fuzzy matching
   print-handler.js    — Print/download modal (Ctrl+P / Cmd+P)
+  lang-switch.js      — Seamless language switching (fetch + DOM swap)
 
 templates/
   index.hbs           — Main page template
@@ -92,7 +180,7 @@ templates/
 css/
   main.css            — Entry point (imports all other CSS)
   base.css            — Reset, custom properties, dark theme, utilities
-  sidebar.css         — Sidebar layout and profile
+  hero.css            — Hero header, contact links, language bars
   sections.css        — Content sections
   components.css      — Buttons, modals, badges
   experience.css      — Experience timeline and collapse
@@ -146,6 +234,3 @@ GitHub Actions runs on push/PR to `main`:
 6. HTML validation
 7. E2E tests (Puppeteer + Chromium)
 
-## License
-
-Private.

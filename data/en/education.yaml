@@ -1,0 +1,9 @@
+groups:
+  - institution: Technical University of Berlin
+    date: '2011 - 2015'
+    location: Berlin, Germany
+    degrees:
+      - date: '2011 - 2014'
+        title: "Bachelor's degree in Computer Science"
+      - date: '2014 - 2015'
+        title: "Master's degree in Software Engineering"

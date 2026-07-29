@@ -1,0 +1,124 @@
+groups:
+  - company: Acme Corp
+    date: 'Mär 2021 - Heute'
+    title: Senior Software Engineer
+    location: Berlin, Deutschland · Remote
+    positions:
+      - date: 'Jan 2023 - Heute'
+        title: Tech Lead
+        project: 'Payment-Plattform'
+        technologies:
+          - TypeScript
+          - Node.js
+          - PostgreSQL
+          - Kubernetes
+          - AWS
+        overview: >-
+          Leitung des Payment-Plattform-Teams, verantwortlich für die
+          Verarbeitung von Millionen Transaktionen täglich.
+        teamFocus: >-
+          Aufbau und Skalierung der Zahlungsverarbeitungsinfrastruktur
+          bei wachsendem Transaktionsvolumen mit 99,99% Verfügbarkeit.
+        roleFocus: >-
+          Architekturentscheidungen, Code Reviews, Mentoring von
+          Junior-Entwicklern und Koordination mit Produkt- und
+          Plattform-Teams.
+        results:
+          - >-
+            Reduzierung der Zahlungsverarbeitungslatenz um 40% durch
+            Architektur-Redesign
+          - >-
+            Migration von Monolith zu Microservices — Deployment-Frequenz
+            von wöchentlich auf mehrmals täglich gesteigert
+          - >-
+            3 Junior-Entwickler zu Mid-Level-Beförderungen begleitet
+
+      - date: 'Mär 2021 - Dez 2022'
+        title: Senior Software Engineer
+        project: 'E-Commerce-Plattform'
+        technologies:
+          - TypeScript
+          - React
+          - Node.js
+          - PostgreSQL
+          - Redis
+        overview: >-
+          Full-Stack-Entwicklung an der E-Commerce-Kernplattform
+          mit 2M+ monatlich aktiven Nutzern.
+        teamFocus: >-
+          Bereitstellung neuer Features und Performance-Verbesserung
+          der kundenorientierten E-Commerce-Anwendung.
+        roleFocus: >-
+          Design und Implementierung von Backend-Services, API-Endpoints
+          und Datenbankschemas. Performance-Optimierung und Abbau
+          technischer Schulden.
+        results:
+          - >-
+            Echtzeit-Inventarsystem implementiert — Überverkaufsfälle
+            um 95% reduziert
+          - >-
+            Datenbankabfragen optimiert — Seitenladezeit um 60% reduziert
+          - >-
+            Integrationstests-Framework eingeführt, von 3 Teams übernommen
+
+  - company: TechStart GmbH
+    date: 'Jun 2018 - Feb 2021'
+    title: Software Engineer
+    location: München, Deutschland
+    positions:
+      - date: 'Jan 2020 - Feb 2021'
+        title: Software Engineer
+        project: 'Datenanalyse-Plattform'
+        technologies:
+          - Python
+          - FastAPI
+          - PostgreSQL
+          - Docker
+          - AWS
+        overview: >-
+          Backend-Entwicklung für eine SaaS-Analyseplattform für
+          Unternehmenskunden.
+        teamFocus: >-
+          Aufbau der Datenerfassungs- und Verarbeitungspipeline für
+          Echtzeit-Analyse-Dashboards.
+        roleFocus: >-
+          Design von Datenmodellen, Implementierung von ETL-Pipelines
+          und Erstellung von REST-APIs für das Frontend-Team.
+        results:
+          - >-
+            Datenerfassungspipeline für 10M+ Events pro Tag aufgebaut
+          - >-
+            Berichterstellungszeit von 30 Minuten auf unter 2 Minuten
+            reduziert
+
+      - date: 'Jun 2018 - Dez 2019'
+        title: Junior Software Engineer
+        project: 'Interne Tools'
+        technologies:
+          - Python
+          - Django
+          - JavaScript
+          - Docker
+        overview: >-
+          Full-Stack-Entwicklung interner Produktivitätstools
+          und Automatisierung.
+        teamFocus: >-
+          Automatisierung manueller Prozesse und Erstellung von Tools
+          zur Verbesserung der Entwicklerproduktivität.
+        roleFocus: >-
+          End-to-End-Implementierung von Features vom Datenbankdesign
+          bis zur Frontend-UI.
+        results:
+          - >-
+            Deployment-Prozess automatisiert — Release-Zeit von
+            2 Stunden auf 15 Minuten reduziert
+          - >-
+            Internes Tool entwickelt, das dem Team 20 Stunden pro
+            Woche einspart
+
+earlyCareer:
+  - company: WebDev Agentur
+    date: 'Sep 2015 - Mai 2018'
+    title: Frontend-Entwickler
+    location: Berlin, Deutschland
+    description: Webagentur — responsive Websites und SPAs für Kunden aus Handel und Medien

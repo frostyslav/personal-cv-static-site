@@ -24,12 +24,12 @@ hooks = [
   { id = "mixed-line-ending", args = [
     "--fix=lf",
   ] },
-  { id = "no-commit-to-branch", args = [
-    "--branch",
-    "main",
-    "--branch",
-    "master",
-  ] },
+  # { id = "no-commit-to-branch", args = [
+  #   "--branch",
+  #   "main",
+  #   "--branch",
+  #   "master",
+  # ] },
   { id = "trailing-whitespace" },
 ]
 

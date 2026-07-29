@@ -1,0 +1,32 @@
+- group: Cloud
+  cssClass: cert-aws
+  certs:
+    - title: 'AWS Certified Solutions Architect - Associate'
+      image: /images/certs/aws-sa-associate.webp
+      alt: AWS Solutions Architect Associate
+      href: https://www.credly.com/badges/example
+      issued: 'Mar 2023'
+
+    - title: 'AWS Certified Developer - Associate'
+      image: /images/certs/aws-developer-associate.webp
+      alt: AWS Developer Associate
+      href: https://www.credly.com/badges/example
+      issued: 'Jun 2022'
+
+- group: Kubernetes
+  cssClass: cert-k8s
+  certs:
+    - title: Certified Kubernetes Application Developer
+      image: /images/certs/kubernetes-ckad.webp
+      alt: CKAD
+      href: https://www.credly.com/badges/example
+      issued: 'Sep 2022'
+
+- group: Other
+  cssClass: cert-other
+  certs:
+    - title: 'HashiCorp Certified: Terraform Associate'
+      image: /images/certs/terraform_associate.webp
+      alt: Terraform Associate
+      href: https://www.credly.com/badges/example
+      issued: 'Jan 2023'

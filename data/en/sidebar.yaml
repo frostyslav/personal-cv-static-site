@@ -1,0 +1,51 @@
+profile:
+  name: Jane Doe
+  title: Senior Software Engineer | Tech Lead
+  photo:
+    webp: /images/photo.webp
+    png: /images/photo.png
+  location:
+    text: Berlin, Germany
+    city: Berlin
+    country: DE
+    url: 'https://www.openstreetmap.org/?mlat=52.520008&mlon=13.404954#map=13/52.520008/13.404954'
+
+social:
+  - href: 'mailto:jane.doe@example.com'
+    label: Email
+    icon: fa-solid fa-envelope
+  - href: https://linkedin.com/in/janedoe/
+    label: LinkedIn
+    icon: fab fa-linkedin-in
+    external: true
+  - href: https://github.com/janedoe
+    label: GitHub
+    icon: fab fa-github
+    external: true
+
+languages:
+  - name: English
+    level: Native
+    percent: 100
+  - name: German
+    level: Advanced
+    percent: 80
+  - name: French
+    level: Intermediate
+    percent: 50
+
+nav:
+  - href: '#about'
+    text: Summary
+  - href: '#experience'
+    text: Experience
+  - href: '#projects'
+    text: Projects & Speaking
+  - href: '#education'
+    text: Education
+  - href: '#skills'
+    text: Skills
+  - href: '#certifications'
+    text: Certifications
+
+cvDownloadUrl: /files/CV_Jane_Doe.pdf

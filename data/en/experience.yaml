@@ -1,0 +1,124 @@
+groups:
+  - company: Acme Corp
+    date: 'Mar 2021 - Present'
+    title: Senior Software Engineer
+    location: Berlin, Germany · Remote
+    positions:
+      - date: 'Jan 2023 - Present'
+        title: Tech Lead
+        project: 'Payment Platform'
+        technologies:
+          - TypeScript
+          - Node.js
+          - PostgreSQL
+          - Kubernetes
+          - AWS
+        overview: >-
+          Leading the payment platform team responsible for processing
+          millions of transactions daily.
+        teamFocus: >-
+          Building and scaling the payment processing infrastructure
+          to handle growing transaction volumes while maintaining
+          99.99% uptime.
+        roleFocus: >-
+          Architectural decisions, code reviews, mentoring junior
+          engineers, and coordinating with product and platform teams.
+        results:
+          - >-
+            Reduced payment processing latency by 40% through
+            architecture redesign
+          - >-
+            Led migration from monolith to microservices, improving
+            deployment frequency from weekly to multiple times daily
+          - >-
+            Mentored 3 junior engineers to mid-level promotions
+
+      - date: 'Mar 2021 - Dec 2022'
+        title: Senior Software Engineer
+        project: 'E-Commerce Platform'
+        technologies:
+          - TypeScript
+          - React
+          - Node.js
+          - PostgreSQL
+          - Redis
+        overview: >-
+          Full-stack development on the core e-commerce platform
+          serving 2M+ monthly active users.
+        teamFocus: >-
+          Delivering new features and improving performance of the
+          customer-facing e-commerce application.
+        roleFocus: >-
+          Designing and implementing backend services, API endpoints,
+          and database schemas. Performance optimization and technical
+          debt reduction.
+        results:
+          - >-
+            Implemented real-time inventory system reducing overselling
+            incidents by 95%
+          - >-
+            Optimized database queries, reducing page load time by 60%
+          - >-
+            Introduced integration testing framework adopted across
+            3 teams
+
+  - company: TechStart GmbH
+    date: 'Jun 2018 - Feb 2021'
+    title: Software Engineer
+    location: Munich, Germany
+    positions:
+      - date: 'Jan 2020 - Feb 2021'
+        title: Software Engineer
+        project: 'Data Analytics Platform'
+        technologies:
+          - Python
+          - FastAPI
+          - PostgreSQL
+          - Docker
+          - AWS
+        overview: >-
+          Backend development for a SaaS analytics platform used by
+          enterprise customers.
+        teamFocus: >-
+          Building the data ingestion and processing pipeline for
+          real-time analytics dashboards.
+        roleFocus: >-
+          Designing data models, implementing ETL pipelines, and
+          building REST APIs for the frontend team.
+        results:
+          - >-
+            Built data ingestion pipeline handling 10M+ events per day
+          - >-
+            Reduced report generation time from 30 minutes to under
+            2 minutes
+
+      - date: 'Jun 2018 - Dec 2019'
+        title: Junior Software Engineer
+        project: 'Internal Tools'
+        technologies:
+          - Python
+          - Django
+          - JavaScript
+          - Docker
+        overview: >-
+          Full-stack development of internal productivity tools
+          and automation.
+        teamFocus: >-
+          Automating manual processes and building tools to improve
+          developer productivity.
+        roleFocus: >-
+          Implementing features end-to-end from database design to
+          frontend UI.
+        results:
+          - >-
+            Automated deployment process, reducing release time from
+            2 hours to 15 minutes
+          - >-
+            Built internal tool that saved the team 20 hours per week
+
+earlyCareer:
+  - company: WebDev Agency
+    date: 'Sep 2015 - May 2018'
+    title: Frontend Developer
+    location: Berlin, Germany
+    description: Web agency — responsive websites and SPAs for clients in retail and media

@@ -1,0 +1,17 @@
+projects:
+  - title: open-source-lib
+    description: Beliebte Utility-Bibliothek für TypeScript mit 2k+ GitHub-Sternen
+    url: https://github.com/janedoe/open-source-lib
+
+  - title: personal-cv
+    description: Diese Portfolio-Seite — datengesteuert, ATS-freundlich, barrierefrei
+    url: https://github.com/janedoe/personal-cv
+
+community:
+  - title: JSConf EU — Vortragende
+    description: 'Vortrag: Skalierung von Node.js-Microservices in Produktion'
+    url: https://example.com/talks/scaling-nodejs
+
+  - title: Berlin Tech Meetup — Organisatorin
+    description: Monatliches Meetup für 200+ Entwickler zu Backend und verteilten Systemen
+    url: https://example.com/meetup

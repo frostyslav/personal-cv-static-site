@@ -41,9 +41,9 @@ en:
   footerDownload: download the PDF
   footerCredly: Certification badges verify on
   metaDescription: >-
-    CV of {{name}} — {{title}} with {{years}}+ years of expertise in DevOps, cloud migration, and infrastructure. AWS, Azure, GCP certified.
+    CV of {{name}} — {{title}} with {{years}}+ years of experience in software engineering, web applications, and distributed systems.
   ogDescription: >-
-    Professional CV — {{years}}+ years in DevOps, cloud architecture, and infrastructure. Multi-cloud certified (AWS, Azure, GCP, Kubernetes).
+    Professional CV — {{years}}+ years in software engineering, full-stack development, and cloud-native applications.
 
 de:
   lang: de
@@ -85,6 +85,6 @@ de:
   footerDownload: PDF herunterladen
   footerCredly: Zertifizierungsbadges verifizierbar auf
   metaDescription: >-
-    Lebenslauf von {{name}} — {{title}} mit {{years}}+ Jahren Erfahrung in DevOps, Cloud-Migration und Infrastruktur. AWS, Azure, GCP zertifiziert.
+    Lebenslauf von {{name}} — {{title}} mit {{years}}+ Jahren Erfahrung in Softwareentwicklung, Webanwendungen und verteilten Systemen.
   ogDescription: >-
-    Professioneller Lebenslauf — {{years}}+ Jahre in DevOps, Cloud-Architektur und Infrastruktur. Multi-Cloud-zertifiziert (AWS, Azure, GCP, Kubernetes).
+    Professioneller Lebenslauf — {{years}}+ Jahre in Softwareentwicklung, Full-Stack-Entwicklung und Cloud-nativen Anwendungen.

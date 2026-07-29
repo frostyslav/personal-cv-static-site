@@ -1,0 +1,74 @@
+- title: Programmiersprachen
+  icon: fa-solid fa-code
+  color: blue
+  featured: true
+  tags:
+    - TypeScript
+    - JavaScript
+    - Python
+    - Go
+    - SQL
+
+- title: Frontend
+  icon: fa-solid fa-display
+  color: blue
+  featured: true
+  tags:
+    - React
+    - Next.js
+    - Vue.js
+    - HTML/CSS
+    - Tailwind CSS
+
+- title: Backend
+  icon: fa-solid fa-server
+  color: teal
+  featured: true
+  tags:
+    - Node.js
+    - Express
+    - FastAPI
+    - Django
+    - GraphQL
+    - REST APIs
+
+- title: Datenbanken
+  icon: fa-solid fa-database
+  color: teal
+  featured: true
+  tags:
+    - PostgreSQL
+    - Redis
+    - MongoDB
+    - Elasticsearch
+
+- title: Cloud & DevOps
+  icon: fa-solid fa-cloud
+  color: green
+  featured: true
+  tags:
+    - AWS
+    - Docker
+    - Kubernetes
+    - Terraform
+    - GitHub Actions
+    - CI/CD
+
+- title: Testing
+  icon: fa-solid fa-vial
+  color: green
+  tags:
+    - Jest
+    - Vitest
+    - Playwright
+    - pytest
+
+- title: Tools & Methoden
+  icon: fa-solid fa-wrench
+  color: purple
+  tags:
+    - Git
+    - Linux
+    - Agile/Scrum
+    - Code Review
+    - Technische Dokumentation
