@@ -234,3 +234,66 @@ GitHub Actions runs on push/PR to `main`:
 6. HTML validation
 7. E2E tests (Puppeteer + Chromium)
 
+## Deployment
+
+The site deploys automatically to **Cloudflare Pages** on every push to `main` (after CI passes).
+
+### How it works
+
+1. CI tests pass using the example data (no secrets required).
+2. The deploy job checks out the private data repo (`personal-cv-data`) and builds with real content.
+3. A PDF version of the CV is generated via Puppeteer.
+4. The `dist/` directory is deployed to Cloudflare Pages using `wrangler`.
+
+### Required GitHub secrets and variables
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `DATA_REPO_KEY` | Secret | SSH deploy key with read access to the private data repo |
+| `CLOUDFLARE_API_TOKEN` | Secret | Cloudflare API token with Pages edit permissions |
+| `CLOUDFLARE_ACCOUNT_ID` | Secret | Your Cloudflare account ID |
+| `CLOUDFLARE_PROJECT_NAME` | Variable | Cloudflare Pages project name (e.g. `personal-cv`) |
+
+### Setting up Cloudflare Pages
+
+1. Create a Cloudflare Pages project (direct upload, no git integration needed since we deploy via CI):
+   - Go to Cloudflare Dashboard → Pages → Create a project → Direct Upload
+   - Name it (this becomes `CLOUDFLARE_PROJECT_NAME`)
+
+2. Create an API token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens):
+   - Click **Create Token**
+   - Choose **Custom token** (at the bottom, "Get started")
+   - Token name: `personal-cv-deploy` (or any descriptive name)
+   - Permissions: **Account** → **Cloudflare Pages** → **Edit**
+   - Account Resources: Include → your account
+   - Zone Resources: All zones (or restrict to your domain)
+   - TTL: leave blank for no expiry
+   - Click **Continue to summary** → **Create Token**
+   - Copy the token (you won't see it again)
+
+3. Find your Account ID:
+   - Go to [dash.cloudflare.com](https://dash.cloudflare.com)
+   - Click on any domain (or the overview page)
+   - Look in the right sidebar under **API** → **Account ID**
+   - Alternatively, it's in the URL: `dash.cloudflare.com/<account-id>/...`
+
+4. Add the secrets to your GitHub repo (Settings → Secrets and variables → Actions):
+   - `CLOUDFLARE_API_TOKEN` → the token from step 2
+   - `CLOUDFLARE_ACCOUNT_ID` → the account ID from step 3
+   - `CLOUDFLARE_PROJECT_NAME` (as a **Variable**, not secret) → the Pages project name from step 1
+
+5. (Optional) Add a custom domain in Cloudflare Pages → your project → Custom domains.
+
+### Setting up the data repo deploy key
+
+1. Generate an SSH key pair:
+
+   ```sh
+   ssh-keygen -t ed25519 -C "deploy-key-personal-cv" -f deploy_key -N ""
+   ```
+
+2. Add `deploy_key.pub` as a deploy key on the private data repo (Settings → Deploy keys, read-only).
+
+3. Add the private key (`deploy_key`) as `DATA_REPO_KEY` in the static-site repo's GitHub Secrets.
+
+4. Delete the local key files after setup.
