@@ -58,30 +58,30 @@ function fingerprint() {
     }
   }
 
-  // Rewrite references in index.html
-  const htmlPath = path.join(DIST, 'index.html');
-  let html = fs.readFileSync(htmlPath, 'utf8');
-  for (const asset of ASSETS_TO_FINGERPRINT) {
-    html = html.replace(asset.pattern, manifest[asset.original]);
-  }
-  fs.writeFileSync(htmlPath, html);
+  // Rewrite references in all HTML files (root and locale subdirectories)
+  const htmlFiles = [path.join(DIST, 'index.html')];
 
-  // Rewrite references in locale HTML files (e.g., dist/de/index.html)
-  const deHtmlPath = path.join(DIST, 'de', 'index.html');
-  if (fs.existsSync(deHtmlPath)) {
-    let deHtml = fs.readFileSync(deHtmlPath, 'utf8');
-    for (const asset of ASSETS_TO_FINGERPRINT) {
-      deHtml = deHtml.replace(asset.pattern, `../${manifest[asset.original]}`);
+  // Find locale subdirectory HTML files
+  for (const entry of fs.readdirSync(DIST, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      const localeHtml = path.join(DIST, entry.name, 'index.html');
+      if (fs.existsSync(localeHtml)) {
+        htmlFiles.push(localeHtml);
+      }
     }
-    // Also fix relative paths for vendor assets and other resources
-    deHtml = deHtml.replace(/href="vendor\//g, 'href="../vendor/');
-    deHtml = deHtml.replace(/src="vendor\//g, 'src="../vendor/');
-    deHtml = deHtml.replace(/href="favicon\.svg"/g, 'href="../favicon.svg"');
-    deHtml = deHtml.replace(
-      /src="sw-register\.js"/g,
-      'src="../sw-register.js"'
-    );
-    fs.writeFileSync(deHtmlPath, deHtml);
+  }
+
+  for (const htmlFile of htmlFiles) {
+    let html = fs.readFileSync(htmlFile, 'utf8');
+    for (const asset of ASSETS_TO_FINGERPRINT) {
+      // Match both /styles.min.css and styles.min.css (absolute or relative)
+      const absPattern = new RegExp(
+        `/${asset.original.replace('.', '\\.')}`,
+        'g'
+      );
+      html = html.replace(absPattern, `/${manifest[asset.original]}`);
+    }
+    fs.writeFileSync(htmlFile, html);
   }
 
   // Generate sw.js from template with actual fingerprinted values

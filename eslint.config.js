@@ -21,6 +21,8 @@ const BROWSER_GLOBALS = {
   clearTimeout: 'readonly',
   console: 'readonly',
   HTMLElement: 'readonly',
+  fetch: 'readonly',
+  DOMParser: 'readonly',
 };
 
 export default [
@@ -37,6 +39,7 @@ export default [
       'scripts/skills.js',
       'scripts/error-handler.js',
       'scripts/sw-register.js',
+      'scripts/lang-switch.js',
     ],
     languageOptions: {
       ecmaVersion: 2022,
@@ -57,6 +60,7 @@ export default [
   {
     files: [
       'scripts/build-html.js',
+      'scripts/build-all-locales.js',
       'scripts/build-parallel.js',
       'scripts/extract-critical-css.js',
       'scripts/subset-fonts.js',

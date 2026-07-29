@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node scripts/clean.js",
     "build": "node scripts/build-parallel.js",
-    "build:html": "node scripts/extract-critical-css.js && node scripts/build-html.js --locale en && node scripts/build-html.js --locale de && npx prettier --write dist/index.html dist/de/index.html",
+    "build:html": "node scripts/extract-critical-css.js && node scripts/build-all-locales.js",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
     "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && mkdir -p dist/vendor/fontawesome/css dist/vendor/fontawesome/webfonts dist/files && cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/ && cp vendor/fontawesome/webfonts/fa-solid-900.woff2 vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/ && cp -r images dist/images && npx svgo dist/favicon.svg --quiet",

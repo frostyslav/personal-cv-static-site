@@ -6,3 +6,4 @@ import './navigation.js';
 import './print-handler.js';
 import './experience.js';
 import './skills.js';
+import './lang-switch.js';
