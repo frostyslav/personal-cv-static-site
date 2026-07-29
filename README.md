@@ -95,17 +95,17 @@ The `.env` file is loaded automatically via `node --env-file-if-exists=.env` (No
 
 ### Data files reference
 
-| File                           | Content                                         |
-| ------------------------------ | ----------------------------------------------- |
-| `<locale>/sidebar.yaml`       | Profile info, photo, social links, languages    |
-| `<locale>/about.yaml`         | Summary paragraphs                              |
-| `<locale>/experience.yaml`    | Work history (grouped by company or standalone) |
-| `<locale>/education.yaml`     | Education entries                               |
-| `<locale>/skills.yaml`        | Skill categories and tags                       |
-| `<locale>/projects.yaml`      | Open-source projects and speaking engagements   |
-| `<locale>/site.yaml`          | Base URL, PDF path, career start year           |
-| `certifications.yaml`         | Professional certifications (shared)            |
-| `i18n.yaml`                   | Locale config, UI strings, meta descriptions    |
+| File                       | Content                                         |
+| -------------------------- | ----------------------------------------------- |
+| `<locale>/sidebar.yaml`    | Profile info, photo, social links, languages    |
+| `<locale>/about.yaml`      | Summary paragraphs                              |
+| `<locale>/experience.yaml` | Work history (grouped by company or standalone) |
+| `<locale>/education.yaml`  | Education entries                               |
+| `<locale>/skills.yaml`     | Skill categories and tags                       |
+| `<locale>/projects.yaml`   | Open-source projects and speaking engagements   |
+| `<locale>/site.yaml`       | Base URL, PDF path, career start year           |
+| `certifications.yaml`      | Professional certifications (shared)            |
+| `i18n.yaml`                | Locale config, UI strings, meta descriptions    |
 
 ### Internationalization
 
@@ -247,20 +247,22 @@ The site deploys automatically to **Cloudflare Pages** on every push to `main` (
 
 ### Required GitHub secrets and variables
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `DATA_REPO_KEY` | Secret | SSH deploy key with read access to the private data repo |
-| `CLOUDFLARE_API_TOKEN` | Secret | Cloudflare API token with Pages edit permissions |
-| `CLOUDFLARE_ACCOUNT_ID` | Secret | Your Cloudflare account ID |
-| `CLOUDFLARE_PROJECT_NAME` | Variable | Cloudflare Pages project name (e.g. `personal-cv`) |
+| Name                      | Type     | Description                                              |
+| ------------------------- | -------- | -------------------------------------------------------- |
+| `DATA_REPO_KEY`           | Secret   | SSH deploy key with read access to the private data repo |
+| `CLOUDFLARE_API_TOKEN`    | Secret   | Cloudflare API token with Pages edit permissions         |
+| `CLOUDFLARE_ACCOUNT_ID`   | Secret   | Your Cloudflare account ID                               |
+| `CLOUDFLARE_PROJECT_NAME` | Variable | Cloudflare Pages project name (e.g. `personal-cv`)       |
 
 ### Setting up Cloudflare Pages
 
 1. Create a Cloudflare Pages project (direct upload, no git integration needed since we deploy via CI):
+
    - Go to Cloudflare Dashboard → Pages → Create a project → Direct Upload
    - Name it (this becomes `CLOUDFLARE_PROJECT_NAME`)
 
 2. Create an API token at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens):
+
    - Click **Create Token**
    - Choose **Custom token** (at the bottom, "Get started")
    - Token name: `personal-cv-deploy` (or any descriptive name)
@@ -272,12 +274,14 @@ The site deploys automatically to **Cloudflare Pages** on every push to `main` (
    - Copy the token (you won't see it again)
 
 3. Find your Account ID:
+
    - Go to [dash.cloudflare.com](https://dash.cloudflare.com)
    - Click on any domain (or the overview page)
    - Look in the right sidebar under **API** → **Account ID**
    - Alternatively, it's in the URL: `dash.cloudflare.com/<account-id>/...`
 
 4. Add the secrets to your GitHub repo (Settings → Secrets and variables → Actions):
+
    - `CLOUDFLARE_API_TOKEN` → the token from step 2
    - `CLOUDFLARE_ACCOUNT_ID` → the account ID from step 3
    - `CLOUDFLARE_PROJECT_NAME` (as a **Variable**, not secret) → the Pages project name from step 1

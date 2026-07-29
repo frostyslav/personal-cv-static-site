@@ -4,6 +4,6 @@ groups:
     location: Berlin, Deutschland
     degrees:
       - date: '2011 - 2014'
-        title: "Bachelor of Science in Informatik"
+        title: 'Bachelor of Science in Informatik'
       - date: '2014 - 2015'
-        title: "Master of Science in Software Engineering"
+        title: 'Master of Science in Software Engineering'
