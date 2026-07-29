@@ -9,10 +9,8 @@ import { initPrintHandler } from './print-handler.js';
 (() => {
   let isSwitching = false;
 
-  function applyThemeToNewContent() {
-    // Theme is stored on <html> data-theme attr and persists via localStorage,
-    // so the theme.js module's applyTheme handles it. We just need to re-bind
-    // the new .theme-toggle button.
+  function updateThemeUI() {
+    // Sync the .theme-toggle button visuals with the current theme.
     const STORAGE_KEY = 'theme-preference';
     const theme =
       localStorage.getItem(STORAGE_KEY) ||
@@ -41,14 +39,20 @@ import { initPrintHandler } from './print-handler.js';
         : btn.dataset.ariaLight || 'Switch to dark mode';
     btn.setAttribute('aria-label', ariaText);
     btn.setAttribute('title', label ? label.textContent : '');
+  }
+
+  function bindThemeToggle() {
+    // Re-bind the click listener on the (new) .theme-toggle button after DOM swap.
+    const STORAGE_KEY = 'theme-preference';
+    const btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
 
     btn.addEventListener('click', () => {
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       localStorage.setItem(STORAGE_KEY, next);
-
       document.documentElement.setAttribute('data-theme', next);
-      applyThemeToNewContent();
+      updateThemeUI();
     });
   }
 
@@ -148,7 +152,8 @@ import { initPrintHandler } from './print-handler.js';
       initExperience();
       initSkills();
       initPrintHandler();
-      applyThemeToNewContent();
+      updateThemeUI();
+      bindThemeToggle();
       bindLangToggle();
 
       // Scroll to top smoothly
