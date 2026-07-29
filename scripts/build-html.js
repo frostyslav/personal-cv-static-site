@@ -9,7 +9,13 @@ const args = process.argv.slice(2);
 const localeIdx = args.indexOf('--locale');
 const locale =
   localeIdx !== -1 && args[localeIdx + 1] ? args[localeIdx + 1] : 'en';
-const outputDir = locale === 'en' ? 'dist' : path.join('dist', locale);
+
+// Load i18n to determine defaultLocale and compute output paths
+const i18nRaw = yaml.load(
+  fs.readFileSync(path.join('data', 'i18n.yaml'), 'utf8')
+);
+const defaultLocale = i18nRaw.defaultLocale || 'en';
+const outputDir = locale === defaultLocale ? 'dist' : path.join('dist', locale);
 
 // Load YAML data files with error handling
 function loadYaml(filename) {
@@ -26,18 +32,19 @@ function loadYaml(filename) {
   }
 }
 
-// Load locale-specific YAML, falling back to default
+// Load locale-specific YAML from data/<locale>/
 function loadLocalizedYaml(filename) {
   const localePath = path.join('data', locale, filename);
-  if (locale !== 'en' && fs.existsSync(localePath)) {
-    try {
-      return yaml.load(fs.readFileSync(localePath, 'utf8'));
-    } catch (e) {
-      console.error(`✗ Invalid YAML in ${localePath}: ${e.message}`);
-      process.exit(1);
-    }
+  if (!fs.existsSync(localePath)) {
+    console.error(`✗ Missing localized data file: ${localePath}`);
+    process.exit(1);
   }
-  return loadYaml(filename);
+  try {
+    return yaml.load(fs.readFileSync(localePath, 'utf8'));
+  } catch (e) {
+    console.error(`✗ Invalid YAML in ${localePath}: ${e.message}`);
+    process.exit(1);
+  }
 }
 
 // Validate merged data against the declarative schema
@@ -52,8 +59,12 @@ function validateData(data) {
 }
 
 // Load i18n strings
-const i18nAll = loadYaml('i18n.yaml');
-const i18n = i18nAll[locale] || i18nAll.en;
+const i18n = i18nRaw[locale] || i18nRaw[defaultLocale];
+
+// Compute altLangUrl based on defaultLocale (override static value in YAML)
+if (i18n.altLang) {
+  i18n.altLangUrl = i18n.altLang === defaultLocale ? '/' : `/${i18n.altLang}/`;
+}
 
 const data = {
   site: loadLocalizedYaml('site.yaml'),
@@ -95,6 +106,18 @@ Handlebars.registerHelper('yearsSince', function (year) {
  */
 Handlebars.registerHelper('t', function (key) {
   return i18n[key] || key;
+});
+
+/**
+ * {{displayUrl url}} — strips protocol prefixes (mailto:, https://, http://)
+ * and trailing slashes from a URL for human-readable display in print.
+ */
+Handlebars.registerHelper('displayUrl', function (url) {
+  if (typeof url !== 'string') return '';
+  return url
+    .replace(/^mailto:/i, '')
+    .replace(/^https?:\/\//i, '')
+    .replace(/\/+$/, '');
 });
 
 /**

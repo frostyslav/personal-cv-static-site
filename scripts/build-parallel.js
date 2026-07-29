@@ -12,11 +12,19 @@ import { exec, execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import yaml from 'js-yaml';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const KEEP_SOURCEMAPS = process.env.SOURCEMAPS === '1';
+
+// Read locales from i18n config
+const i18nConfig = yaml.load(
+  fs.readFileSync(path.join(ROOT, 'data', 'i18n.yaml'), 'utf8')
+);
+const defaultLocale = i18nConfig.defaultLocale || 'en';
+const locales = i18nConfig.locales || [defaultLocale];
 
 /**
  * Run a shell command asynchronously and return a promise.
@@ -54,10 +62,20 @@ async function build() {
   console.log('Building in parallel…\n');
 
   // Phase 1: HTML, CSS, JS, and assets run concurrently
+  // Build HTML commands for all configured locales
+  const htmlBuildCmds = locales
+    .map(l => `node scripts/build-html.js --locale ${l}`)
+    .join(' && ');
+  const htmlOutputFiles = locales
+    .map(l =>
+      l === defaultLocale ? 'dist/index.html' : `dist/${l}/index.html`
+    )
+    .join(' ');
+
   await Promise.all([
     runAsync(
       'HTML',
-      'node scripts/extract-critical-css.js && node scripts/build-html.js --locale en && node scripts/build-html.js --locale de && npx prettier --write dist/index.html dist/de/index.html'
+      `node scripts/extract-critical-css.js && ${htmlBuildCmds} && npx prettier --write ${htmlOutputFiles}`
     ),
     runAsync(
       'CSS',

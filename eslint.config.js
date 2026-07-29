@@ -60,6 +60,7 @@ export default [
   {
     files: [
       'scripts/build-html.js',
+      'scripts/build-all-locales.js',
       'scripts/build-parallel.js',
       'scripts/extract-critical-css.js',
       'scripts/subset-fonts.js',

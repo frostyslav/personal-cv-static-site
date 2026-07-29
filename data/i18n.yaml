@@ -1,3 +1,6 @@
+defaultLocale: en
+locales: [en, de]
+
 en:
   lang: en
   langLabel: EN

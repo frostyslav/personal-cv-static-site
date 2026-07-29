@@ -29,16 +29,16 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none';" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="{{site.baseUrl}}/" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <style>
       /* Critical CSS — auto-extracted from source (do not edit manually) */
       @media (prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--primary-hover:var(--dark-primary-hover);--primary-light:var(--dark-primary-light);--secondary-color:var(--dark-secondary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--text-tertiary:var(--dark-text-tertiary);--gradient-primary-color:var(--dark-gradient-primary);--gradient-secondary-color:var(--dark-gradient-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--bg-hover:var(--dark-bg-hover);--border-color:var(--dark-border-color);--border-hover:var(--dark-border-hover);--shadow-color:var(--dark-shadow-color);--shadow-primary:var(--dark-shadow-primary);--shadow-primary-lg:var(--dark-shadow-primary-lg);--shadow-primary-sm:var(--dark-shadow-primary-sm)}}
     </style>
-    <link rel="stylesheet" href="styles.min.css" />
+    <link rel="stylesheet" href="/styles.min.css" />
     <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />
-    <link rel="preload" href="vendor/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="vendor/fontawesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
+    <link rel="preload" href="/vendor/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/vendor/fontawesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
     <noscript>
       <style>
         .section.js-animate { opacity: 1 !important; transform: none !important; }
@@ -101,13 +101,12 @@
             </p>
             </address>
             <div class="print-contact">
-              <span>rostyslav.fridman@gmail.com</span>
+              {{#each sidebar.social}}
+              <span>{{displayUrl href}}</span>
+              {{#unless @last}}<span class="print-sep">|</span>{{/unless}}
+              {{/each}}
               <span class="print-sep">|</span>
-              <span>linkedin.com/in/rostyslavfridman</span>
-              <span class="print-sep">|</span>
-              <span>github.com/frostyslav</span>
-              <span class="print-sep">|</span>
-              <span>cv.rostyslav.eu</span>
+              <span>{{displayUrl site.baseUrl}}</span>
             </div>
             <nav class="hero-links" aria-label="Contact and profile links">
               {{#each sidebar.social}}
@@ -194,7 +193,7 @@
       </div>
     </div>
 
-    <script src="scripts.min.js"></script>
-    <script src="sw-register.js"></script>
+    <script src="/scripts.min.js"></script>
+    <script src="/sw-register.js"></script>
   </body>
 </html>
