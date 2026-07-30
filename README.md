@@ -60,6 +60,9 @@ Store your personal content in a separate (private) repository with this structu
 
 ```text
 your-cv-data/
+├── assets/
+│   ├── llms.txt             ← AI agent discovery file
+│   └── robots.txt           ← robots.txt with your sitemap URL
 ├── data/
 │   ├── en/
 │   │   ├── about.yaml
@@ -85,13 +88,20 @@ Then point the build at it:
 # Option A: .env file (gitignored, recommended for local dev)
 echo 'CV_DATA_DIR=../your-cv-data/data' >> .env
 echo 'CV_IMAGES_DIR=../your-cv-data/images' >> .env
+echo 'CV_ASSETS_DIR=../your-cv-data/assets' >> .env
 npm run build
 
 # Option B: inline environment variables
-CV_DATA_DIR=../your-cv-data/data CV_IMAGES_DIR=../your-cv-data/images npm run build
+CV_DATA_DIR=../your-cv-data/data CV_IMAGES_DIR=../your-cv-data/images CV_ASSETS_DIR=../your-cv-data/assets npm run build
 ```
 
 The `.env` file is loaded automatically via `node --env-file-if-exists=.env` (Node 22+).
+
+| Variable        | Description                                                                |
+| --------------- | -------------------------------------------------------------------------- |
+| `CV_DATA_DIR`   | Path to YAML data directory (default: `data/`)                             |
+| `CV_IMAGES_DIR` | Path to images directory (default: `images/`)                              |
+| `CV_ASSETS_DIR` | Path to static assets to copy into `dist/` (e.g. `robots.txt`, `llms.txt`) |
 
 ### Data files reference
 
@@ -133,6 +143,7 @@ The deploy workflow checks out the private data repo and sets the env vars:
   env:
     CV_DATA_DIR: data-private/data
     CV_IMAGES_DIR: data-private/images
+    CV_ASSETS_DIR: data-private/assets
   run: npm run build
 ```
 
