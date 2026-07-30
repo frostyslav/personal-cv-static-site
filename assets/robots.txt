@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cv.rostyslav.eu/sitemap.xml
+# Sitemap: https://your-domain.example/sitemap.xml

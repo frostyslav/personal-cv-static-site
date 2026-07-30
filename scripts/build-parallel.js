@@ -19,6 +19,7 @@ const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const KEEP_SOURCEMAPS = process.env.SOURCEMAPS === '1';
 const IMAGES_DIR = process.env.CV_IMAGES_DIR || path.join(ROOT, 'images');
+const ASSETS_DIR = process.env.CV_ASSETS_DIR || '';
 
 // Read locales from i18n config
 const dataRoot = process.env.CV_DATA_DIR || path.join(ROOT, 'data');
@@ -98,6 +99,8 @@ async function build() {
         'cp vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/',
         `cp -r ${IMAGES_DIR} dist/images`,
         'npx svgo dist/favicon.svg --quiet',
+        // Copy private assets (llms.txt, robots.txt) — overrides public defaults
+        ...(ASSETS_DIR ? [`cp ${ASSETS_DIR}/* dist/ 2>/dev/null || true`] : []),
       ].join(' && ')
     ),
   ]);

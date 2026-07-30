@@ -109,7 +109,7 @@
   text-align: center;
 }
 
-.print-modal h2 {
+.print-modal-title {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);

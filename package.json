@@ -9,7 +9,7 @@
     "build:html": "node scripts/extract-critical-css.js && node scripts/build-all-locales.js",
     "build:css": "npx lightningcss --bundle --minify css/main.css -o dist/styles.min.css",
     "build:js": "npx esbuild scripts/main.js --bundle --minify --outfile=dist/scripts.min.js",
-    "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && mkdir -p dist/vendor/fontawesome/css dist/vendor/fontawesome/webfonts dist/files && cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/ && cp vendor/fontawesome/webfonts/fa-solid-900.woff2 vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/ && cp -r ${CV_IMAGES_DIR:-images} dist/images && npx svgo dist/favicon.svg --quiet",
+    "build:assets": "cp assets/favicon.svg assets/robots.txt assets/sitemap.xml dist/ && mkdir -p dist/vendor/fontawesome/css dist/vendor/fontawesome/webfonts dist/files && cp vendor/fontawesome/css/all.min.css dist/vendor/fontawesome/css/ && cp vendor/fontawesome/webfonts/fa-solid-900.woff2 vendor/fontawesome/webfonts/fa-brands-400.woff2 dist/vendor/fontawesome/webfonts/ && cp -r ${CV_IMAGES_DIR:-images} dist/images && npx svgo dist/favicon.svg --quiet && if [ -n \"${CV_ASSETS_DIR}\" ]; then cp ${CV_ASSETS_DIR}/* dist/ 2>/dev/null || true; fi",
     "dev": "SOURCEMAPS=1 npm run build && node scripts/dev-server.js",
     "dev:watch": "node scripts/dev-watch.js",
     "subset-fonts": "node scripts/subset-fonts.js",
