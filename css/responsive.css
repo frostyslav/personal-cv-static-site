@@ -560,7 +560,7 @@
   }
 
   .early-career-separator::before {
-    content: ' — ' !important;
+    content: ' | ' !important;
     font-size: 9pt !important;
   }
 
@@ -568,9 +568,19 @@
     font-size: 9pt !important;
   }
 
-  .early-career-location,
-  .early-career-description {
+  .early-career-location {
     display: none !important;
+  }
+
+  .early-career-description {
+    display: inline !important;
+    width: auto !important;
+    margin: 0 !important;
+    font-size: 9pt !important;
+  }
+
+  .early-career-description::before {
+    content: ' | ';
   }
 
   /* === Education — compact list for print === */
