@@ -347,8 +347,13 @@
     display: inline !important;
   }
 
+  .position-item .timeline-project::after {
+    content: '\A' !important;
+    white-space: pre !important;
+  }
+
   .position-item .timeline-project::before {
-    content: ' — ' !important;
+    content: ' | ' !important;
   }
 
   .timeline-title {
@@ -429,7 +434,7 @@
 
   /* Tech tags — inline text for print */
   .tech-tags {
-    display: block !important;
+    display: inline !important;
     gap: 0 !important;
     margin-bottom: 4pt !important;
     margin-top: 2pt !important;
@@ -480,15 +485,15 @@
 
   /* Project links — inline text for print */
   .project-links {
-    display: block !important;
+    display: inline !important;
     gap: 0 !important;
     margin-bottom: 4pt !important;
-    margin-top: 2pt !important;
+    margin-top: 0 !important;
     padding: 0 !important;
   }
 
   .project-links::before {
-    content: 'Links: ' !important;
+    content: ' | Links: ' !important;
     font-size: 8.5pt !important;
     font-weight: 600 !important;
     color: #333 !important;
@@ -614,14 +619,16 @@
   }
 
   .education-location {
-    display: none !important;
+    display: inline !important;
+    font-size: 8.5pt !important;
+    font-style: italic !important;
   }
 
-  /* === Certifications — compact list for print === */
+  /* === Certifications - compact list for print === */
   .cert-grid {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 3pt !important;
+    flex-flow: row wrap !important;
+    gap: 1pt 12pt !important;
   }
 
   .certification-item {
@@ -634,6 +641,7 @@
     border-radius: 0 !important;
     text-decoration: none !important;
     color: inherit !important;
+    width: 48% !important;
   }
 
   .certification-logo {
@@ -655,15 +663,12 @@
   }
 
   .certification-title::after {
-    content: ' — ' !important;
+    content: '\00a0\00a0\00a0\00a0' !important;
     font-weight: 400 !important;
   }
 
   .certification-date {
-    font-size: 8.5pt !important;
-    color: #555 !important;
-    white-space: nowrap !important;
-    display: inline !important;
+    display: none !important;
   }
 
   .certification-link-icon {
@@ -672,6 +677,7 @@
 
   /* === Skills — inline text list for print === */
   #skills {
+    page-break-before: always;
     page-break-inside: auto;
   }
 
@@ -691,6 +697,10 @@
     border: none !important;
     border-radius: 0 !important;
     background: none !important;
+  }
+
+  .skill-category.skills-extra {
+    display: block !important;
   }
 
   .skill-category:hover {
