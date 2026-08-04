@@ -71,7 +71,7 @@ if (i18n.altLang) {
 
 const data = {
   site: loadLocalizedYaml('site.yaml'),
-  sidebar: loadLocalizedYaml('sidebar.yaml'),
+  hero: loadLocalizedYaml('hero.yaml'),
   about: loadLocalizedYaml('about.yaml'),
   experience: loadLocalizedYaml('experience.yaml'),
   projects: loadLocalizedYaml('projects.yaml'),
@@ -97,8 +97,8 @@ if (data.site.careerStartYear) {
   const years = new Date().getFullYear() - data.site.careerStartYear;
   const rounded = Math.floor(years / 5) * 5;
   const replacements = {
-    name: data.sidebar.profile.name,
-    title: data.sidebar.profile.title,
+    name: data.hero.profile.name,
+    title: data.hero.profile.title,
     years: String(rounded),
   };
   for (const [key, val] of Object.entries(replacements)) {

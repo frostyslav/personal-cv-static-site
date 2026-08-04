@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{sidebar.profile.name}} - {{sidebar.profile.title}}</title>
+    <title>{{hero.profile.name}} - {{hero.profile.title}}</title>
     <meta
       name="description"
       content="{{t "metaDescription"}}"
     />
-    <meta property="og:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
+    <meta property="og:title" content="{{hero.profile.name}} — {{hero.profile.title}}" />
     <meta
       property="og:description"
       content="{{t "ogDescription"}}"
@@ -16,15 +16,15 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{site.baseUrl}}/" />
     <meta property="og:locale" content="{{i18n.lang}}" />
-    <meta property="og:image" content="{{sidebar.profile.photo.webp}}" />
+    <meta property="og:image" content="{{hero.profile.photo.webp}}" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="{{sidebar.profile.name}} — {{sidebar.profile.title}}" />
+    <meta name="twitter:title" content="{{hero.profile.name}} — {{hero.profile.title}}" />
     <meta
       name="twitter:description"
       content="{{t "ogDescription"}}"
     />
-    <meta name="twitter:image" content="{{sidebar.profile.photo.webp}}" />
-    <meta name="author" content="{{sidebar.profile.name}}" />
+    <meta name="twitter:image" content="{{hero.profile.photo.webp}}" />
+    <meta name="author" content="{{hero.profile.name}}" />
     <meta name="theme-color" content="#2563eb" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none';" />
     <meta name="robots" content="index, follow" />
@@ -35,7 +35,7 @@
       @media (prefers-color-scheme:dark){:root:not([data-theme='light']){--primary-color:var(--dark-primary-color);--primary-hover:var(--dark-primary-hover);--primary-light:var(--dark-primary-light);--secondary-color:var(--dark-secondary-color);--text-primary:var(--dark-text-primary);--text-secondary:var(--dark-text-secondary);--text-tertiary:var(--dark-text-tertiary);--gradient-primary-color:var(--dark-gradient-primary);--gradient-secondary-color:var(--dark-gradient-secondary);--bg-primary:var(--dark-bg-primary);--bg-secondary:var(--dark-bg-secondary);--bg-hover:var(--dark-bg-hover);--border-color:var(--dark-border-color);--border-hover:var(--dark-border-hover);--shadow-color:var(--dark-shadow-color);--shadow-primary:var(--dark-shadow-primary);--shadow-primary-lg:var(--dark-shadow-primary-lg);--shadow-primary-sm:var(--dark-shadow-primary-sm)}}
     </style>
     <link rel="stylesheet" href="/styles.min.css" />
-    <link rel="preload" href="{{sidebar.profile.photo.webp}}" as="image" type="image/webp" />
+    <link rel="preload" href="{{hero.profile.photo.webp}}" as="image" type="image/webp" />
     <link rel="preload" href="/vendor/fontawesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/vendor/fontawesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
@@ -59,12 +59,12 @@
       {
         "@context": "https://schema.org",
         "@type": "Person",
-        "name": "{{sidebar.profile.name}}",
-        "jobTitle": "{{sidebar.profile.title}}",
+        "name": "{{hero.profile.name}}",
+        "jobTitle": "{{hero.profile.title}}",
         "url": "{{site.baseUrl}}/",
-        "image": "{{sidebar.profile.photo.png}}",
+        "image": "{{hero.profile.photo.png}}",
         "sameAs": [
-          {{#each sidebar.social}}{{#if external}}"{{safeUrl href}}"{{#unless @last}},
+          {{#each hero.social}}{{#if external}}"{{safeUrl href}}"{{#unless @last}},
           {{/unless}}{{/if}}{{/each}}{{#if site.credlyProfileUrl}},
           "{{site.credlyProfileUrl}}"{{/if}}
         ],
@@ -78,8 +78,8 @@
         },
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "{{sidebar.profile.location.city}}",
-          "addressCountry": "{{sidebar.profile.location.country}}"
+          "addressLocality": "{{hero.profile.location.city}}",
+          "addressCountry": "{{hero.profile.location.country}}"
         }
       }
     </script>
@@ -91,17 +91,17 @@
       <header class="hero">
         <div class="hero-top">
           <div class="hero-text">
-            <h1 class="hero-name">{{sidebar.profile.name}}</h1>
-            <p class="hero-title">{{sidebar.profile.title}}</p>
+            <h1 class="hero-name">{{hero.profile.name}}</h1>
+            <p class="hero-title">{{hero.profile.title}}</p>
             <address class="hero-contact">
             <p class="hero-location">
               <a href="{{safeUrl sidebar.profile.location.url}}" target="_blank" rel="noopener noreferrer" class="hero-location-link">
-                {{sidebar.profile.location.text}}
+                {{hero.profile.location.text}}
               </a>
             </p>
             </address>
             <div class="print-contact">
-              {{#each sidebar.social}}
+              {{#each hero.social}}
               <span>{{displayUrl href}}</span>
               {{#unless @last}}<span class="print-sep">|</span>{{/unless}}
               {{/each}}
@@ -109,7 +109,7 @@
               <span>{{displayUrl site.baseUrl}}</span>
             </div>
             <nav class="hero-links" aria-label="Contact and profile links">
-              {{#each sidebar.social}}
+              {{#each hero.social}}
               <a href="{{safeUrl href}}" {{#if external}}target="_blank" rel="noopener noreferrer"{{/if}} class="hero-btn hero-btn-outline" aria-label="{{label}}"><i class="{{icon}}"></i> {{label}}</a>
               {{/each}}
               <a href="{{safeUrl sidebar.cvDownloadUrl}}" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-filled" aria-label="{{t "downloadPdf"}}"><i class="fa-solid fa-file-pdf"></i> {{t "downloadPdf"}}</a>
@@ -118,13 +118,13 @@
             </nav>
           </div>
           <picture class="hero-photo">
-            <source srcset="{{sidebar.profile.photo.webp}}" type="image/webp" />
-            <img src="{{sidebar.profile.photo.png}}" alt="{{sidebar.profile.name}}" />
+            <source srcset="{{hero.profile.photo.webp}}" type="image/webp" />
+            <img src="{{hero.profile.photo.png}}" alt="{{hero.profile.name}}" />
           </picture>
         </div>
-        {{#if sidebar.languages}}
+        {{#if hero.languages}}
         <div class="languages-bar">
-          {{#each sidebar.languages}}
+          {{#each hero.languages}}
           {{#if certUrl}}
           <a href="{{safeUrl certUrl}}" target="_blank" rel="noopener noreferrer" class="language-item language-item-link" aria-label="{{name}} — {{level}} (view certificate)">
           {{else}}

@@ -69,7 +69,7 @@ your-cv-data/
 │   │   ├── education.yaml
 │   │   ├── experience.yaml
 │   │   ├── projects.yaml
-│   │   ├── sidebar.yaml
+│   │   ├── hero.yaml
 │   │   ├── site.yaml
 │   │   └── skills.yaml
 │   ├── de/                  ← additional locales (optional)
@@ -107,7 +107,7 @@ The `.env` file is loaded automatically via `node --env-file-if-exists=.env` (No
 
 | File                       | Content                                         |
 | -------------------------- | ----------------------------------------------- |
-| `<locale>/sidebar.yaml`    | Profile info, photo, social links, languages    |
+| `<locale>/hero.yaml`       | Profile info, photo, social links, languages    |
 | `<locale>/about.yaml`      | Summary paragraphs                              |
 | `<locale>/experience.yaml` | Work history (grouped by company or standalone) |
 | `<locale>/education.yaml`  | Education entries                               |

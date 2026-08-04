@@ -20,10 +20,10 @@ const OUTPUT_DIR = path.join(DIST, 'files');
 const PORT = 9333;
 
 const dataRoot = process.env.CV_DATA_DIR || path.join(ROOT, 'data');
-const sidebar = yaml.load(
-  fs.readFileSync(path.join(dataRoot, 'en', 'sidebar.yaml'), 'utf8')
+const hero = yaml.load(
+  fs.readFileSync(path.join(dataRoot, 'en', 'hero.yaml'), 'utf8')
 );
-const fullName = sidebar.profile.name.replace(/\s+/g, '_');
+const fullName = hero.profile.name.replace(/\s+/g, '_');
 
 const PAGES = [
   { url: '/', output: `CV_${fullName}.pdf` },

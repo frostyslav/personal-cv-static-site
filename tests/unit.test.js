@@ -106,7 +106,7 @@ describe('data-schema — validate()', () => {
       cvPdfPath: '/files/cv.pdf',
       careerStartYear: 2007,
     },
-    sidebar: {
+    hero: {
       profile: { name: 'Test', title: 'Dev' },
       nav: [{ href: '#about', text: 'About' }],
     },
@@ -148,9 +148,9 @@ describe('data-schema — validate()', () => {
     assert.equal(validate(validData, dataSchema).length, 0);
   });
 
-  it('catches missing sidebar.profile.name', () => {
+  it('catches missing hero.profile.name', () => {
     const d = JSON.parse(JSON.stringify(validData));
-    d.sidebar.profile.name = '';
+    d.hero.profile.name = '';
     const errors = validate(d, dataSchema);
     assert.ok(
       errors.some(e => e.includes('profile.name') && e.includes('required'))

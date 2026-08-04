@@ -130,7 +130,7 @@ const siteSchema = {
   },
 };
 
-const sidebarSchema = {
+const heroSchema = {
   type: 'object',
   required: true,
   fields: {
@@ -314,7 +314,7 @@ export const dataSchema = {
   required: true,
   fields: {
     site: siteSchema,
-    sidebar: sidebarSchema,
+    hero: heroSchema,
     about: aboutSchema,
     experience: experienceSchema,
     education: educationSchema,
