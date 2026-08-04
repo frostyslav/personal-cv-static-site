@@ -4,22 +4,30 @@
  * with print media emulation (same as browser Ctrl+P).
  *
  * Output:
- *   dist/files/CV_Rostyslav_Fridman.pdf    (English)
- *   dist/files/CV_Rostyslav_Fridman_DE.pdf (German)
+ *   dist/files/CV_<Name>.pdf    (English)
+ *   dist/files/CV_<Name>_DE.pdf (German)
  */
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import yaml from 'js-yaml';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DIST = path.join(__dirname, '..', 'dist');
+const ROOT = path.join(__dirname, '..');
+const DIST = path.join(ROOT, 'dist');
 const OUTPUT_DIR = path.join(DIST, 'files');
 const PORT = 9333;
 
+const dataRoot = process.env.CV_DATA_DIR || path.join(ROOT, 'data');
+const sidebar = yaml.load(
+  fs.readFileSync(path.join(dataRoot, 'en', 'sidebar.yaml'), 'utf8')
+);
+const fullName = sidebar.profile.name.replace(/\s+/g, '_');
+
 const PAGES = [
-  { url: '/', output: 'CV_Rostyslav_Fridman.pdf' },
-  { url: '/de/', output: 'CV_Rostyslav_Fridman_DE.pdf' },
+  { url: '/', output: `CV_${fullName}.pdf` },
+  { url: '/de/', output: `CV_${fullName}_DE.pdf` },
 ];
 
 const MIME = {
