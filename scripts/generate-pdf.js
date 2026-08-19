@@ -4,8 +4,13 @@
  * with print media emulation (same as browser Ctrl+P).
  *
  * Output:
- *   dist/files/CV_<Name>.pdf    (English)
- *   dist/files/CV_<Name>_DE.pdf (German)
+ *   dist/files/CV_<Name>.pdf                (English, no phone)
+ *   dist/files/CV_<Name>_DE.pdf             (German, no phone)
+ *   dist/files/CV_<Name>_with_number.pdf    (English, with phone)
+ *   dist/files/CV_<Name>_DE_with_number.pdf (German, with phone)
+ *
+ * The "_with_number" variants include the phone number from hero.yaml
+ * but are NOT linked anywhere on the site — for offline use only.
  */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -24,10 +29,19 @@ const hero = yaml.load(
   fs.readFileSync(path.join(dataRoot, 'en', 'hero.yaml'), 'utf8')
 );
 const fullName = hero.profile.name.replace(/\s+/g, '_');
+const phone = hero.phone || null;
 
 const PAGES = [
-  { url: '/', output: `CV_${fullName}.pdf` },
-  { url: '/de/', output: `CV_${fullName}_DE.pdf` },
+  {
+    url: '/',
+    output: `CV_${fullName}.pdf`,
+    outputWithPhone: `CV_${fullName}_with_number.pdf`,
+  },
+  {
+    url: '/de/',
+    output: `CV_${fullName}_DE.pdf`,
+    outputWithPhone: `CV_${fullName}_DE_with_number.pdf`,
+  },
 ];
 
 const MIME = {
@@ -39,6 +53,17 @@ const MIME = {
   '.txt': 'text/plain',
   '.xml': 'application/xml',
   '.webp': 'image/webp',
+};
+
+const PDF_OPTIONS = {
+  format: 'A4',
+  printBackground: true,
+  margin: {
+    top: '10mm',
+    right: '10mm',
+    bottom: '10mm',
+    left: '10mm',
+  },
 };
 
 function startServer() {
@@ -81,33 +106,49 @@ async function generatePdf() {
     // Ensure output directory exists
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-    for (const { url, output } of PAGES) {
+    for (const { url, output, outputWithPhone } of PAGES) {
+      // --- Standard PDF (no phone) ---
       const outputFile = path.join(OUTPUT_DIR, output);
       const page = await browser.newPage();
-
-      // Emulate print media to trigger @media print styles
       await page.emulateMediaType('print');
-
       await page.goto(`http://localhost:${PORT}${url}`, {
         waitUntil: 'networkidle0',
       });
-
-      await page.pdf({
-        path: outputFile,
-        format: 'A4',
-        printBackground: true,
-        margin: {
-          top: '10mm',
-          right: '10mm',
-          bottom: '10mm',
-          left: '10mm',
-        },
-      });
-
-      await page.close();
+      await page.pdf({ path: outputFile, ...PDF_OPTIONS });
       console.log(
         `✓ PDF generated: ${path.relative(process.cwd(), outputFile)}`
       );
+
+      // --- PDF with phone number ---
+      if (phone) {
+        await page.evaluate(phoneNumber => {
+          const container = document.querySelector('.print-contact');
+          if (container) {
+            // Use !important to override the print media stylesheet
+            container.style.setProperty('font-size', '8pt', 'important');
+            container.style.setProperty('white-space', 'nowrap');
+            const sep = document.createElement('span');
+            sep.className = 'print-sep';
+            sep.textContent = '|';
+            container.appendChild(sep);
+            const link = document.createElement('a');
+            link.href = `tel:${phoneNumber.replace(/\s+/g, '')}`;
+            link.textContent = phoneNumber;
+            container.appendChild(link);
+          }
+        }, phone);
+
+        const outputFileWithPhone = path.join(OUTPUT_DIR, outputWithPhone);
+        await page.pdf({ path: outputFileWithPhone, ...PDF_OPTIONS });
+        console.log(
+          `✓ PDF generated: ${path.relative(
+            process.cwd(),
+            outputFileWithPhone
+          )}`
+        );
+      }
+
+      await page.close();
     }
 
     await browser.close();

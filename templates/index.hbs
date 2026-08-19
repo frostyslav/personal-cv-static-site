@@ -102,11 +102,11 @@
             </address>
             <div class="print-contact">
               {{#each hero.social}}
-              <span>{{displayUrl href}}</span>
+              <a href="{{safeUrl href}}">{{displayUrl href}}</a>
               {{#unless @last}}<span class="print-sep">|</span>{{/unless}}
               {{/each}}
               <span class="print-sep">|</span>
-              <span>{{displayUrl site.baseUrl}}</span>
+              <a href="{{safeUrl site.baseUrl}}">{{displayUrl site.baseUrl}}</a>
             </div>
             <nav class="hero-links" aria-label="Contact and profile links">
               {{#each hero.social}}
