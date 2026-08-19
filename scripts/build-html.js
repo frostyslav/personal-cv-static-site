@@ -83,6 +83,10 @@ const data = {
 
 validateData(data);
 
+// Compute locale-aware portfolio URL for print-contact section
+const localePath = locale === defaultLocale ? '/' : `/${locale}/`;
+data.site.portfolioUrl = `${data.site.baseUrl}${localePath}`;
+
 // Replace {{yearsOfExperience}} placeholder in about paragraphs
 if (data.site.careerStartYear && data.about?.paragraphs) {
   const years = new Date().getFullYear() - data.site.careerStartYear;
