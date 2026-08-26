@@ -74,10 +74,10 @@
 .hero-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
   border-radius: 2rem;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
   transition:
@@ -88,7 +88,7 @@
 }
 
 .hero-btn i {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 /* Make lang toggle and theme toggle compact icon+label pills */

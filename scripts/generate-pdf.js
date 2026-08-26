@@ -126,15 +126,13 @@ async function generatePdf() {
           if (container) {
             // Use !important to override the print media stylesheet
             container.style.setProperty('font-size', '8pt', 'important');
-            container.style.setProperty('white-space', 'nowrap');
-            const sep = document.createElement('span');
-            sep.className = 'print-sep';
-            sep.textContent = '|';
-            container.appendChild(sep);
+            // Phone on its own line — no separator before it
+            const phoneLine = document.createElement('div');
             const link = document.createElement('a');
             link.href = `tel:${phoneNumber.replace(/\s+/g, '')}`;
             link.textContent = phoneNumber;
-            container.appendChild(link);
+            phoneLine.appendChild(link);
+            container.appendChild(phoneLine);
           }
         }, phone);
 
