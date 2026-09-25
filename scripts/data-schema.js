@@ -127,6 +127,13 @@ const siteSchema = {
     baseUrl: { type: 'url', required: true },
     cvPdfPath: { type: 'string', required: true },
     careerStartYear: { type: 'number', required: true, min: 1900 },
+    // Optional profile URLs added to the Person JSON-LD `sameAs` only
+    // (not rendered as visible links).
+    extraSameAs: {
+      type: 'array',
+      required: false,
+      items: { type: 'url', required: true },
+    },
   },
 };
 
